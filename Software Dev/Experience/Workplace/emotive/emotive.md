@@ -1,0 +1,16 @@
+Tech stack:
+- [[Java]]
+- [[C-Sharp]]
+- [[C++]]
+- [[Dot NET]]
+- [[Protobuf]]
+- [[WinForm]]
+- [[WPF]]
+- [[Xml2Code]]
+- [[ReactJS]]
+- [[Material UI]]
+- [[ExpressJS]]
+- [[PostgreSQL]]
+- [[AWS]]
+Client:
+- [[Porsche]]

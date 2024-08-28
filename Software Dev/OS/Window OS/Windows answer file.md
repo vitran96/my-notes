@@ -1,0 +1,2 @@
+This allow setup image for unattended installation: https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11
+The answer file also allow pre-installation and stop windows from installing bloatware.

@@ -1,0 +1,193 @@
+{
+  "main": {
+    "id": "1678708c133f1d1f",
+    "type": "split",
+    "children": [
+      {
+        "id": "2ba25a8e2fed20c6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "babb5e97ee741981",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "65663bcd55340584",
+    "type": "split",
+    "children": [
+      {
+        "id": "7ba052a0bdbba48a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "82a2831311448e0d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "da950e58a91b71bd",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "01157e247df725ec",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "17e4b157dc200d92",
+    "type": "split",
+    "children": [
+      {
+        "id": "8a59c0ee08b332b0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6ec256e6fbf1bcda",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "5b640c6a7577fef2",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "42f49c9a4c02a43b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "d211e128ccf7bab3",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          },
+          {
+            "id": "070f4125b2c690a4",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "markdown-importer:Open format converter": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "babb5e97ee741981",
+  "lastOpenFiles": [
+    "OS/Window OS/Windows answer file.md",
+    "OS/Linux Distro",
+    "OS/Untitled.md",
+    "Programming/Authentication/JWT.md",
+    "Programming/Authentication/PASETO.md",
+    "Database/Relational database/PostgreSQL.md",
+    "Database/Relational database/Relational database.md",
+    "Database/NoSQL",
+    "Database/Relational database",
+    "Database/Relational database/SQL.md",
+    "2024-08-21.md",
+    "Software development.md",
+    "Programming/Programming language/C-Sharp.md",
+    "Programming/Programming language/C Lang.md",
+    "Programming/Programming language/C++.md",
+    "Programming/Framework/Spring-boot.md",
+    "Programming/Framework/Framework.md",
+    "Programming/Authentication/Session Management.md",
+    "Programming/Authentication/OpenConnect.md",
+    "Programming/Authentication/OAuth.md",
+    "Infrastructure/Container technology/Docker.md",
+    "Programming/Authentication",
+    "Infrastructure/Network/nginx.md",
+    "Infrastructure/Network",
+    "Infrastructure/Container technology",
+    "OS/Window OS/Policy.md",
+    "Programming/Programming library/jaregu queries.md",
+    "jaregu queries.md",
+    "Programming/Programming language/Java.md",
+    "Experience/Workplace/emotive/emotive.md",
+    "Programming/Programming library/jOOQ.md",
+    "OS/Window OS/Window OS.md",
+    "Infrastructure/Automation",
+    "Infrastructure/Cloud",
+    "Infrastructure/CI CD",
+    "Infrastructure"
+  ]
+}
