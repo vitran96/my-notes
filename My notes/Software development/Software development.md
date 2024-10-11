@@ -1,2 +1,2 @@
-This note will contain my knowledge and [[Experience]] in this field
+This note will contain my knowledge and [[Work experience]] in this field
 We will note and cover [[Programming language]], [[Design pattern]], [[Framework]], etc...
