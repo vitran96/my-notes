@@ -1,5 +1,6 @@
 {
   "alwaysUpdateLinks": true,
   "livePreview": false,
-  "showLineNumber": true
+  "showLineNumber": true,
+  "newFileLocation": "root"
 }
