@@ -11,8 +11,12 @@
             "id": "4e4a85be273b5012",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Relationship/Workplace/upskills/upskillian/Bich Ho.md",
+                "mode": "source",
+                "source": true
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Relationship/Workplace/upskills/upskillian/Bich Ho.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Relationship/Workplace/upskills/upskillian/Bich Ho.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Relationship/Workplace/upskills/upskillian/Bich Ho.md"
+              }
             }
           },
           {
@@ -151,8 +159,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "4e4a85be273b5012",
+  "active": "82a2831311448e0d",
   "lastOpenFiles": [
+    "Relationship/Workplace/upskills/upskillian",
+    "Relationship/Workplace/upskills/upskills.md",
+    "Relationship/Workplace/upskills/upskillian/Bich Ho.md",
+    "Relationship/Workplace/Work experience.md",
     "Leadership/Leadership.md",
     "Fitness/Fitness.md",
     "Fitness",
@@ -165,10 +177,8 @@
     "Vehicles/Yamaha",
     "Vehicles",
     "Relationship/Family",
-    "Relationship/Workplace/Work experience.md",
     "Relationship/Relationship.md",
     "Relationship/Workplace/emotive/emotive.md",
-    "Relationship/Workplace/upskills/upskills.md",
     "Software development/Programming/Framework/Material UI.md",
     "Relationship",
     "Software development",
@@ -186,8 +196,6 @@
     "Software development/Programming/Programming language/C-Sharp.md",
     "Software development/Programming/Programming language/C Lang.md",
     "Software development/Programming/Programming language/C++.md",
-    "Software development/Programming/Framework/Spring-boot.md",
-    "Software development/Programming/Framework/Framework.md",
-    "Software development/Programming/Authentication/Session Management.md"
+    "Software development/Programming/Framework/Spring-boot.md"
   ]
 }

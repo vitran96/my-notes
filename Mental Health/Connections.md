@@ -1,2 +1,0 @@
-* [[emotive]]
-* [[upskills]]
