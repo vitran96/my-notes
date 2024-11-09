@@ -1,0 +1,1 @@
+- Awesome shell to pipeline / query shell result like [[SQL]]
