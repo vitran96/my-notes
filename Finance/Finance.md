@@ -1,3 +1,3 @@
 ## The Pyramid of finance
 
-Saving / Insurance > Investing > Asset (House)
+Saving / [[Insurance]] > [[Investing]] > Asset (House)

@@ -1,7 +1,7 @@
 Tech stack:
 - Programming language
 	- [[Java]]
-	- [[Python]]
+	- [[Software development/Runtime/Python]]
 	- [[Typescript]]
 	- [[SQL]]
 - Tools:
