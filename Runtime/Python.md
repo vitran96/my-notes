@@ -1,1 +1,0 @@
-[[Programming/Programming language/Python/Python|Python]] runtime
