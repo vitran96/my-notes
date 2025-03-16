@@ -1,1 +1,0 @@
-- Trừ khi nghỉ việc, luôn QTT theo năm

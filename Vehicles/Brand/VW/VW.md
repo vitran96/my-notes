@@ -1,2 +1,0 @@
-The parent of:
-- [[Porsche]]

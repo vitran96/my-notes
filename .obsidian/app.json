@@ -2,5 +2,6 @@
   "alwaysUpdateLinks": true,
   "livePreview": false,
   "showLineNumber": true,
-  "newFileLocation": "root"
+  "newFileLocation": "root",
+  "promptDelete": false
 }

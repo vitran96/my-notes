@@ -1,1 +1,0 @@
-Shell with built-in [[Software development/Runtime/Python]] command support
