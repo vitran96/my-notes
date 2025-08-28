@@ -34,3 +34,11 @@ Appending to System PATH:
 for /f "usebackq tokens=2,*" %A in (`reg query "HKLM\\SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment" /v PATH`) do set system_path=%B
 setx /M PATH "%my_user_path%;NEW_PATH"
 ```
+
+# Restart to Recovery mode
+
+1. Keep force restart until recovery mode is ON
+
+# Restore file
+
+Use `sfc` tool
