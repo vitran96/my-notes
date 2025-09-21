@@ -1,4 +1,16 @@
-# Organize VS project
+A [[Programming language]] with [[Procedural paradigm]] and [[Object oriented paradigm]] support
+C++ is also a super set of [[CLang]]
+
+# clang compiler
+
+Basic compilation
+
+```bash
+cl /EHsc /GA /MT klog_main.cpp User32.lib
+```
+
+# CMake
+## Organize VS project
 
 Link: [https://www.programmersought.com/article/11366491955/](https://www.programmersought.com/article/11366491955/)
 
@@ -20,7 +32,7 @@ set_target_properties(hk_camera_test PROPERTIES FOLDER "CMakeTargets")
 set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMakeTargets")
 ```
 
-# Generate [[ninja]] on [[Window OS]]
+## Generate [[ninja]] on [[Window OS]]
 
 [https://stackoverflow.com/questions/31262342/cmake-g-ninja-on-windows-specify-x64](https://stackoverflow.com/questions/31262342/cmake-g-ninja-on-windows-specify-x64)
 
@@ -28,7 +40,7 @@ set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMakeTargets")
 
 ⇒ Load build environment of your VS version then gen Ninja just like Linux (same with nmake)
 
-# Findxxx module
+## Findxxx module
 
 Link: https://cmake.org/cmake/help/v3.8/manual/cmake-developer.7.html?highlight=find#find-modules
 
