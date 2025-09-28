@@ -4,28 +4,20 @@ This is the most mature web-framework for [[Java]] ecosystem (beat [[vertx]] in 
 # Init command
 
 ```shell
-spring init `
-  --boot-version=3.5.5 `
-  --java-version=21 `
-  --build=maven `
-  --language=java `
-  --group-id=com.example `
-  --artifact-id=demo `
-  --name=demo `
-  --package-name=com.example.demo `
-  --dependencies=web,validation,data-jpa,h2,security,actuator,devtools,lombok,testcontainers,mysql,restdocs `
-  --extract `
-  demo
-
+spring init \
+  --boot-version=3.5.5 \
+  --java-version=21 \
+  --build=maven \
+  --language=java \
+  --group-id=tech.kingoyster \
+  --artifact-id=demo \
+  --name=project-1 \
+  --package-name=tech.kingoyster.project-1 \
+  --dependencies=web,security,lombok,liquibase,testcontainers,actuator,devtools,restdocs,validation,data-jpa,h2,mysql \
+  --extract \
+  project-1
 ```
 
-# Spring-doc dependencies
-
-```xml
-<!-- pom.xml -->
-<dependency>
-  <groupId>org.springdoc</groupId>
-  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-  <version>2.x</version> <!-- use latest 2.x -->
-</dependency>
-```
+# [[Liquibase]] support
+Spring-boot can auto recognize Liquibase dependancies in the class-path so you don't need additional configuration.
+Please take a look at [[Liquibase]] page for configuration.
