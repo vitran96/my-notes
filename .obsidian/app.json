@@ -3,5 +3,6 @@
   "livePreview": false,
   "showLineNumber": true,
   "newFileLocation": "root",
-  "promptDelete": false
+  "promptDelete": false,
+  "readableLineLength": false
 }
