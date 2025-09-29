@@ -7,5 +7,9 @@
   "obsidian-linter",
   "obsidian-paste-image-rename",
   "url-into-selection",
-  "recent-files-obsidian"
+  "recent-files-obsidian",
+  "obsidian-excalidraw-plugin",
+  "obsidian-git",
+  "obsidian-mind-map",
+  "obsidian-plantuml"
 ]
