@@ -21,3 +21,23 @@ spring init \
 # [[Liquibase]] support
 Spring-boot can auto recognize Liquibase dependancies in the class-path so you don't need additional configuration.
 Please take a look at [[Liquibase]] page for configuration.
+
+## Config
+```yaml
+spring:
+  liquibase:
+    change-log: classpath:/db/migrations/changelog.xml
+```
+
+# Config DB & JPA
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo_liquibase
+    username: postgres
+    password: changemeinproduction
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+```
