@@ -30,7 +30,6 @@
 
 # Maven plugin
 ```xml
-```
 <build>
 	<plugins>
 		<plugin>
@@ -46,4 +45,25 @@
 	</plugins>
 </build>
 ```
+
+# Properties file sample
+[Guide](https://docs.liquibase.com/pro/user-guide-4-33/what-is-the-liquibase-properties-file)
+```properties
+changelogFile: ../path/to/file/dbchangelog.xml
+driver: oracle.jdbc.OracleDriver
+url: jdbc:oracle:thin:@192.168.0.22:1521/orcl
+referenceDriver: oracle.jdbc.OracleDriver
+referenceUrl: jdbc:oracle:thin:@192.168.0.22:1521/orcl
+licenseKey: aeioufakekey32aeioufakekey785463214
+classpath: ../path/to/file/ojdbc6-11.2.0.3.0.jar
+```
+
+```yaml
+changelogFile: ../path/to/file/dbchangelog.xml
+driver: oracle.jdbc.OracleDriver
+url: jdbc:oracle:thin:@192.168.0.22:1521/orcl
+referenceDriver: oracle.jdbc.OracleDriver
+referenceUrl: jdbc:oracle:thin:@192.168.0.22:1521/orcl
+licenseKey: aeioufakekey32aeioufakekey785463214
+classpath: ../path/to/file/ojdbc6-11.2.0.3.0.jar
 ```

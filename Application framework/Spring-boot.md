@@ -23,10 +23,15 @@ Spring-boot can auto recognize Liquibase dependancies in the class-path so you d
 Please take a look at [[Liquibase]] page for configuration.
 
 ## Config
+URL can be used from datasource
 ```yaml
 spring:
   liquibase:
     change-log: classpath:/db/migrations/changelog.xml
+    url: jdbc:mysql://localhost:3306/mydatabase
+	user: myuser
+	password: mypassword
+    enabled: false
 ```
 
 # Config DB & JPA
