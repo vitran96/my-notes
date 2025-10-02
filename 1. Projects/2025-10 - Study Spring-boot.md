@@ -3,7 +3,7 @@ start: 2025-10-02
 end: 2025-10-12
 ---
 
-Scope:
+# Scope
 - Spring config
 - Spring security & filter chain & Authorization
 - Spring life-cycle
@@ -14,3 +14,7 @@ Scope:
 - JPA & Hibernate
 - JUnit & Mokito
 - TestContainer
+
+# Course 1
+
+# Course 2
