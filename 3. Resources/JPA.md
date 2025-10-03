@@ -66,20 +66,21 @@ Official plugin from [[Hibernate]]
 
 ### Properties file
 ```properties
-hibernate.dialect=org.hibernate.dialect.MySQLDialect
-hibernate.connection.driver_class=com.mysql.jdbc.Driver
-hibernate.connection.url=jdbc:mysql://localhost:3306/demo
-hibernate.connection.username=user
-hibernate.connection.password=password
+hibernate.dialect=org.hibernate.dialect.MySQLDialect  
+hibernate.connection.url=jdbc:mysql://localhost:3306/spring_1  
+hibernate.connection.driver_class=com.mysql.cj.jdbc.Driver  
+hibernate.connection.username=user1  
+hibernate.connection.password=pass1234
 ```
 
 ### Reverse engineer file
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
-
-<hibernate-reverse-engineering>
-
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE hibernate-reverse-engineering SYSTEM "http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >  
+  
+<hibernate-reverse-engineering>  
+    <table-filter match-name="DATABASECHANGELOG" exclude="true"/>  
+    <table-filter match-name="DATABASECHANGELOGLOCK" exclude="true"/>  
 </hibernate-reverse-engineering>
 ```
 
