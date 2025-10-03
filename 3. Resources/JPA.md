@@ -28,7 +28,7 @@ Notes:
 
 ### Config & Run
 1. Create the `src/main/resources/entityGenConfig.yml` ([sample](https://raw.githubusercontent.com/smartnews/jpa-entity-generator/6cca92a226d5225b2d8316bc205b77941f86281e/src/test/resources/entityGenConfig4.yml))
-	```yaml
+	```yaml title="src/main/resources/entityGenConfig.yml"
 	jdbcSettings:
 		url: "jdbc:h2:file:./db/blog;MODE=MySQL"
 		username: "user"
@@ -71,16 +71,6 @@ hibernate.connection.driver_class=com.mysql.jdbc.Driver
 hibernate.connection.url=jdbc:mysql://localhost:3306/demo
 hibernate.connection.username=user
 hibernate.connection.password=password
-```
-
-```yaml
-hibernate:  
-  dialect: org.hibernate.dialect.MySQLDialect  
-  connection:  
-    url: jdbc:mysql://localhost:3306/spring_1  
-    driverClass: com.mysql.jdbc.Driver  
-    username: user1  
-    password: pass1234
 ```
 
 ### Reverse engineer file
