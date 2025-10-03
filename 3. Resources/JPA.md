@@ -44,23 +44,29 @@ Official plugin from [[Hibernate]]
 [Guide](https://web.archive.org/web/20201013105933/https://jonamlabs.com/how-to-use-hibernate-tools-maven-plugin-to-generate-jpa-entities-from-an-existing-database/)
 
 ### [[Maven]] plugin
+By default, the tool include schema / catalog (== MySQL database or Postgres Schema). So we override a template to remove that.
 ```xml
 <plugin>  
-    <groupId>org.hibernate.tool</groupId>  
-    <artifactId>hibernate-tools-maven</artifactId>  
-    <version>${hibernate-tools.version}</version>  
-    <configuration>  
-        <propertyFile>${project.basedir}/hibernate.properties</propertyFile>  
-        <revengFile>${project.basedir}/hibernate.reveng.xml</revengFile>  
-    </configuration>  
-    <dependencies>  
-        <!-- DB Driver of your database -->  
-        <dependency>  
-            <groupId>com.mysql</groupId>  
-            <artifactId>mysql-connector-j</artifactId>  
-            <version>${mysql.version}</version>  
-        </dependency>  
-    </dependencies>  
+	<groupId>org.hibernate.tool</groupId>  
+	<artifactId>hibernate-tools-maven</artifactId>  
+	<version>${hibernate-tools.version}</version>  
+	<configuration>  
+		<propertyFile>${project.basedir}/hibernate.properties</propertyFile>  
+		<revengFile>${project.basedir}/hibernate.reveng.xml</revengFile>  
+<!--                    <ejb3>true</ejb3>-->  
+<!--                    <jdk5>true</jdk5>-->  
+		<outputDirectory>${project.basedir}/src/main/java</outputDirectory>  
+		<packageName>tech.kingoyster.spring_1.model</packageName>  
+		<templatePath>${project.basedir}/template</templatePath>  
+	</configuration>  
+	<dependencies>  
+		<!-- DB Driver of your database -->  
+		<dependency>  
+			<groupId>com.mysql</groupId>  
+			<artifactId>mysql-connector-j</artifactId>  
+			<version>${mysql.version}</version>  
+		</dependency>  
+	</dependencies>  
 </plugin>
 ```
 
@@ -89,5 +95,10 @@ hibernate.connection.password=pass1234
 # Generate
 mvn hibernate-tools:hbm2java
 ```
+
+### Use custom template
+To override an existing template, you just need to name . Then add to the configuration `<templatePath>...</templatePath>`.
+If path is `template_path` then the template should be in `template_path/pojo`.
+
 ## [[Lombok]] `@Data` annotation should be avoided
 It is not recommended to add `@Data` annotation to Entity since it can break the [[Lazy evaluation]]
