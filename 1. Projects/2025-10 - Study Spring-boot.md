@@ -51,7 +51,8 @@ end: 2025-10-12
 ## Session 1
 1. Create base code
 2. Create base migration with [[Liquibase]]
-3. Customer CRUD
+3. Create / Generate JPA's Entity
+4. Customer CRUD
 
 ## Session 2
 

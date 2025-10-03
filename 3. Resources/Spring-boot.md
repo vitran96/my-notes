@@ -112,3 +112,10 @@ spring:
     hibernate:
       ddl-auto: none
 ```
+
+# REST Controller
+REST controller is a combination of `@Controller` and `@ResponseBody` (basically add `application/json` as response)
+
+# Spring's Bean
+Why is it important?
+- For Spring component scan & dependencies injection.
