@@ -27,8 +27,8 @@ spring-boot-app/
 └── README.md
 
 ```
-# Init command
 
+# Init command
 ```shell
 spring init \
   --boot-version=3.5.5 \
@@ -49,7 +49,7 @@ Spring-boot can auto recognize Liquibase dependancies in the class-path so you d
 Please take a look at [[Liquibase]] page for configuration.
 
 ## Config
-URL can be used from datasource
+URL can be used from data-source
 ```yaml
 spring:
   liquibase:
@@ -97,8 +97,6 @@ public SpringLiquibase liquibase(@Qualifier("taskExecutor") TaskExecutor taskExe
     return liquibase;
 }
 ```
-
-## Generate changelog with [[JPA]]
 
 # DB & [[JPA]]
 

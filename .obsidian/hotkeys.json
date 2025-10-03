@@ -61,24 +61,6 @@
       "key": "Tab"
     }
   ],
-  "hotkeysplus-obsidian:duplicate-lines-down": [
-    {
-      "modifiers": [
-        "Alt",
-        "Shift"
-      ],
-      "key": "ArrowDown"
-    }
-  ],
-  "hotkeysplus-obsidian:duplicate-lines-up": [
-    {
-      "modifiers": [
-        "Alt",
-        "Shift"
-      ],
-      "key": "ArrowUp"
-    }
-  ],
   "editor:swap-line-down": [
     {
       "modifiers": [
@@ -95,33 +77,7 @@
       "key": "ArrowUp"
     }
   ],
-  "hotkeysplus-obsidian:clear-current-line": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "K"
-    }
-  ],
   "editor:delete-paragraph": [],
-  "hotkeysplus-obsidian:insert-line-above": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "Enter"
-    }
-  ],
-  "hotkeysplus-obsidian:insert-line-below": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "Enter"
-    }
-  ],
   "app:go-back": [
     {
       "modifiers": [
@@ -141,12 +97,6 @@
   "editor:open-link-in-new-leaf": [
     {
       "modifiers": [
-        "Mod"
-      ],
-      "key": "Enter"
-    },
-    {
-      "modifiers": [
         "Alt",
         "Mod"
       ],
@@ -154,5 +104,14 @@
     }
   ],
   "editor:open-link-in-new-split": [],
-  "editor:open-link-in-new-window": []
+  "editor:open-link-in-new-window": [],
+  "editor:toggle-checklist-status": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "L"
+    }
+  ]
 }

@@ -11,5 +11,7 @@
   "obsidian-excalidraw-plugin",
   "obsidian-git",
   "obsidian-mind-map",
-  "obsidian-plantuml"
+  "obsidian-plantuml",
+  "obsidian-editor-shortcuts",
+  "shiki-highlighter"
 ]
