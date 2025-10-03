@@ -37,7 +37,7 @@ end: 2025-10-12
 	- Verify [[OpenAPI]]/Scalar paths and understand where the spec/UI live.
 - Session 4 — [[MySQL]] Profile & [[Testcontainers]] Integration
 	- Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.
-	- Use [[Testcontainers]] to run real [[MySQL]] in integration tests (ephemeral, reproducible).
+	- Use [[Testcontainers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
 	- Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource`).
 	- Validate persistence guarantees (identity, constraints, sorting, cascading).
 	- Handle and assert on database exceptions (e.g., unique constraint violations).
@@ -47,12 +47,19 @@ end: 2025-10-12
 	- Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
 	- Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
 	- Define preflight behavior and verify the right `Access-Control-*` headers are returned.
+- Session 6 — Checkstyle & Formatting:
+	- Maven check style.
+	- Maven formatting.
 
 ## Session 1
 1. Create base code
 2. Create base migration with [[Liquibase]]
 3. Create / Generate JPA's Entity
+	1. Generation of JPA is not worth it if the scope is small & we want customized Entity instead of the DEFAULT generation
+	2. Generation of changelog might be worth to check
 4. Customer CRUD
+	1. Start with simple base CRUD
+5. [[Unit Test]]
 
 ## Session 2
 

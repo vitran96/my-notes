@@ -43,6 +43,12 @@ Notes:
 Official plugin from [[Hibernate]]
 [Guide](https://web.archive.org/web/20201013105933/https://jonamlabs.com/how-to-use-hibernate-tools-maven-plugin-to-generate-jpa-entities-from-an-existing-database/)
 
+Notes:
+- `NOT NULL` will try to use primitive
+- `catalog/schema` will always included
+- Generate POJO with name exactly like the DB
+- AUTO generated ID is not annotated
+
 ### [[Maven]] plugin
 By default, the tool include schema / catalog (== MySQL database or Postgres Schema). So we override a template to remove that.
 ```xml

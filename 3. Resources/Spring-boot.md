@@ -119,3 +119,5 @@ REST controller is a combination of `@Controller` and `@ResponseBody` (basically
 # Spring's Bean
 Why is it important?
 - For Spring component scan & dependencies injection.
+
+## `@Autowired` vs constructor injection
