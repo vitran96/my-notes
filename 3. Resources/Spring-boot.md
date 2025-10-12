@@ -126,3 +126,22 @@ Why is it important?
 
 ## Unit Test
 Don't need `@SpringBootTest` if not load Spring app context.
+
+# Spring validation
+
+Sample validation:
+```java
+class User {
+	@Email
+	private String email;
+}
+```
+
+## Maven
+```xml
+<!-- Maven -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
