@@ -35,5 +35,32 @@ class UserServiceTest {
 # Mocking
 `when` -> `then`
 
-# Work with JUnit 5
+# Count innovocation
+`verify(<mock class>, times(<xxx>)).<mock function>(...);`
+
+# Work with [[JUnit|JUnit 5]]
 `@Test` must be `org.junit.jupyter.api.Test`, not `org.junit.Test`
+
+# Attach agent to [[Maven]] surefire
+Future release of Java might prohibit "inline Mockito agent attach". For [[Maven]], you can use below [[XML]] (please remove `@{argLine}` if there is no additional argument for java)
+[Article about this](https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3)
+```xml
+ <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-dependency-plugin</artifactId>
+     <executions>
+         <execution>
+             <goals>
+                 <goal>properties</goal>
+             </goals>
+         </execution>
+     </executions>
+ </plugin>
+ <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-surefire-plugin</artifactId>
+     <configuration>
+         <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
+     </configuration>
+ </plugin>
+```
