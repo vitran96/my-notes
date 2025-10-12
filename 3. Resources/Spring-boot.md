@@ -121,3 +121,8 @@ Why is it important?
 - For Spring component scan & dependencies injection.
 
 ## `@Autowired` vs constructor injection
+
+# Spring test
+
+## Unit Test
+Don't need `@SpringBootTest` if not load Spring app context.

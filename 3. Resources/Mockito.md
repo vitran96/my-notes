@@ -2,6 +2,8 @@
 Mockito also works well with [[Spring-boot]].
 
 [Test configuration](https://medium.com/simform-engineering/testing-spring-boot-applications-best-practices-and-frameworks-6294e1068516)
+[Guide](https://dev.to/ankitdevcode/spring-boot-testing-a-comprehensive-best-practices-guide-1do6)
+[Mockito core doc](https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#45)
 
 Sample
 ```java
@@ -32,3 +34,6 @@ class UserServiceTest {
 
 # Mocking
 `when` -> `then`
+
+# Work with JUnit 5
+`@Test` must be `org.junit.jupyter.api.Test`, not `org.junit.Test`

@@ -10,7 +10,7 @@ Issues:
 Notes:
 - Good enhancement can be found from this [repo](https://github.com/pierrickrouxel/jpa-entity-generator/tree/main)
 
-### Maven dependancies
+### [[Maven]] dependencies
 ```xml
 <plugin>
   <groupId>com.smartnews</groupId>
