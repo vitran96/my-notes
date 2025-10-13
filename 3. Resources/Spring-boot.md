@@ -145,3 +145,90 @@ class User {
     <artifactId>spring-boot-starter-validation</artifactId>
 </dependency>
 ```
+
+# Spring [[REST API|REST]] Docs
+[Document](https://docs.spring.io/spring-restdocs/docs/current/reference/htmlsingle)
+
+Notes:
+- We can [[Unit Test]] the document since this module also support testing.
+- This is more like handwriting document
+
+# Springdoc [[OpenAPI]] generation
+[Guide](https://www.baeldung.com/spring-rest-openapi-documentation)
+
+API URL: `http://localhost:8080/v3/api-docs`
+Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+
+## [[Maven]] dependency
+### WebMVC
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.8.13</version>
+</dependency>
+```
+
+### WebFlux
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+    <version>2.8.5</version>
+</dependency>
+```
+
+### Support plugin for [[Kotlin]]
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-common</artifactId>
+    <version>2.8.5</version>
+</dependency>
+```
+
+## Properties
+```properties
+springdoc.api-docs.enabled=false
+springdoc.api-docs.path=<url path>
+springdoc.swagger-ui.path=<url path>.html
+springdoc.swagger-ui.operationsSorter=<sort with method|etc...>
+springdoc.swagger-ui.tagsSorter=alpha
+springdoc.writer-with-order-by-keys=true
+```
+
+## Plugin to generate docs
+```xml
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <version>3.4.3</version>
+    <executions>
+        <execution>
+            <id>pre-integration-test</id>
+            <goals>
+                <goal>start</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>post-integration-test</id>
+            <goals>
+                <goal>stop</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+<plugin>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-maven-plugin</artifactId>
+    <version>1.4</version>
+    <executions>
+        <execution>
+            <phase>integration-test</phase>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
