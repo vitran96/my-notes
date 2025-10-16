@@ -235,9 +235,11 @@ springdoc.writer-with-order-by-keys=true
 
 # Spring security
 Notes:
-- Default will redirect like how SSO work
+- Default will redirect like how [[SSO]] work
 	- Can be disabled with config
 - Spring security does support [[LDAP]], [[OAuth]] integration
+- [[CSRF]] is disabled
+- Request cache is disabled
 
 ## Sample config
 ```java
