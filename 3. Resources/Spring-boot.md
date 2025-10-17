@@ -188,6 +188,7 @@ Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 ```
 
 ## Properties
+[Properties](https://springdoc.org/properties.html)
 ```properties
 springdoc.api-docs.enabled=false
 springdoc.api-docs.path=<url path>
@@ -233,13 +234,25 @@ springdoc.writer-with-order-by-keys=true
 </plugin>
 ```
 
+## Show actuator routes
+Actuator is not show by default
+```properties
+springdoc.show-actuator=true
+```
+
+## Show Spring-security routes
+Spring's security not show by default
+```properties
+springdoc.show-login-endpoint=true
+```
+
 # Spring security
 Notes:
 - Default will redirect like how [[SSO]] work
 	- Can be disabled with config
 - Spring security does support [[LDAP]], [[OAuth]] integration
-- [[CSRF]] is disabled
-- Request cache is disabled
+- [[CSRF]] is supported by default
+- Request cache is supported by default
 
 ## Sample config
 ```java

@@ -62,5 +62,12 @@ end: 2025-10-31
 5. [[Unit Test]]
 
 ## Session 2
+1. Create User CRUD
+2. Auto create ADMIN account
+3. Setup Spring-security
+4. Setup Authentication Filter chain
+5. [[Unit Test]] User CRUD & Filter chain
+
+## Session 3
 
 # Course 2
