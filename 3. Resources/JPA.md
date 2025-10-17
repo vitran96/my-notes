@@ -106,5 +106,27 @@ mvn hibernate-tools:hbm2java
 To override an existing template, you just need to name . Then add to the configuration `<templatePath>...</templatePath>`.
 If path is `template_path` then the template should be in `template_path/pojo`.
 
-## [[Lombok]] `@Data` annotation should be avoided
+# [[Lombok]] `@Data` annotation should be avoided
 It is not recommended to add `@Data` annotation to Entity since it can break the [[Lazy evaluation]]
+
+# Projection view
+```java
+public interface UserRepo extends JapRepository<User, Long> {
+	// This will create SELECT ... FROM users with fields sepecified in UserSummary
+	List<UserSummary> findProjectedById(Long id);
+}
+```
+
+# Custom query
+```java
+public interface UserRepo extends JapRepository<User, Long> {
+	@Transaction
+	@Modifying
+	@Query("UPDATE User u SET u.hashedPassword = :hashedPassword WHERE u.id = :id")
+	void updatePasword(@Param("id") Long id, @Param("hashedPassword") String hashedPassword)
+}
+```
+
+Notes:
+- The table name should be the **entity class name**. Same with it's field name
+- Update query should be in a transaction and require `@Modifying` annotation

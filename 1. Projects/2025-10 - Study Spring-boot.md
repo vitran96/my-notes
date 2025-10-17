@@ -66,7 +66,8 @@ end: 2025-10-31
 2. Auto create ADMIN account
 3. Setup Spring-security
 4. Setup Authentication Filter chain
-5. [[Unit Test]] User CRUD & Filter chain
+5. [[Unit Test]] User CRUD & Security Filter chain & Security (where possible)
+6. [[Integration Test]] Security & Security Filter chain
 
 ## Session 3
 

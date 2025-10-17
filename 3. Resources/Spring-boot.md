@@ -362,3 +362,9 @@ public class SecurityConfig {
     }
 }
 ```
+
+# DTO Mapper pattern
+Notes:
+- DTO set at controller
+- Mapping should be done at Service layer
+- Mapping can be done manually or with MapStruct / ModelMapper
