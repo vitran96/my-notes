@@ -368,3 +368,46 @@ Notes:
 - DTO set at controller
 - Mapping should be done at Service layer
 - Mapping can be done manually or with MapStruct / ModelMapper
+
+# Startup task
+```
+
+```
+
+# Custom config param
+
+## Use `@Value`
+```java
+@Value("app.env1")
+private String env1;
+```
+
+## Use `@Configuration`
+```java
+@Configuration  
+@ConfigurationProperties(prefix = "app.admin")  
+@RequiredArgsConstructor  
+@NoArgsConstructor  
+@Getter  
+@Setter  
+public class AdminConfiguration {
+	// app.admin.fullName
+    private String fullName;  
+	// app.admin.email
+    private String email;  
+	// app.admin.password
+    private String password;  
+}
+```
+
+# Startup task
+```java
+@Component  
+@RequiredArgsConstructor  
+public class InitAdmin {  
+    @EventListener(ApplicationReadyEvent.class)  
+    void initAdmin() {  
+        // Find if any user with email existed.  
+    }  
+}
+```
