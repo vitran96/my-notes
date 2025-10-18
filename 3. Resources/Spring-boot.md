@@ -401,12 +401,14 @@ public class AdminConfiguration {
 ```
 
 # Startup task
+
+## Task to run on app ready
 ```java
 @Component  
 @RequiredArgsConstructor  
 public class InitAdmin {  
     @EventListener(ApplicationReadyEvent.class)  
-    void initAdmin() {  
+    void taskToRun() {  
         // Find if any user with email existed.  
     }  
 }
