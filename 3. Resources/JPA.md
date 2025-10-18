@@ -118,8 +118,10 @@ public interface UserRepo extends JapRepository<User, Long> {
 ```
 
 # Custom query
+
+## Use `@Query`
 ```java
-public interface UserRepo extends JapRepository<User, Long> {
+public interface UserRepo extends JpaRepository<User, Long> {
 	@Transaction
 	@Modifying
 	@Query("UPDATE User u SET u.hashedPassword = :hashedPassword WHERE u.id = :id")
@@ -130,3 +132,14 @@ public interface UserRepo extends JapRepository<User, Long> {
 Notes:
 - The table name should be the **entity class name**. Same with it's field name
 - Update query should be in a transaction and require `@Modifying` annotation
+
+## Let JPA EntityManager auto handle query
+```java
+public interface UserRepo Extends JpaRepository<User, Long> {
+	Optional<User> findOneByEmail(String email);
+	List<User> findByEmail(String email);
+}
+```
+
+`findBy` prefix with `Email` will tell JPA to auto create query that use email for filter.
+`findOne` tell JPA that we are looking for exactly 1.
