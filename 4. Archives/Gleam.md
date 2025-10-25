@@ -1,0 +1,1 @@
+[[Programming language]] that will compile desktop / backend code into [[Erlang]] and frontend code into [[Javascript]]
