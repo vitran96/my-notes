@@ -1,5 +1,6 @@
 Build on top of [[Spring]]. Mainly use [[Java]] but also support [[Kotlin]], [[Groovy]].
-This is the most mature web-framework for [[Java]] ecosystem (beat [[vertx]] in my opinion)
+This is the most mature web-framework for [[Java]] ecosystem (beat [[vertx]] in my opinion).
+With [[Thymeleaf]] it can be come a [[Full-stack web framework]] with [[Server-side rendering]].
 
 # Standard project struture
 ```
