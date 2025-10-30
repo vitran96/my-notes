@@ -418,5 +418,10 @@ public class InitAdmin {
 # Profile
 Best practice:
 - Use multiple profile
-- Use profile by deployment env..
+- Use profile by deployment environment.
 
+## Deployment profile
+Should set things like debugger level for each deployment so that we don't have to override on deploy and only need to choose profile.
+```shell
+java -jar app.jar --spring.profiles.active=dev
+```
