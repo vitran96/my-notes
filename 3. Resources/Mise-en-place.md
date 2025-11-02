@@ -1,5 +1,10 @@
+---
+repo: https://github.com/jdx/mise
+---
+
 # Auto-Configure
 It will automatically set current shell env, tooling.
+Config for `mise.toml`: https://mise.jdx.dev/configuration.html
 
 # Tasks
 Not cross-platform so be careful when write.
@@ -34,6 +39,51 @@ mise ls-remote <tool name>
 # Self update
 ```shell
 mise self-update
+```
+
+# Monorepo tasks
+[[GitHub]] issue: https://github.com/jdx/mise/discussions/6564
+
+Sample:
+```shell
+# Run tests in ALL projects
+mise //...:test
+
+# Run all build tasks under services/
+mise //services/...:build
+
+# Run ALL tasks in frontend (wildcards need quotes)
+mise '//projects/frontend:*'
+
+# Run all test:* tasks everywhere
+mise '//...:test:*'
+```
+
+## Getting started
+Set `export MISE_EXPERIMENTAL=1`
+```toml
+experimental_monorepo_root = true
+
+[tools]
+node = "20"
+python = "3.12"
+```
+
+# ENV config
+Use `MISE_ENV=<env name>` to switch mise config file.
+Rule is similar to [[Vite]] env file rule, the last one will override the 1st one:
+1. mise.toml
+2. mise.local.toml
+3. mise.<MISE_ENV>.toml
+4. mise.<MISE_ENV>.local.toml
+
+# Lock file
+Similar to [[NodeJS]] package-lock file, mise can enable that.
+Without this, we will have to manually choose version.
+To enable
+```toml
+[settings]
+lockfile = true
 ```
 
 # VSCode plugin
