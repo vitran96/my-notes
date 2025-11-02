@@ -302,7 +302,6 @@ public class SecurityConfig {
                                 // NOTE: what is scalar?
                                 "/scalar/**",
                                 "/actuator/health"
-//                                "/h2-console/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -318,12 +317,6 @@ public class SecurityConfig {
                             response.getWriter().write("{\"error\":\"forbidden\"}");
                         })
                 );
-
-        // NOTE: this is for H2 console frame
-//        http.headers(
-//                headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-//        );
-
         return http.build();
     }
 
@@ -363,6 +356,10 @@ public class SecurityConfig {
     }
 }
 ```
+
+## Use custom User table for authentication
+Since our user data source is in DB, we need to create custom `UserDetailsService`.
+There is an existing implementation, [JdbcUserDetailsManager](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/jdbc.html). However, it has different schema so we are not going to use it.
 
 # DTO Mapper pattern
 Notes:
