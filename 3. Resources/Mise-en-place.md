@@ -101,3 +101,5 @@ lockfile = true
 Plugin for [[VSCode]]. Not support multi workspace.
 Modify extensions runtime path directly in **settings.json** of a project.
 
+## Auto config other extensions
+This plugin, if enable, also auto config other extensions. Use local shims config can help but will fail on [[Window OS]].
