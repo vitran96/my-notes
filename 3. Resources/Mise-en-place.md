@@ -15,6 +15,13 @@ A very convenient built-in watch support for language not support it.
 Require `watchexec` binary.
 [Document](https://mise.jdx.dev/cli/watch.html)
 
+A task with defined `sources` can be watched.
+```toml
+[tasks.compile]
+run = "mvn compile"
+sources = { "src/main/java/**/*.java", "pom.xml" }
+```
+
 # Install / Search tool
 ```shell
 # If already has mise config

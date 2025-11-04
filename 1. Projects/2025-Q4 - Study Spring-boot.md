@@ -17,8 +17,8 @@ end: 2025-11-10
 
 # Course 1
 
-- Session 1 — [[REST]], Validation, Error Handling
-	- Design a small [[REST]] surface (resource modeling, versioned paths, idempotent verbs).	    
+- Session 1 — [[REST API]], Validation, Error Handling
+	- Design a small [[REST API]] surface (resource modeling, versioned paths, idempotent verbs).	    
 	- Apply [[Jakarta]] Bean Validation on inputs and surface clean 400 errors.
 	- Shape a consistent [[JSON]] error envelope (validation, not-found, conflict).
 	- Structure controller–service–repository cleanly for testability.

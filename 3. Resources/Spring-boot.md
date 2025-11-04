@@ -244,6 +244,7 @@ springdoc.show-actuator=true
 ## Show Spring-security routes
 Spring's security not show by default
 ```properties
+# not work
 springdoc.show-login-endpoint=true
 ```
 
@@ -295,11 +296,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         // NOTE: this allow create internal only API.
-                        // TODO: But how about internal between service?
-                        .requestMatchers("/internal/**").denyAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",
-                                // NOTE: what is scalar?
                                 "/scalar/**",
                                 "/actuator/health"
                         ).permitAll()
@@ -357,19 +355,60 @@ public class SecurityConfig {
 }
 ```
 
-## Use custom User table for authentication
-Since our user data source is in DB, we need to create custom `UserDetailsService`.
-There is an existing implementation, [JdbcUserDetailsManager](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/jdbc.html). However, it has different schema so we are not going to use it.
+## Custom implement
+~~Since our user data source is in DB, we need to create custom `UserDetailsService`.~~
+~~There is an existing implementation, [JdbcUserDetailsManager](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/jdbc.html). However, it has different schema so we are not going to use it.~~
+Above is not relevant anymore. Spring security doesn't have built-in structure to authenticate as [[REST API]].
+So we will have to create our own filter.
 
 # DTO Mapper pattern
 Notes:
 - DTO set at controller
 - Mapping should be done at Service layer
-- Mapping can be done manually or with MapStruct / ModelMapper
+- Mapping can be done manually or with `MapStruct` / `ModelMapper`
 
 # Startup task
-```
-
+```java title="InitAdmin.java"
+package example;  
+  
+import lombok.RequiredArgsConstructor;  
+import org.springframework.boot.context.event.ApplicationReadyEvent;  
+import org.springframework.context.event.EventListener;  
+import org.springframework.security.crypto.password.PasswordEncoder;  
+import org.springframework.stereotype.Component;  
+  
+import java.util.Optional;  
+  
+@Component  
+@RequiredArgsConstructor  
+public class InitAdmin {  
+    public final UserRepository userRepository;  
+    public final PasswordEncoder passwordEncoder;  
+    public final AdminConfiguration adminConfiguration;  
+  
+    @EventListener(ApplicationReadyEvent.class)  
+    void initAdmin() {  
+        try {  
+            Optional<UserSummary> admin = userRepository.findOneProjectedByEmail(adminConfiguration.getEmail());  
+            if (admin.isPresent()) {  
+                return;  
+            }  
+  
+            userRepository.save(  
+                    User.builder()  
+                            .email(adminConfiguration.getEmail())  
+                            .fullName(adminConfiguration.getFullName())  
+                            .hashedPassword(  
+                                    passwordEncoder.encode(adminConfiguration.getPassword())  
+                            )  
+                            .build()  
+            );  
+        } catch (Exception e) {  
+            // TODO: add logger  
+            System.out.println("Failed to create admin account: " + e.getMessage());  
+        }  
+    }  
+}
 ```
 
 # Custom config param
@@ -435,3 +474,6 @@ java -jar app.jar --spring.profiles.active=dev
 
 Note:
 - In my opinion, we choose by preference. And I prefer [[Yaml]] format. We should rarely make change to config let alone create a conflict.
+
+# Caching
+%% TODO: %%

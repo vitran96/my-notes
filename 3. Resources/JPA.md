@@ -39,7 +39,7 @@ Notes:
     ```
 2. Run command: `mvn jpa-entity-generator:generateAll`
 
-## hibernate-tools-maven-plugin
+## [[Hibernate|hibernate]]-tools-[[Maven|maven]]-plugin
 Official plugin from [[Hibernate]]
 [Guide](https://web.archive.org/web/20201013105933/https://jonamlabs.com/how-to-use-hibernate-tools-maven-plugin-to-generate-jpa-entities-from-an-existing-database/)
 
