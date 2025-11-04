@@ -55,7 +55,7 @@ Not very famous
 
 # jOOQ
 
-A [[Java]] ‘s [[ORM]] library to interact with [[SQL]] [[database]]
+A [[Java]] ‘s [[ORM]] library to interact with [[Relational database|SQL DB]]
 ## Dynamic table name
 
 https://www.jooq.org/doc/latest/manual/sql-building/names
