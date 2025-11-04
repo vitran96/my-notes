@@ -44,7 +44,7 @@ mise self-update
 # Monorepo tasks
 [[GitHub]] issue: https://github.com/jdx/mise/discussions/6564
 
-Sample:
+## Sample commands
 ```shell
 # Run tests in ALL projects
 mise //...:test
@@ -62,11 +62,22 @@ mise '//...:test:*'
 ## Getting started
 Set `export MISE_EXPERIMENTAL=1`
 ```toml
+# root mise config
 experimental_monorepo_root = true
 
 [tools]
 node = "20"
 python = "3.12"
+
+[tasks."start:be"]
+depends = { "//server:start" }
+
+# server mise config
+[tools]
+node = "21"
+
+[tasks.start]
+run = "npm start"
 ```
 
 # ENV config

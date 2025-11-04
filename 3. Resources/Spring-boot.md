@@ -422,3 +422,16 @@ Should set things like debugger level for each deployment so that we don't have 
 ```shell
 java -jar app.jar --spring.profiles.active=dev
 ```
+
+# Config file
+
+## YML vs properties
+- [[Yaml|YML]]:
+	- Better structure
+	- Easier to make mistake due to indentation
+	- Might be harder for resolve [[Git]] conflict compare to [[properties]] since the config is on multiline
+- [[properties]]:
+	- Easier to resolve conflict
+
+Note:
+- In my opinion, we choose by preference. And I prefer [[Yaml]] format. We should rarely make change to config let alone create a conflict.
