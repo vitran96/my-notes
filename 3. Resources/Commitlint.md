@@ -37,6 +37,8 @@ module.exports = {
    */
   // We can add more rule with plugin
   // [ { rules: { "rule-name-1": async (parsed, when, value) => { ... } } } ]
+  // We can also use package / local script to add rule
+  // plugins: [ 'package1', 'package2' ]
   //plugins: []
   rules: {
 	"references-empty": [1, "never"],
