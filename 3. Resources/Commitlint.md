@@ -80,3 +80,10 @@ module.exports = {
   //},
 };
 ```
+
+# Test locally
+```shell
+VAR_1="data"
+
+echo "some message" | npx commitlint
+```
