@@ -1,0 +1,1 @@
+A super configurable [[Window manager]] targeting styling
