@@ -1,4 +1,4 @@
-A [[Programming language]] with [[Procedural paradigm]] and [[Object oriented paradigm]] support
+A [[Programming language]] for system level ([[System programming language]]) with [[Procedural paradigm]] and [[Object oriented paradigm]] support
 C++ is also a super set of [[CLang]]
 
 # clang compiler

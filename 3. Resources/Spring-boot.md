@@ -45,6 +45,9 @@ spring init \
   project-1
 ```
 
+# Lifecycle
+%% TODO: %%
+
 # [[Liquibase]] support
 Spring-boot can auto recognize Liquibase dependancies in the class-path so you don't need additional configuration.
 Please take a look at [[Liquibase]] page for configuration.
@@ -130,7 +133,7 @@ Don't need `@SpringBootTest` if not load Spring app context.
 
 # Spring validation
 
-Sample validation:
+## Sample validation
 ```java
 class User {
 	@Email
@@ -138,7 +141,10 @@ class User {
 }
 ```
 
-## Maven
+## Lifecycle
+%% TODO: %%
+
+## [[Maven]]
 ```xml
 <!-- Maven -->
 <dependency>
@@ -355,11 +361,17 @@ public class SecurityConfig {
 }
 ```
 
+
+## Lifecycle
+%% TODO: %%
+
 ## Custom implement
 ~~Since our user data source is in DB, we need to create custom `UserDetailsService`.~~
 ~~There is an existing implementation, [JdbcUserDetailsManager](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/jdbc.html). However, it has different schema so we are not going to use it.~~
 Above is not relevant anymore. Spring security doesn't have built-in structure to authenticate as [[REST API]].
 So we will have to create our own filter.
+
+### Sample JWT Token filter
 
 # DTO Mapper pattern
 Notes:
@@ -477,3 +489,5 @@ Note:
 
 # Caching
 %% TODO: %%
+
+# Serve SPA site
