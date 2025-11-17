@@ -457,9 +457,9 @@ public class JwtProvider {
                 .password("")  
                 .build();  
         return UsernamePasswordAuthenticationToken.authenticated(  
-                principal,  
-                "",  
-                null  
+                principal, 
+                "", 
+                null
         );  
     }  
   
