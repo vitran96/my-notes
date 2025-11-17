@@ -126,6 +126,12 @@ Why is it important?
 
 ## `@Autowired` vs constructor injection
 
+1. Enforcing dependencies for creation
+2. Clear schema contract
+3. No need for comprehensive reflection
+4. Better performance in some case
+5. Ensure compile-time safety
+
 # Spring test
 
 ## Unit Test
