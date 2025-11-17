@@ -4,16 +4,17 @@ end: 2025-11-10
 ---
 
 # Scope
-- Spring config
-- Spring security & filter chain & Authorization
-- Spring life-cycle
-- Spring component
-- Spring error handling
-- Spring with migration tool
-- Migration flow for DEV and PROD
-- JPA & Hibernate
-- JUnit & Mokito
-- TestContainer
+- [x] Spring config
+- [x] Spring security & filter chain & Authorization
+- [ ] Spring life-cycle
+- [ ] Spring component
+- [ ] Spring error handling
+- [ ] Spring with migration tool
+- [ ] Migration flow for DEV and PROD
+- [ ] JPA & Hibernate
+- [ ] JUnit & Mokito
+- [ ] TestContainer
+- [ ] File download / upload API
 
 # Course 1
 
