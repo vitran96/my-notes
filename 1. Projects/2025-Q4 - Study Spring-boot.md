@@ -4,16 +4,17 @@ end: 2025-11-10
 ---
 
 # Scope
-- [x] Spring config
-- [x] Spring security & filter chain & Authorization
-- [ ] Spring life-cycle
-- [ ] Spring component
-- [ ] Spring error handling
-- [ ] Spring with migration tool
+
+- [x] [[Spring-boot|Spring]] config
+- [x] [[Spring-boot#Spring security|Spring security]] & filter chain & Authorization
+- [ ] [[Spring-boot|Spring]] life-cycle
+- [ ] [[Spring-boot|Spring]] component
+- [ ] [[Spring-boot|Spring]] error handling
+- [ ] [[Spring-boot|Spring]] with migration tool
 - [ ] Migration flow for DEV and PROD
-- [ ] JPA & Hibernate
-- [ ] JUnit & Mokito
-- [ ] TestContainer
+- [ ] [[JPA]] & [[Hibernate]]
+- [ ] [[JUnit]] & [[Mokito]]
+- [ ] [[TestContainer]]
 - [ ] File download / upload API
 
 # Course 1
@@ -25,7 +26,7 @@ end: 2025-11-10
 	- Structure controller–service–repository cleanly for testability.
 	- Decide when to return 201 vs 200 and how to set `Location` headers.
 - Session 2 — Security Filter Chain (no redirects), Public Docs
-	- How [[Spring Security]] chooses a filter chain (first matching chain/rule wins).
+	- How [[Spring-boot#Spring security|Spring security]] chooses a filter chain (first matching chain/rule wins).
 	- Configure APIs to return **401/403 [[JSON]]** instead of redirecting to a login page.
 	- Open specific endpoints ([[OpenAPI]] `/v3/api-docs`, Scalar UI `/scalar`, health) while securing the rest.
 	- Use method-level guards (`@PreAuthorize`) for fine-grained authorization.
@@ -42,34 +43,65 @@ end: 2025-11-10
 	- Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource`).
 	- Validate persistence guarantees (identity, constraints, sorting, cascading).
 	- Handle and assert on database exceptions (e.g., unique constraint violations).
-- Session 5 — SPA Concerns: [[CORS]], [[CSRF]], Login Flow Choices
+- Session 5 — [[SPA]] Concerns: [[CORS]], [[CSRF]], Login Flow Choices
 	- Configure [[CORS]] so a React dev server can call your APIs safely.  
 	- Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
 	- Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
 	- Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
 	- Define preflight behavior and verify the right `Access-Control-*` headers are returned.
 - Session 6 — Checkstyle & Formatting:
-	- Maven check style.
-	- Maven formatting.
+	- [[Maven]] check style.
+	- [[Maven]] formatting.
 
 ## Session 1
-1. Create base code
-2. Create base migration with [[Liquibase]]
-3. Create / Generate JPA's Entity
-	1. Generation of JPA is not worth it if the scope is small & we want customized Entity instead of the DEFAULT generation
-	2. Generation of changelog might be worth to check
-4. Customer CRUD
-	1. Start with simple base CRUD
-5. [[Unit Test]]
+
+1. [ ] Create base code
+2. [ ] Create base migration with [[Liquibase]]
+3. [ ] Create / Generate JPA's Entity
+	1. [ ] Generation of JPA is not worth it if the scope is small & we want customized Entity instead of the DEFAULT generation
+	2. [ ] Generation of changelog might be worth to check
+4. [ ] Customer CRUD
+	1. [ ] Start with simple base CRUD
+5. [ ] [[Unit Test]]
 
 ## Session 2
-1. Create User CRUD
-2. Auto create ADMIN account
-3. Setup Spring-security
-4. Setup Authentication Filter chain
-5. [[Unit Test]] User CRUD & Security Filter chain & Security (where possible)
-6. [[Integration Test]] Security & Security Filter chain
+
+1. [ ] Create User CRUD
+2. [ ] Auto create ADMIN account
+3. [ ] Setup Spring-security
+4. [ ] Setup Authentication Filter chain
+5. [ ] [[Unit Test]] User CRUD & Security Filter chain & Security (where possible)
+6. [ ] [[Integration Test]] Security & Security Filter chain
 
 ## Session 3
 
+1. [ ] Enable and safely expose Actuator endpoints in dev (health, metrics, info, env, thread dump).
+2. [ ] Read and reason about [[HTTP]] metrics (e.g., `http.server.requests`) to spot latency/errors.
+3. [ ] Attach app metadata to `/actuator/info` for release diagnostics.
+4. [ ] Keep API docs public while the API remains protected.
+5. [ ] Verify [[OpenAPI]]/Scalar paths and understand where the spec/UI live.
+
+## Session 4
+
+1. [ ] Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.
+2. [ ] Use [[Testcontainers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
+3. [ ] Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource`).
+4. [ ] Validate persistence guarantees (identity, constraints, sorting, cascading).
+5. [ ] Handle and assert on database exceptions (e.g., unique constraint violations).
+
+## Session 5
+
+1. [ ] Configure [[CORS]] so a React dev server can call your APIs safely.  
+2. [ ] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
+3. [ ] Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
+4. [ ] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
+5. [ ] Define preflight behavior and verify the right `Access-Control-*` headers are returned.
+
+## Session 6
+
+1. [ ] [[Maven]] check style.
+2. [ ] [[Maven]] formatting.
+
 # Course 2
+
+##
