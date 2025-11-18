@@ -45,8 +45,38 @@ spring init \
   project-1
 ```
 
-# Lifecycle
-%% TODO: %%
+# App life-cycle
+
+bootstrap (load properties & env) -> context creation -> been definition -> dependency injection -> initialization -> ready -> shutdown
+
+# Bean
+
+Article: https://medium.com/@bolot.89/understanding-the-spring-boot-bean-lifecycle-a-deep-dive-132d543efeaa
+
+```java title="sample.java"
+@Component  
+public class MyService {  
+    // ...  
+}
+```
+
+## How to create
+
+1. @Service | @Repository | @Controller
+2. @Component
+3. @Configuration & @Bean
+4. XML config (not recommended since too verbose)
+
+## Life-cycle
+
+Instantiation -> DI -> Aware Interfaces -> `BeanPostProcessor` (before) -> Init Methods -> `BeanPostProcessor` (after) -> In use -> Destroy Methods
+
+## Aware & Factory
+
+Implement interface `BeanNameAware` to inject name.
+Implement interface to `BeanFactory` to state how to write
+
+# Spring scope
 
 # [[Liquibase]] support
 Spring-boot can auto recognize Liquibase dependancies in the class-path so you don't need additional configuration.
@@ -182,7 +212,7 @@ Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 </dependency>
 ```
 
-### WebFlux
+### [[WebFlux]]
 ```xml
 <dependency>
     <groupId>org.springdoc</groupId>
@@ -366,8 +396,6 @@ public class SecurityConfig {
     }
 }
 ```
-
-
 
 ## Lifecycle
 %% TODO: %%
@@ -746,6 +774,10 @@ public SecurityFilterChain apiSecurityChain(HttpSecurity http) throws Exception 
 }
 ```
 
+## Role & Permission
+
+Article: https://medium.com/@victoronu/implementing-role-and-permission-based-authorization-in-spring-boot-with-jwt-359901206b6a
+
 # DTO Mapper pattern
 Notes:
 - DTO set at controller
@@ -864,3 +896,7 @@ Note:
 %% TODO: %%
 
 # Serve SPA site
+%% TODO: %%
+
+# [[Hibernate]] nested [[SQL]] transaction
+%% TODO: %%
