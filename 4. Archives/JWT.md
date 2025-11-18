@@ -11,3 +11,12 @@ Notes:
 # Secure JWT
 [[PASETO]] is a recommended alternative.
 [[OpenConnect]] and [[OAuth]] are also good replacement.
+
+# [[Java]] package
+https://github.com/auth0/java-jwt
+https://github.com/jwtk/jjwt#installation
+
+| Package | Git | Maven view |
+| --- | --- | --- |
+| auth0-jwt | https://github.com/auth0/java-jwt | https://mvnrepository.com/artifact/com.auth0/java-jwt |
+| jjwt | https://github.com/jwtk/jjwt#installation | https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt |

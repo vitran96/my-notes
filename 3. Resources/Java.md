@@ -30,7 +30,7 @@ public class TestAgent {
 
 manifest.mf
 ```toml
-Premain-Class: package.to.TestAgent
+Premain-Class="package.to.TestAgent"
 ```
 
 %% Note about Java special API to get incremental / debug data %%
@@ -49,41 +49,10 @@ Eg:
 .\\jdk-8u221-windows-i586.exe /s
 ```
 
-# jaregu queries
-[[Java]] [[SQL]] templating library
-Not very famous
-
-# jOOQ
-
-A [[Java]] ‘s [[ORM]] library to interact with [[Relational database|SQL DB]]
-## Dynamic table name
-
-https://www.jooq.org/doc/latest/manual/sql-building/names
-
-```java
-String parameter = "entityType";
-Table<?> table = table(name(parameter + "_other_stuff"));
-```
-
-## Dynamic SQL template
-Not possible
-Workaround is by dynamically pass in fields
-Eg:
-```java
-RequestQuery<?> query(
-	String bizDate, 
-	Field<?> sortField, 
-	SortOrder sortOrder
-) {
-	return context.selectFrom("table1")
-		.where(field("report_date").eq(bizDate))
-		.orderBy(sortField.sort(sortOrder));
-}
-```
-
 # Primitive data caching
 
 ## Integer cache
+
 `Integer` object type has caching from `-128` to `127`
 
 ```java
@@ -112,65 +81,16 @@ java -Djava.lang.Integer.IntegerCache.high=<value>
 ## What about wrapper that is not cached?
 It will do object reference comparison -> always false if different object.
 
-# Code formatting
-We can use [[Maven]] plugin: `Spotless` for [[Code-linting]] and [[Code-formatting]].
-[Guide](https://www.baeldung.com/java-maven-spotless-plugin)
-```xml
-<plugin>
-    <groupId>com.diffplug.spotless</groupId>
-    <artifactId>spotless-maven-plugin</artifactId>
-    <version>2.43.0</version>
-    <configuration>
-        <java>
-            <googleJavaFormat/>
-        </java>
-    </configuration>
-</plugin>
-```
+# String pool
 
-Command:
-```shell
-# Linting
-mvn spotless:check
+# Java version update
 
-# Foramtting
-mvn spotless:apply
-```
+I will take in LTS change-log only
 
-# Error prone
-Static analysis tool to check for common code mistake.
-Can only be used as part of compiler.
-[[Maven]] config:
-```xml
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <source>17</source>
-          <target>8</target>
-          <encoding>UTF-8</encoding>
-          <compilerArgs>
-            <arg>-XDcompilePolicy=simple</arg>
-            <arg>--should-stop=ifError=FLOW</arg>
-            <arg>-Xplugin:ErrorProne</arg>
-          </compilerArgs>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>com.google.errorprone</groupId>
-              <artifactId>error_prone_core</artifactId>
-              <version>${error-prone.version}</version>
-            </path>
-            <!-- Other annotation processors go here.
+## Java 25
 
-            If 'annotationProcessorPaths' is set, processors will no longer be
-            discovered on the regular -classpath; see also 'Using Error Prone
-            together with other annotation processors' below. -->
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-```
+## Java 21
+
+## Java 17
+
+## Java 8
