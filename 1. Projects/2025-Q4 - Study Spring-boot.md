@@ -1,17 +1,17 @@
 ---
 start: 2025-10-02
-end: 2025-11-10
+end: 2025-12-10
 ---
 
 # Scope
 
 - [x] [[Spring-boot|Spring]] config
 - [x] [[Spring-boot#Spring security|Spring security]] & filter chain & Authorization
-- [ ] [[Spring-boot|Spring]] life-cycle
-- [ ] [[Spring-boot|Spring]] component
+- [x] [[Spring-boot|Spring]] life-cycle
+- [x] [[Spring-boot|Spring]] component
 - [ ] [[Spring-boot|Spring]] error handling
-- [ ] [[Spring-boot|Spring]] with migration tool
-- [ ] Migration flow for DEV and PROD
+- [x] [[Spring-boot|Spring]] with migration tool
+- [x] Migration flow for DEV and PROD
 - [ ] [[JPA]] & [[Hibernate]]
 - [ ] [[JUnit]] & [[Mokito]]
 - [ ] [[TestContainer]]
