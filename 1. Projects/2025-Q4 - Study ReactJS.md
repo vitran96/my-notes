@@ -20,6 +20,9 @@ Study [[ReactJS]]
 - [ ] Setup [[Docker#Dockerfile]]
 - [ ] Setup [[nginx]]
 - [ ] Best practice for [[SCSS]] structure
+- [ ] API call hook/middleware
+- [ ] API retry
+- [ ] Debounce
 - [ ] Component:
 	- [ ] Sticky header
 	- [ ] Top NavBar & sticky
