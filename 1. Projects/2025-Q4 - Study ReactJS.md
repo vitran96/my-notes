@@ -1,6 +1,6 @@
 ---
-start: 2025-?
-end: 2025-12-20
+start: 2026-?
+end: 2026-03-20
 ---
 
 Study [[ReactJS]]
@@ -26,4 +26,8 @@ Study [[ReactJS]]
 	- [ ] Sidebar
 	- [ ] Burger sidebar
 	- [ ] Bottom NavBar
-	- [ ] Multi-scroll view
+	- [ ] Multi-scroll view (left and right with separated scroll)
+- [ ] [[Unit Test]] with [[Vite#Vi test]]
+- [ ] [[Integration Test]] with [[Vite#Vi test]]
+- [ ] [[Playwright]] for [[E2E]] test
+- [ ] [[Playbook]]
