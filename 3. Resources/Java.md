@@ -1,6 +1,7 @@
 A [[Programming language]] with [[Object oriented paradigm]]
 
 # JRE
+
 [[Java]] Runtime Environment
 
 JRE has multiple implementation:
