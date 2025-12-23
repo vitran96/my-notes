@@ -1,0 +1,1 @@
+[[SSO]] login with [[Kerberos]] to login with [[Active Directory]]

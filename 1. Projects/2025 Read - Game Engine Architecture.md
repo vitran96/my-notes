@@ -5,7 +5,7 @@ end: 2026-06
 
 # Log
 
-## 2025-19-11
+## 2025-11-19
 
 - Audio engine is also important
 - Dev should turn on their speaker when do game dev
@@ -15,3 +15,5 @@ end: 2026-06
 	- Split screen
 	- Networked
 	- MMO
+
+## 2025-12-23
