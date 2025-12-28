@@ -77,6 +77,79 @@ Instantiation -> DI -> Aware Interfaces -> `BeanPostProcessor` (before) -> Init 
 Implement interface `BeanNameAware` to inject name.
 Implement interface to `BeanFactory` to state how to write
 
+## Condition flag
+
+```java
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class NotificationConfiguration {
+
+    @Bean
+    @ConditionalOnProperty(
+        prefix = "feature.notifications",
+        name = "enabled",
+        havingValue = "true",
+        matchIfMissing = false // The bean will NOT be created if the property is absent
+    )
+    public NotificationService emailNotificationService() {
+        return new EmailNotificationService();
+    }
+}
+```
+
+## Matching a bean
+
+What to do if we have multiple bean implementing the same interface?
+
+1. Create the bean in configuration bean and set unqiue function name -> match the name by that string
+2. Use `@Qualifier`
+
+Create bean:
+```java
+public interface PaymentProcessor {
+    void process(double amount);
+}
+
+@Component("paypalProcessor")
+public class PaypalProcessor implements PaymentProcessor {
+    @Override
+    public void process(double amount) {
+        System.out.println("Processing $" + amount + " via PayPal.");
+    }
+}
+
+@Component("stripeProcessor")
+public class StripeProcessor implements PaymentProcessor {
+    @Override
+    public void process(double amount) {
+        System.out.println("Processing $" + amount + " via Stripe.");
+    }
+}
+```
+
+Matching bean:
+```java
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CheckoutService {
+
+    private final PaymentProcessor paymentProcessor;
+
+    // Use @Qualifier in the constructor to pick the specific implementation
+    public CheckoutService(@Qualifier("stripeProcessor") PaymentProcessor paymentProcessor) {
+        this.paymentProcessor = paymentProcessor;
+    }
+
+    public void completeCheckout(double total) {
+        paymentProcessor.process(total);
+    }
+}
+```
 # Spring scope
 
 # [[Liquibase]] support
@@ -901,3 +974,36 @@ Note:
 
 # [[Hibernate]] nested [[SQL]] transaction
 %% TODO: %%
+
+# Properties bean
+
+Instead of `@Value("{...}")` to get env data, we can create a bean to save and access globally.
+Also, with additional dependencies, we can even document and generate artifact to support properties file auto-complete for custom properties.
+
+```toml
+# Sample App Configuration
+app.display-name=My Coding Project
+app.version=1.0.2
+app.max-connections=50
+app.timeout-seconds=30
+```
+
+```java
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ConfigurationProperties(prefix = "app")
+@Data
+public class AppConfig {
+    private String displayName;
+    private String version;
+    private int maxConnections;
+    private int timeoutSeconds;
+}
+```
+
+# [[Spnego]] integration
+
+%% TODO: extract sample from TSS project %%
