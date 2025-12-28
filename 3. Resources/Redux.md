@@ -14,4 +14,4 @@ Advantages compare to direct [[HTTP#Client]] usage:
 ## Auto generate API file
 
 Article: https://redux-toolkit.js.org/rtk-query/usage/code-generation#openapi
-TLDR, it is possible to auto-generate API file using [[Swagger]]
+TLDR, it is possible to auto-generate API file using [[OpenAPI|Swagger]]

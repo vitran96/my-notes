@@ -84,6 +84,17 @@ It will do object reference comparison -> always false if different object.
 
 # String pool
 
+%% TODO: %%
+
+# JVM Instrument
+
+%% TODO: %%
+
+# Time module
+
+`JavaTimeModule` is an important module to serialize/deserialize date & time.
+The module follow JSR-310.
+
 # Java version update
 
 I will take in LTS change-log only
