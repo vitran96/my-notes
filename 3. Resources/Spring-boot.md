@@ -46,10 +46,87 @@ spring init \
   project-1
 ```
 
-# App life-cycle
+# App starting life-cycle
 
 bootstrap (load properties & env) -> context creation -> been definition -> dependency injection -> initialization -> ready -> shutdown
 
+To inspect the **Application Startup Lifecycle**
+1. Implement the `ApplicationListener` interface
+2. Use the `@EventListener` annotation.
+
+## The Multi-Event Listener
+
+This class captures the most important events in the sequence they occur.
+
+```java
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.*;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+public class StartupCheckListener {
+
+    // 1. Environment Ready (Properties/Profiles loaded)
+    @EventListener
+    public void handleEnvironmentPrepared(ApplicationEnvironmentPreparedEvent event) {
+        log.info("--- 2. Environment Prepared: Profiles: {}", 
+            (Object) event.getEnvironment().getActiveProfiles());
+    }
+
+    // 2. Context Prepared (Context created, no beans yet)
+    @EventListener
+    public void handleContextPrepared(ApplicationContextInitializedEvent event) {
+        log.info("--- 3. Context Initialized");
+    }
+
+    // 3. Beans Loaded (Definitions loaded, not instantiated)
+    @EventListener
+    public void handleApplicationPrepared(ApplicationPreparedEvent event) {
+        log.info("--- 4. Application Prepared (Beans loaded)");
+    }
+
+    // 4. Application Started (Ready, but Runners haven't run)
+    @EventListener
+    public void handleApplicationStarted(ApplicationStartedEvent event) {
+        log.info("--- 5. Application Started");
+    }
+
+    // 5. Application Ready (Everything finished)
+    @EventListener
+    public void handleApplicationReady(ApplicationReadyEvent event) {
+        log.info("--- 6. Application Ready! Time to serve traffic.");
+    }
+}
+```
+
+## Capturing the 1st event
+
+Notes:
+- Start-up event occur before even bean creation so it is best to capture at main.
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationStartingEvent;
+import org.springframework.context.ApplicationListener;
+
+@SpringBootApplication
+public class LifecycleApplication {
+
+    public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(LifecycleApplication.class);
+
+        // Manually adding a listener for the earliest possible event
+        app.addListeners((ApplicationListener<ApplicationStartingEvent>) event -> {
+            System.out.println("--- 1. Application Starting (Manual Listener Triggered)");
+        });
+
+        app.run(args);
+    }
+}
+```
 # Bean
 
 Article: https://medium.com/@bolot.89/understanding-the-spring-boot-bean-lifecycle-a-deep-dive-132d543efeaa
@@ -150,6 +227,9 @@ public class CheckoutService {
     }
 }
 ```
+
+
+
 # Spring scope
 
 # [[Liquibase]] support
@@ -219,6 +299,55 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+```
+
+## Create custom datasource
+
+Steps:
+1. Disable default DataSource auto-configuration
+2. Setup custom DataSource properties
+
+```java
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+    basePackages = "com.example.repo.primary", // Package for Primary Repos
+    entityManagerFactoryRef = "primaryEntityManagerFactory",
+    transactionManagerRef = "primaryTransactionManager"
+)
+public class PrimaryDbConfig {
+
+    @Primary
+    @Bean(name = "primaryDataSourceProperties")
+    @ConfigurationProperties("app.datasource.primary")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Primary
+    @Bean(name = "primaryDataSource")
+    public DataSource dataSource() {
+        return dataSourceProperties().initializeDataSourceBuilder().build();
+    }
+
+    @Primary
+    @Bean(name = "primaryEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            EntityManagerFactoryBuilder builder, @Qualifier("primaryDataSource") DataSource dataSource) {
+        return builder
+                .dataSource(dataSource)
+                .packages("com.example.model.primary") // Package for Primary Entities
+                .persistenceUnit("primary")
+                .build();
+    }
+
+    @Primary
+    @Bean(name = "primaryTransactionManager")
+    public PlatformTransactionManager transactionManager(
+            @Qualifier("primaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+}
 ```
 
 # REST Controller
@@ -1007,3 +1136,61 @@ public class AppConfig {
 # [[Spnego]] integration
 
 %% TODO: extract sample from TSS project %%
+
+# Spring Rest client
+
+Spring's Rest client is a new [[HTTP]] client, replacement for the old Rest Template
+
+Example:
+Config:
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
+
+@Configuration
+public class ClientConfig {
+
+    @Bean
+    public RestClient restClient() {
+        return RestClient.builder()
+                .baseUrl("https://api.example.com")
+                // Adding our middleware here
+                .requestInterceptor(new CustomClientMiddleware())
+                .defaultHeader("Content-Type", "application/json")
+                .build();
+    }
+}
+```
+
+Middleware:
+```java
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
+import java.io.IOException;
+import java.util.UUID;
+
+@Slf4j
+public class CustomClientMiddleware implements ClientHttpRequestInterceptor {
+
+    @Override
+    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) 
+            throws IOException {
+        
+        // 1. Pre-processing: Add a header
+        request.getHeaders().add("X-Correlation-ID", UUID.randomUUID().toString());
+        log.info("Sending {} request to {}", request.getMethod(), request.getURI());
+
+        // 2. Execute the request
+        ClientHttpResponse response = execution.execute(request, body);
+
+        // 3. Post-processing: Log the status
+        log.info("Received response with status: {}", response.getStatusCode());
+        
+        return response;
+    }
+}
+```

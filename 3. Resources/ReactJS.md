@@ -98,3 +98,25 @@ Internationalization or [[i18n]]
 `i18n-next`
 
 ## Rules
+
+# Routing
+
+How does NavLink know if we are in a route?
+This can be achieve but define subroute:
+
+```json title="sub-indexed-route.json"
+{
+	"path": "/",
+	"component": <Page>,
+	"children": [
+		{
+			"index": true,
+			"component": null,
+		},
+		{
+			"path": "/sub-route",
+			"component": null,
+		}
+	] 
+}
+```
