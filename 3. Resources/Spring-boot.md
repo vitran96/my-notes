@@ -149,6 +149,85 @@ public class MyService {
 
 Instantiation -> DI -> Aware Interfaces -> `BeanPostProcessor` (before) -> Init Methods -> `BeanPostProcessor` (after) -> In use -> Destroy Methods
 
+### Sample
+
+```java
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+public class LifecycleInspectorBean implements 
+        BeanNameAware, 
+        ApplicationContextAware, 
+        InitializingBean, 
+        DisposableBean {
+
+    private String beanName;
+
+    // 1. Instantiation (Constructor)
+    public LifecycleInspectorBean() {
+        log.info("--- 1. INSTANTIATION: Bean object created via constructor.");
+    }
+
+    // 2. Populate Properties (@Value or @Autowired)
+    @Value("${spring.application.name:DefaultApp}")
+    public void setAppName(String name) {
+        log.info("--- 2. POPULATE PROPERTIES: Injected property 'name': {}", name);
+    }
+
+    // 3. Aware Interfaces
+    @Override
+    public void setBeanName(String name) {
+        this.beanName = name;
+        log.info("--- 3. BEAN NAME AWARE: My name in the context is: {}", name);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        log.info("--- 3. CONTEXT AWARE: Received reference to the ApplicationContext.");
+    }
+
+    // 4. Initialization - @PostConstruct
+    @PostConstruct
+    public void postConstruct() {
+        log.info("--- 4. @POSTCONSTRUCT: Custom init logic after dependency injection.");
+    }
+
+    // 4. Initialization - InitializingBean interface
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        log.info("--- 4. AFTER PROPERTIES SET: InitializingBean hook called.");
+    }
+
+    // 5. Ready for Use
+    public void executeBusinessLogic() {
+        log.info("--- 5. READY: Bean is performing its job.");
+    }
+
+    // 6. Destruction - @PreDestroy
+    @PreDestroy
+    public void preDestroy() {
+        log.info("--- 6. @PREDESTROY: Cleaning up before Spring kills the bean.");
+    }
+
+    // 6. Destruction - DisposableBean interface
+    @Override
+    public void destroy() throws Exception {
+        log.info("--- 6. DISPOSABLE BEAN: Final cleanup logic executed.");
+    }
+}
+```
+
 ## Aware & Factory
 
 Implement interface `BeanNameAware` to inject name.
