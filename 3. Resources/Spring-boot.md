@@ -1224,6 +1224,10 @@ Article: https://medium.com/@victoronu/implementing-role-and-permission-based-au
 
 %% TODO: %%
 
+## [[OAuth]] integration
+
+%% TODO: %%
+
 # DTO Mapper pattern
 
 Notes:
