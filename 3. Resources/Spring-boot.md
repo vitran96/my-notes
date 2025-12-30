@@ -235,6 +235,9 @@ public class LifecycleInspectorBean implements
 Implement interface `BeanNameAware` to inject name.
 Implement interface to `BeanFactory` to state how to write
 
+When do we need to implement aware interface?
+-> When we need to interact / access been related information like the BeanFactory or bean's name.
+
 ## Condition flag
 
 ```java
@@ -310,8 +313,67 @@ public class CheckoutService {
 ```
 
 
-
 # Spring scope
+
+| Scope | Description |
+| --- | --- |
+| Singleton | (Default) Scopes a single bean definition to a single object instance per Spring IoC container. |
+| Prototype | Scopes a single bean definition to any number of object instances. A new instance is created every time it is requested. |
+| Request | Scopes a single bean definition to the lifecycle of a single HTTP request (Web-aware). |
+| Session | Scopes a single bean definition to the lifecycle of an HTTP Session (Web-aware). |
+
+## Prototype scope in Singleton
+
+Non-singleton level if do direct constructor injection will keep the bean forever instead of create new one for each thread.
+To fix the issue, we can do 1 of the below approach.
+
+### @Lookup
+
+```java
+@Component
+public class MySingleton {
+
+    public void process() {
+        // This call will return a NEW instance every time
+        MyPrototype instance = getPrototype();
+        instance.doWork();
+    }
+
+    @Lookup
+    public MyPrototype getPrototype() {
+        return null; // Spring overrides this at runtime
+    }
+}
+```
+
+### Inject factory
+
+```java
+@Component
+public class MySingleton {
+    private final ObjectFactory<MyPrototype> prototypeFactory;
+
+    public MySingleton(ObjectFactory<MyPrototype> prototypeFactory) {
+        this.prototypeFactory = prototypeFactory;
+    }
+
+    public void process() {
+        // Each call to getObject() returns a new Prototype
+        MyPrototype instance = prototypeFactory.getObject();
+        instance.doWork();
+    }
+}
+```
+
+### Scoped proxy
+
+```java
+@Component
+@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class MyPrototype { 
+    // ...
+}
+```
 
 # [[Liquibase]] support
 Spring-boot can auto recognize Liquibase dependancies in the class-path so you don't need additional configuration.
@@ -449,7 +511,18 @@ Why is it important?
 # Spring test
 
 ## Unit Test
+
+%% TODO: %%
+
 Don't need `@SpringBootTest` if not load Spring app context.
+
+## Integration test
+
+%% TODO: %%
+
+### Mock external service
+
+### [[TestContainer]] usage
 
 # Spring validation
 
@@ -1176,13 +1249,148 @@ java -jar app.jar --spring.profiles.active=dev
 Note:
 - In my opinion, we choose by preference. And I prefer [[Yaml]] format. We should rarely make change to config let alone create a conflict.
 
+# Controller input type
+
+%% TODO: %%
+
+# Exception control
+
+## Global exception handler
+
+The `@ControllerAdvice` only catches exceptions thrown in the **DispatcherServlet** layer. If an exception happens in a **Filter** (e.g., during JWT authentication), your global handler won't see it.
+
+```java title="ExceptionAdviceHandler.java"
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import java.time.LocalDateTime;
+
+@ControllerAdvice
+public class ExceptionAdviceHandler {
+
+    // Handle specific exceptions
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(
+            ResourceNotFoundException ex, WebRequest request) {
+        
+        ErrorDetails errorDetails = new ErrorDetails(
+            LocalDateTime.now(), 
+            ex.getMessage(), 
+            request.getDescription(false)
+        );
+        
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    // Handle global exceptions (Fallback)
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDetails> handleGlobalException(
+            Exception ex, WebRequest request) {
+        
+        ErrorDetails errorDetails = new ErrorDetails(
+            LocalDateTime.now(), 
+            "An unexpected error occurred", 
+            request.getDescription(false)
+        );
+        
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+
+## Controller-level exception handler
+
+```java
+@RestController
+public class OrderController {
+
+    @GetMapping("/orders/{id}")
+    public Order getOrder(@PathVariable String id) {
+        // ... logic
+        throw new OrderNotFoundException("Order missing");
+    }
+
+    // This only catches exceptions thrown within OrderController
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<String> handleOrderError(OrderNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+}
+```
+
+## Filter-level exception handler
+
+```java
+@Component
+public class JwtFilter extends OncePerRequestFilter {
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver resolver;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+        try {
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            // This sends the error to your @ControllerAdvice
+            resolver.resolveException(request, response, null, e);
+        }
+    }
+}
+```
+
+# Spring AOP
+
+Spring package for [[Aspect oriented programming|AOP]].
+
+```java title="LoggingAspect.java"
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class LoggingAspect {
+
+    // Pointcut expression: Matches any method in UserService
+    @Before("execution(* com.example.service.UserService.*(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("AOP Before: Calling method: " + joinPoint.getSignature().getName());
+    }
+
+    @AfterReturning(pointcut = "execution(* com.example.service.UserService.*(..))", returning = "result")
+    public void logAfter(JoinPoint joinPoint, Object result) {
+        System.out.println("AOP After: Method " + joinPoint.getSignature().getName() + " returned: " + result);
+    }
+    
+    @Around("execution(* com.example.service.UserService.*(..))")
+	public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+	    long start = System.currentTimeMillis();
+	
+	    // This line actually executes the business method
+	    Object result = joinPoint.proceed(); 
+	
+	    long executionTime = System.currentTimeMillis() - start;
+	    System.out.println(joinPoint.getSignature() + " executed in " + executionTime + "ms");
+	    
+	    return result;
+	}
+}
+```
 # Caching
+
 %% TODO: %%
 
 # Serve SPA site
+
 %% TODO: %%
 
 # [[Hibernate]] nested [[SQL]] transaction
+
 %% TODO: %%
 
 # Properties bean
