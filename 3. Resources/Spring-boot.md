@@ -1407,6 +1407,9 @@ spring.web.resources.cache.period=31536000
 # Ensure that if the file changes, the cache is busted (uses fingerprinting)
 spring.web.resources.chain.strategy.content.enabled=true
 spring.web.resources.chain.strategy.content.paths=/**
+
+# Map the default error path to index.html
+server.error.path=/index.html
 ```
 
 # [[Hibernate]] nested [[SQL]] transaction
@@ -1503,3 +1506,12 @@ public class CustomClientMiddleware implements ClientHttpRequestInterceptor {
     }
 }
 ```
+
+
+## Config [[SSL]]
+
+%% TODO: %%
+
+## Config timeout
+
+%% TODO: %%
