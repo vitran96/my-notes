@@ -548,6 +548,15 @@ Why these specific values?
 - Max Lifetime: It is critical to set this around 2-5 minutes shorter than your [[Relational database|database]] 's global wait timeout (e.g., [[MySQL]]'s wait_timeout) to prevent "Broken Pipe" or "Connection Reset" errors.
 - Connection Timeout: 30 seconds (the default) is an eternity for a web user. It is better to fail fast (5 seconds) so your application can handle the error or fallback.
 
+## What happen if connection suddenly spike?
+
+- **Connection Requests are Queued:** Initially, the connection pool tries to satisfy requests using existing idle connections. As the spike continues, all available connections become "active". Subsequent requests are then put into a queue to wait for a connection to be returned to the pool.
+- **Threads Block:** The application threads handling the user requests are blocked while waiting for a connection from the pool. This leads to increased latency for those requests.
+- **Connection Timeout Exceptions:** If a request remains in the queue for longer than the configured `connectionTimeout` (default is typically around 30 seconds for [[HikariCP]]), it will fail and throw a timeout exception. The user receives an error, and the application's overall error rate increases.
+- **Application Unresponsiveness (Cascading Failure):** As more and more threads block waiting for connections, the application's general thread pool (e.g., [[Tomcat]]'s thread pool) can become exhausted. This prevents the application from processing new incoming requests (even those not requiring a DB connection immediately), leading to a complete application freeze.
+- **Database Overload:** Even if the application pool size is large, the database itself has a maximum number of connections it can handle. An overwhelming number of simultaneous queries from the application can overload the database server, leading to slow queries, lock waits, and potential database instability, exacerbating the problem.
+- **"Connection pool exhausted" Errors:** Eventually, the system will start logging "Connection pool exhausted" or "too many clients" errors, indicating a critical failure in managing database resources.
+
 # [[Mongo DB]]
 
 %% TODO: %%
