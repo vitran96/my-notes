@@ -47,6 +47,12 @@ spring init \
   project-1
 ```
 
+# Controller
+
+## @RestController vs @Controller
+
+`@RestController` has body `application/json` while `@Controller` usually used for Spring MVC
+
 # App starting life-cycle
 
 bootstrap (load properties & env) -> context creation -> been definition -> dependency injection -> initialization -> ready -> shutdown
@@ -376,10 +382,12 @@ public class MyPrototype {
 ```
 
 # [[Liquibase]] support
-Spring-boot can auto recognize Liquibase dependancies in the class-path so you don't need additional configuration.
+
+Spring-boot can auto recognize [[Liquibase]] dependancies in the class-path so you don't need additional configuration.
 Please take a look at [[Liquibase]] page for configuration.
 
 ## Config
+
 URL can be used from data-source
 ```yaml
 spring:
@@ -429,7 +437,18 @@ public SpringLiquibase liquibase(@Qualifier("taskExecutor") TaskExecutor taskExe
 }
 ```
 
-# DB & [[JPA]]
+# [[Flyway]] support
+
+Spring-boot can auto recognize [[Flyway]] dependancies in the class-path so you don't need additional configuration.
+
+## Config
+
+%% TODO: %%
+
+# [[JPA]]
+
+Notes:
+- [[JPA]] is the specification, [[Hibernate]] is the implementation, and [[HikariCP]] is the connection provider.
 
 ## Config
 ```yaml
@@ -493,14 +512,56 @@ public class PrimaryDbConfig {
 }
 ```
 
+# Spring [[HikariCP]]
+
+Recommended config:
+```properties
+# Basic Connection Info
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=password
+
+# --- Recommended HikariCP Tuning ---
+
+# 1. Maximum Pool Size: The formula (cores * 2) + 1 is a great starting point.
+# Don't set this to 100+ unless you have a high-end DB cluster.
+spring.datasource.hikari.maximum-pool-size=10
+
+# 2. Minimum Idle: Matches maximum-pool-size for a "fixed-size" pool (recommended for performance).
+spring.datasource.hikari.minimum-idle=10
+
+# 3. Connection Timeout: How long to wait for a connection from the pool (5-10 seconds is safer than 30s).
+spring.datasource.hikari.connection-timeout=5000
+
+# 4. Idle Timeout: How long a connection can sit idle before being retired (default is 10 min).
+spring.datasource.hikari.idle-timeout=300000
+
+# 5. Max Lifetime: Total life of a connection. Must be shorter than any DB/Firewall timeout.
+spring.datasource.hikari.max-lifetime=1800000
+
+# 6. Leak Detection: Log a warning if a thread holds a connection longer than this (great for debugging).
+spring.datasource.hikari.leak-detection-threshold=2000
+```
+
+Why these specific values?
+- Fixed Pool Size (minimum-idle == maximum-pool-size): By keeping the pool size fixed, you avoid the latency "spike" of creating a new physical [[TCP]] connection to the [[Relational database|database]] when traffic suddenly bursts.
+- Max Lifetime: It is critical to set this around 2-5 minutes shorter than your [[Relational database|database]] 's global wait timeout (e.g., [[MySQL]]'s wait_timeout) to prevent "Broken Pipe" or "Connection Reset" errors.
+- Connection Timeout: 30 seconds (the default) is an eternity for a web user. It is better to fail fast (5 seconds) so your application can handle the error or fallback.
+
+# [[Mongo DB]]
+
+%% TODO: %%
+
 # REST Controller
+
 REST controller is a combination of `@Controller` and `@ResponseBody` (basically add `application/json` as response)
 
 # Spring's Bean
+
 Why is it important?
 - For Spring component scan & dependencies injection.
 
-## `@Autowired` vs constructor injection
+## Why Constructor injection is better than `@Autowired` 
 
 1. Enforcing dependencies for creation
 2. Clear schema contract
@@ -526,18 +587,9 @@ Don't need `@SpringBootTest` if not load Spring app context.
 
 # Spring validation
 
-## Sample validation
-```java
-class User {
-	@Email
-	private String email;
-}
-```
-
-## Lifecycle
 %% TODO: %%
 
-## [[Maven]]
+[[Maven]] dependency:
 ```xml
 <!-- Maven -->
 <dependency>
@@ -546,7 +598,21 @@ class User {
 </dependency>
 ```
 
+## Sample validation
+
+```java
+class User {
+	@Email
+	private String email;
+}
+```
+
+## Lifecycle
+
+%% TODO: %%
+
 # Spring [[REST API|REST]] Docs
+
 [Document](https://docs.spring.io/spring-restdocs/docs/current/reference/htmlsingle)
 
 Notes:
@@ -554,13 +620,16 @@ Notes:
 - This is more like handwriting document
 
 # Springdoc [[OpenAPI]] generation
+
 [Guide](https://www.baeldung.com/spring-rest-openapi-documentation)
 
 API URL: `http://localhost:8080/v3/api-docs`
 Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 
 ## [[Maven]] dependency
+
 ### WebMVC
+
 ```xml
 <dependency>
     <groupId>org.springdoc</groupId>
@@ -570,6 +639,7 @@ Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 ```
 
 ### [[WebFlux]]
+
 ```xml
 <dependency>
     <groupId>org.springdoc</groupId>
@@ -579,6 +649,7 @@ Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 ```
 
 ### Support plugin for [[Kotlin]]
+
 ```xml
 <dependency>
     <groupId>org.springdoc</groupId>
@@ -588,6 +659,7 @@ Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 ```
 
 ## Properties
+
 [Properties](https://springdoc.org/properties.html)
 ```properties
 springdoc.api-docs.enabled=false
@@ -599,6 +671,7 @@ springdoc.writer-with-order-by-keys=true
 ```
 
 ## Plugin to generate docs
+
 ```xml
 <plugin>
     <groupId>org.springframework.boot</groupId>
@@ -635,12 +708,14 @@ springdoc.writer-with-order-by-keys=true
 ```
 
 ## Show actuator routes
+
 Actuator is not show by default
 ```properties
 springdoc.show-actuator=true
 ```
 
 ## Show Spring-security routes
+
 Spring's security not show by default
 ```properties
 # not work
@@ -648,6 +723,7 @@ springdoc.show-login-endpoint=true
 ```
 
 # Spring security
+
 Notes:
 - Default will redirect like how [[SSO]] work
 	- Can be disabled with config
@@ -755,6 +831,7 @@ public class SecurityConfig {
 ```
 
 ## Lifecycle
+
 %% TODO: %%
 
 ## Custom implement
@@ -1108,6 +1185,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 ```
 
 ## Require authenticate on all API exclude some
+
 A simple way to fine-grain request matcher.
 This is important since it mean we only need to define the path 1 time.
 And it work well with [[SPA]] too if we host it together with BE.
@@ -1135,13 +1213,47 @@ public SecurityFilterChain apiSecurityChain(HttpSecurity http) throws Exception 
 
 Article: https://medium.com/@victoronu/implementing-role-and-permission-based-authorization-in-spring-boot-with-jwt-359901206b6a
 
+%% TODO: %%
+
 # DTO Mapper pattern
+
 Notes:
 - DTO set at controller
 - Mapping should be done at Service layer
 - Mapping can be done manually or with `MapStruct` / `ModelMapper`
 
+# Custom config param
+
+## Use `@Value`
+
+```java
+@Value("app.env1")
+private String env1;
+```
+
+## Use `@Configuration`
+
+```java
+@Configuration  
+@ConfigurationProperties(prefix = "app.admin")  
+@RequiredArgsConstructor  
+@NoArgsConstructor  
+@Getter  
+@Setter  
+public class AdminConfiguration {
+	// app.admin.fullName
+    private String fullName;  
+	// app.admin.email
+    private String email;  
+	// app.admin.password
+    private String password;  
+}
+```
+
 # Startup task
+
+## Task to run on app ready
+
 ```java title="InitAdmin.java"
 package example;  
   
@@ -1163,20 +1275,7 @@ public class InitAdmin {
     @EventListener(ApplicationReadyEvent.class)  
     void initAdmin() {  
         try {  
-            Optional<UserSummary> admin = userRepository.findOneProjectedByEmail(adminConfiguration.getEmail());  
-            if (admin.isPresent()) {  
-                return;  
-            }  
-  
-            userRepository.save(  
-                    User.builder()  
-                            .email(adminConfiguration.getEmail())  
-                            .fullName(adminConfiguration.getFullName())  
-                            .hashedPassword(  
-                                    passwordEncoder.encode(adminConfiguration.getPassword())  
-                            )  
-                            .build()  
-            );  
+            // Do stuff 
         } catch (Exception e) {  
             // TODO: add logger  
             System.out.println("Failed to create admin account: " + e.getMessage());  
@@ -1185,52 +1284,14 @@ public class InitAdmin {
 }
 ```
 
-# Custom config param
-
-## Use `@Value`
-```java
-@Value("app.env1")
-private String env1;
-```
-
-## Use `@Configuration`
-```java
-@Configuration  
-@ConfigurationProperties(prefix = "app.admin")  
-@RequiredArgsConstructor  
-@NoArgsConstructor  
-@Getter  
-@Setter  
-public class AdminConfiguration {
-	// app.admin.fullName
-    private String fullName;  
-	// app.admin.email
-    private String email;  
-	// app.admin.password
-    private String password;  
-}
-```
-
-# Startup task
-
-## Task to run on app ready
-```java
-@Component  
-@RequiredArgsConstructor  
-public class InitAdmin {  
-    @EventListener(ApplicationReadyEvent.class)  
-    void taskToRun() {  
-        // Find if any user with email existed.  
-    }  
-}
-```
-
 # Profile
+
 Best practice:
 - Use multiple profile
 - Use profile by deployment environment.
 
 ## Deployment profile
+
 Should set things like debugger level for each deployment so that we don't have to override on deploy and only need to choose profile.
 ```shell
 java -jar app.jar --spring.profiles.active=dev
@@ -1239,6 +1300,7 @@ java -jar app.jar --spring.profiles.active=dev
 # Config file
 
 ## YML vs properties
+
 - [[Yaml|YML]]:
 	- Better structure
 	- Easier to make mistake due to indentation
@@ -1342,6 +1404,8 @@ public class JwtFilter extends OncePerRequestFilter {
 ```
 
 # Spring [[Aspect oriented programming|AOP]]
+
+%% TODO: what is Spring proxy? %%
 
 Spring package for [[Aspect oriented programming|AOP]].
 
