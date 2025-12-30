@@ -84,6 +84,43 @@ It will do object reference comparison -> always false if different object.
 
 # String pool
 
+```java
+public class StringPoolExample {
+    public static void main(String[] args) {
+        // Created in the String Pool
+        String s1 = "Java";
+        String s2 = "Java";
+
+        // Created in the Heap (Outside the Pool)
+        String s3 = new String("Java");
+
+        // Comparison using == (Checks memory address)
+        System.out.println(s1 == s2); // true -> Both point to the same object in the pool
+        System.out.println(s1 == s3); // false -> s3 is a different object in the heap
+
+        // Comparison using .equals() (Checks actual text content)
+        System.out.println(s1.equals(s3)); // true -> The content is the same
+        
+        // String literal concatenation save in String pool
+        String s1 = "Java" + "Programming"; 
+		String s2 = "JavaProgramming";
+
+		System.out.println(s1 == s2); // true
+    }
+}
+```
+
+## intern()
+
+```java
+String s3 = new String("Java");
+String s4 = s3.intern(); // Fetch the reference from the pool
+
+System.out.println(s1 == s4); // true
+```
+
+# JVM profiling
+
 %% TODO: %%
 
 # JVM Instrument
@@ -94,6 +131,10 @@ It will do object reference comparison -> always false if different object.
 
 `JavaTimeModule` is an important module to serialize/deserialize date & time.
 The module follow JSR-310.
+
+# Virtual thread
+
+%% TODO: %%
 
 # Java version update
 
