@@ -740,6 +740,7 @@ Notes:
 - Request cache is supported by default
 
 ## Sample config
+
 ```java
 package tech.kingoyster.spring_1;
 
