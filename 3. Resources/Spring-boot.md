@@ -1563,9 +1563,9 @@ server.error.path=/index.html
 Instead of `@Value("{...}")` to get env data, we can create a bean to save and access globally.
 Also, with additional dependencies, we can even document and generate artifact to support properties file auto-complete for custom properties.
 
-```toml
+```properties
 # Sample App Configuration
-app.display-name=My Coding Project
+app.display-name="My Coding Project"
 app.version=1.0.2
 app.max-connections=50
 app.timeout-seconds=30
