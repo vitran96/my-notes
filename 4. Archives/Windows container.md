@@ -1,0 +1,2 @@
+[[Window OS]] container that can run [[Window OS]] tool as server or isolation for compilation.
+However, we might not be able to play with it for now as it require license :( (https://learn.microsoft.com/en-us/answers/questions/1403072/do-we-need-license-for-using-windows-os-as-contain)
