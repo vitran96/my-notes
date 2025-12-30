@@ -1341,13 +1341,16 @@ public class JwtFilter extends OncePerRequestFilter {
 }
 ```
 
-# Spring AOP
+# Spring [[Aspect oriented programming|AOP]]
 
 Spring package for [[Aspect oriented programming|AOP]].
 
 Pattern `execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)`.
 - `*`: Matches any return type or name.
 - `..`: Matches any number of arguments.
+
+Notes:
+- Spring [[Aspect oriented programming|AOP]] work via proxy so it won't work if invoked from within the same class.
 
 ```java title="LoggingAspect.java"
 import org.aspectj.lang.JoinPoint;
@@ -1385,13 +1388,26 @@ public class LoggingAspect {
 	}
 }
 ```
+
 # Caching
 
 %% TODO: %%
 
 # Serve SPA site
 
-%% TODO: %%
+```properties
+# Define where Spring should look for static files
+spring.web.resources.static-locations=classpath:/my-react-build/,file:/var/www/static/
+
+# All static files will now be served under /dashboard/
+spring.mvc.static-path-pattern=/dashboard/**
+
+# Enable caching for 1 year for static resources
+spring.web.resources.cache.period=31536000
+# Ensure that if the file changes, the cache is busted (uses fingerprinting)
+spring.web.resources.chain.strategy.content.enabled=true
+spring.web.resources.chain.strategy.content.paths=/**
+```
 
 # [[Hibernate]] nested [[SQL]] transaction
 
