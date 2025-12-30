@@ -1416,6 +1416,71 @@ public class JwtFilter extends OncePerRequestFilter {
 }
 ```
 
+# Spring middleware
+
+## Filter as "Servlet Middleware"
+
+Filters are part of the [[Servlet]] Container ([[Tomcat]]). They are the "outermost" layer of protection. They execute **before** the request even reaches Spring's `DispatcherServlet`.
+- Best for: Tasks that don't need to know which controller method is being called.
+- Examples: Logging raw HTTP headers, CORS, GZIP compression, and security (Spring Security is essentially a chain of filters).
+- Key Interface: `jakarta.servlet.Filter`
+
+```java
+@Component
+public class MyFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) 
+            throws IOException, ServletException {
+        // 1. BEFORE (Pre-processing)
+        chain.doFilter(req, res); // 2. PASS TO NEXT
+        // 3. AFTER (Post-processing)
+    }
+}
+```
+
+Preferred / modern approach:
+```java
+import org.springframework.web.filter.OncePerRequestFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Component
+public class TransactionFilter extends OncePerRequestFilter {
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        
+        String requestId = request.getHeader("X-Request-ID");
+        System.out.println("Processing request ID: " + requestId);
+        
+        filterChain.doFilter(request, response);
+    }
+}
+```
+## Interceptor as "Spring MVC Middleware"
+
+Interceptors are a Spring-specific concept. They execute after the request is accepted by the `DispatcherServlet` but before it hits your `@RestController`.
+- Best for: Tasks that need to know about the "Handler" (the specific method being called) or need access to Spring's Model and View.
+- Examples: Checking custom annotations on a controller method, measuring execution time of a specific API, or modifying the ModelAndView.
+- Key Interface: `HandlerInterceptor`
+
+```java
+@Component
+public class MyInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        // Runs before the controller
+        return true; // Continue execution
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
+        // Runs after the controller, before view rendering
+    }
+}
+```
+
 # Spring [[Aspect oriented programming|AOP]]
 
 %% TODO: what is Spring proxy? %%
