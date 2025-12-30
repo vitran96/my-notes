@@ -47,12 +47,6 @@ spring init \
   project-1
 ```
 
-# Controller
-
-## @RestController vs @Controller
-
-`@RestController` has body `application/json` while `@Controller` usually used for Spring MVC
-
 # App starting life-cycle
 
 bootstrap (load properties & env) -> context creation -> been definition -> dependency injection -> initialization -> ready -> shutdown
