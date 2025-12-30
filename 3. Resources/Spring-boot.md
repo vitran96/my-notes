@@ -726,6 +726,10 @@ Spring's security not show by default
 springdoc.show-login-endpoint=true
 ```
 
+# Spring actuator
+
+%% TODO: %%
+
 # Spring security
 
 Notes:
