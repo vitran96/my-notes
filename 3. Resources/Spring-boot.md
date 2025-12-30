@@ -1345,6 +1345,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
 Spring package for [[Aspect oriented programming|AOP]].
 
+Pattern `execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)`.
+- `*`: Matches any return type or name.
+- `..`: Matches any number of arguments.
+
 ```java title="LoggingAspect.java"
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
