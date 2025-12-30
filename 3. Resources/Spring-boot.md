@@ -31,6 +31,7 @@ spring-boot-app/
 ```
 
 # Init command
+
 ```shell
 spring init \
   --boot-version=3.5.5 \
@@ -175,6 +176,7 @@ public class LifecycleInspectorBean implements
     private String beanName;
 
     // 1. Instantiation (Constructor)
+    //   Dependencies injection can also occur here
     public LifecycleInspectorBean() {
         log.info("--- 1. INSTANTIATION: Bean object created via constructor.");
     }
