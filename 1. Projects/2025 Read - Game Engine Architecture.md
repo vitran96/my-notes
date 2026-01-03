@@ -21,7 +21,7 @@ end: 2026-06
 - VR [[Game Engine]] run below 90 fps tend to cause disorientation, nausea, etc... to player
 - Game engine (https://en.wikipedia.org/wiki/List_of_game_engines):
 	- The [[Quake Game Engine]] family
-		- Written by [[id Software of Texas]].
+		- Written by [[id Software]].
 		- Similar engine is [[DOOM Game Engine]]
 		- The corner stone of all modern [[Game Engine]]
 	- [[Unreal Game Engine]]
