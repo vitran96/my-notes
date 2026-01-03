@@ -1312,6 +1312,8 @@ java -jar app.jar --spring.profiles.active=dev
 
 # Config file
 
+Common properties can be found here: https://docs.spring.io/spring-boot/appendix/application-properties/index.html
+
 ## YML vs properties
 
 - [[Yaml|YML]]:

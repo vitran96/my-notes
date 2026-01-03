@@ -14,6 +14,7 @@ end: 2026-01-31
 - [x] Migration flow for DEV and PROD
 - [ ] [[JPA]] & [[Hibernate]]
 - [ ] [[JUnit]] & [[Mokito]]
+- [ ]  [[Spring-boot#Spring security|Spring security]]  testing
 - [ ] [[TestContainer]]
 - [ ] File download / upload API
 
@@ -55,27 +56,27 @@ end: 2026-01-31
 
 ## Session 1
 
-1. [ ] Create base code
-2. [ ] Create base migration with [[Liquibase]]
-3. [ ] Create / Generate JPA's Entity
-	1. [ ] Generation of JPA is not worth it if the scope is small & we want customized Entity instead of the DEFAULT generation
-	2. [ ] Generation of changelog might be worth to check
-4. [ ] Customer CRUD
-	1. [ ] Start with simple base CRUD
-5. [ ] [[Unit Test]]
+1. [x] Create base code
+2. [x] Create base migration with [[Liquibase]]
+3. [x] Create / Generate JPA's Entity
+	1. [x] Generation of JPA is not worth it if the scope is small & we want customized Entity instead of the DEFAULT generation
+	2. [x] Generation of changelog might be worth to check
+4. [x] Customer CRUD
+	1. [x] Start with simple base CRUD
+5. [x] [[Unit Test]]
 
 ## Session 2
 
-1. [ ] Create User CRUD
-2. [ ] Auto create ADMIN account
-3. [ ] Setup Spring-security
-4. [ ] Setup Authentication Filter chain
+1. [x] Create User CRUD
+2. [x] Auto create ADMIN account
+3. [x] Setup Spring-security
+4. [x] Setup Authentication Filter chain
 5. [ ] [[Unit Test]] User CRUD & Security Filter chain & Security (where possible)
 6. [ ] [[Integration Test]] Security & Security Filter chain
 
 ## Session 3
 
-1. [ ] Enable and safely expose Actuator endpoints in dev (health, metrics, info, env, thread dump).
+1. [ ] Enable and safely ~~expose~~ Actuator endpoints in dev (health, metrics, info, env, thread dump).
 2. [ ] Read and reason about [[HTTP]] metrics (e.g., `http.server.requests`) to spot latency/errors.
 3. [ ] Attach app metadata to `/actuator/info` for release diagnostics.
 4. [ ] Keep API docs public while the API remains protected.
