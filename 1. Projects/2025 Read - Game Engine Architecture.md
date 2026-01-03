@@ -75,4 +75,5 @@ Chapter 2:
 	- [[Git]]
 	- [[Subversion]]
 	- [[Perforce]]
-- Cool [[Version Control Software]]
+- Cool [[Version Control Software]] feature:
+	- Changelist -> I wonder if [[Jujutsu]] and [[Git]] have it
