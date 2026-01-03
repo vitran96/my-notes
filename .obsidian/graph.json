@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "",
+  "search": "-path:Archives/2.*",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
