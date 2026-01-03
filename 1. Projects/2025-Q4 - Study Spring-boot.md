@@ -76,10 +76,10 @@ end: 2026-01-31
 
 ## Session 3
 
-1. [ ] Enable and safely ~~expose~~ Actuator endpoints in dev (health, metrics, info, env, thread dump).
+1. [x] Enable and safely ~~expose~~ Actuator endpoints in dev (health, metrics, info, env, thread dump).
 2. [ ] Read and reason about [[HTTP]] metrics (e.g., `http.server.requests`) to spot latency/errors.
 3. [ ] Attach app metadata to `/actuator/info` for release diagnostics.
-4. [ ] Keep API docs public while the API remains protected.
+4. [x] Keep API docs public while the API remains protected.
 5. [ ] Verify [[OpenAPI]]/Scalar paths and understand where the spec/UI live.
 
 ## Session 4

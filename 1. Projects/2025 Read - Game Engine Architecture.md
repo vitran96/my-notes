@@ -65,4 +65,14 @@ Game studio prefer [[Web]] app for tooling like scheduling / translation / etc b
 
 Notes:
 - There are quite a lot of layer to learn :(
-- 
+
+## 2026-01-03
+
+Chapter 2:
+- Overall, this chapter looks like it is about software development in general.
+- The 1st few section is about version control
+- [[Version Control Software]] mentioned:
+	- [[Git]]
+	- [[Subversion]]
+	- [[Perforce]]
+- Cool [[Version Control Software]]
