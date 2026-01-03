@@ -728,7 +728,80 @@ springdoc.show-login-endpoint=true
 
 # Spring actuator
 
-%% TODO: %%
+Check out [[Spring-boot#Properties]] for actuator properties.
+
+## How to know all existing actuator ID?
+
+Enable ALL actuator then view what is available with `/actuator`
+```yaml
+management:
+	web:
+		exposure:
+			include: "*"
+```
+
+## Custom actuator
+
+```java
+@Component
+@Endpoint(id = "features")
+public class FeaturesEndpoint {
+
+    private Map<String, Feature> features = new ConcurrentHashMap<>();
+
+    @ReadOperation
+    public Map<String, Feature> features() {
+        return features;
+    }
+
+    @ReadOperation
+    public Feature feature(@Selector String name) {
+        return features.get(name);
+    }
+
+    @WriteOperation
+    public void configureFeature(@Selector String name, Feature feature) {
+        features.put(name, feature);
+    }
+
+    @DeleteOperation
+    public void deleteFeature(@Selector String name) {
+        features.remove(name);
+    }
+
+    public static class Feature {
+        private Boolean enabled;
+
+        // [...] getters and setters 
+    }
+
+}
+```
+
+## Extending existing actuator
+
+```java
+@Component
+@EndpointWebExtension(endpoint = InfoEndpoint.class)
+public class InfoWebEndpointExtension {
+
+    private InfoEndpoint delegate;
+
+    // standard constructor
+
+    @ReadOperation
+    public WebEndpointResponse<Map> info() {
+        Map<String, Object> info = this.delegate.info();
+        Integer status = getStatus(info);
+        return new WebEndpointResponse<>(info, status);
+    }
+
+    private Integer getStatus(Map<String, Object> info) {
+        // return 5xx if this is a snapshot
+        return 200;
+    }
+}
+```
 
 # Spring security
 
