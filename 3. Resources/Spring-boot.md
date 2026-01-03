@@ -730,6 +730,13 @@ springdoc.show-login-endpoint=true
 
 Check out [[Spring-boot#Properties]] for actuator properties.
 
+## Actuator metric
+
+### Request
+
+`http.server.requests` is statistic about all incoming request.
+Good for monitoring with system like [[Prometheus]] / [[Grafana]]
+
 ## How to know all existing actuator ID?
 
 Enable ALL actuator then view what is available with `/actuator`
