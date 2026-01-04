@@ -18,7 +18,7 @@ end: 2026-01-31
 - [ ] [[TestContainer]]
 - [ ] File download / upload API
 
-# Course 1
+# Course overview
 
 - Session 1 — [[REST API]], Validation, Error Handling
 	- Design a small [[REST API]] surface (resource modeling, versioned paths, idempotent verbs).	    
@@ -54,7 +54,7 @@ end: 2026-01-31
 	- [[Maven]] check style.
 	- [[Maven]] formatting.
 
-## Session 1
+# Session 1
 
 1. [x] Create base code
 2. [x] Create base migration with [[Liquibase]]
@@ -65,7 +65,7 @@ end: 2026-01-31
 	1. [x] Start with simple base CRUD
 5. [x] [[Unit Test]]
 
-## Session 2
+# Session 2
 
 1. [x] Create User CRUD
 2. [x] Auto create ADMIN account
@@ -74,15 +74,15 @@ end: 2026-01-31
 5. [ ] [[Unit Test]] User CRUD & Security Filter chain & Security (where possible)
 6. [ ] [[Integration Test]] Security & Security Filter chain
 
-## Session 3
+# Session 3
 
 1. [x] Enable and safely ~~expose~~ Actuator endpoints in dev (health, metrics, info, env, thread dump).
-2. [ ] Read and reason about [[HTTP]] metrics (e.g., `http.server.requests`) to spot latency/errors.
-3. [ ] Attach app metadata to `/actuator/info` for release diagnostics.
+2. [x] Read and reason about [[HTTP]] metrics (e.g., `http.server.requests`) to spot latency/errors.
+3. [x] Attach app metadata to `/actuator/info` for release diagnostics.
 4. [x] Keep API docs public while the API remains protected.
-5. [ ] Verify [[OpenAPI]]/Scalar paths and understand where the spec/UI live.
+5. [ ] Verify [[OpenAPI]] / Scalar paths and understand where the spec/UI live.
 
-## Session 4
+# Session 4
 
 1. [ ] Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.
 2. [ ] Use [[Testcontainers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
@@ -90,7 +90,7 @@ end: 2026-01-31
 4. [ ] Validate persistence guarantees (identity, constraints, sorting, cascading).
 5. [ ] Handle and assert on database exceptions (e.g., unique constraint violations).
 
-## Session 5
+# Session 5
 
 1. [ ] Configure [[CORS]] so a React dev server can call your APIs safely.  
 2. [ ] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
@@ -98,11 +98,7 @@ end: 2026-01-31
 4. [ ] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
 5. [ ] Define preflight behavior and verify the right `Access-Control-*` headers are returned.
 
-## Session 6
+# Session 6
 
 1. [ ] [[Maven]] check style.
 2. [ ] [[Maven]] formatting.
-
-# Course 2
-
-##
