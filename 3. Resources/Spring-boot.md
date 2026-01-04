@@ -726,6 +726,8 @@ Spring's security not show by default
 springdoc.show-login-endpoint=true
 ```
 
+## Set base url to root
+
 # Spring actuator
 
 Check out [[Spring-boot#Properties]] for actuator properties.

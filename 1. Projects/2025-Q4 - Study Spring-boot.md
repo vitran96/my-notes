@@ -84,11 +84,11 @@ end: 2026-01-31
 
 # Session 4
 
-1. [ ] Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.
-2. [ ] Use [[Testcontainers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
-3. [ ] Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource`).
-4. [ ] Validate persistence guarantees (identity, constraints, sorting, cascading).
-5. [ ] Handle and assert on database exceptions (e.g., unique constraint violations).
+~~1. [ ] Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.~~
+1. [ ] Use [[Testcontainers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
+2. [ ] Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource`).
+3. [ ] Validate persistence guarantees (identity, constraints, sorting, cascading).
+4. [ ] Handle and assert on database exceptions (e.g., unique constraint violations).
 
 # Session 5
 
