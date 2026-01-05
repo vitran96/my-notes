@@ -4,6 +4,7 @@ Notes:
 - Free version has limit [[REST API]] support
 
 # Sample [[Maven]] config
+
 ```xml title="~/.m2/settings.xml"
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="https://maven.apache.org/SETTINGS/1.1.0"

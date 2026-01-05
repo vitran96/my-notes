@@ -1,4 +1,5 @@
-
+[[Microsoft]] [[IDE]].
+Work on [[Window OS]] and [[MacOS]]
 # Dev shell prompt
 
 Dev Command Prompt location
