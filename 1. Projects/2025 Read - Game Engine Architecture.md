@@ -77,3 +77,8 @@ Chapter 2:
 	- [[Perforce]]
 - Cool [[Version Control Software]] feature:
 	- Changelist -> I wonder if [[Jujutsu]] and [[Git]] have it
+
+## 2026-01-05
+
+Continue with chapter 2 about [[Visual studio]] and [[C++]].
+Not much new beside what I already know.

@@ -50,7 +50,7 @@ Stay current with modern Java features (Java 17 and 21).
 
 |Domain|Senior Level Indicator|
 |---|---|
-|**Testing**|Uses **Testcontainers** for real database integration testing.|
+|**Testing**|Uses **Testcontainers** for real database integration testing. [[MockServer]] / [[WireMock]] / [[Spring-boot#Mock Rest Service Server]] to [[Integration Test]] external services. |
 |**Security**|Implements Method-level security and JWT-based stateless auth.|
 |**Database**|Can explain **Index types** (B-Tree, Hash) and their impact on JPA.|
 |**Tooling**|Uses **Profiling tools** (JVisualVM, YourKit) to find bottlenecks.|

@@ -587,7 +587,54 @@ Mocking with [[Mockito]] and run test with [[JUnit]].
 
 ### Mock external service
 
-### [[TestContainer]] usage
+### [[Test Containers]] usage
+
+Articles:
+- https://blog.jetbrains.com/idea/2024/12/testing-spring-boot-applications-using-testcontainers/
+
+```java title="MySqlTestConfiguration.java"
+package tech.kingoyster.spring_1;  
+  
+import org.springframework.boot.test.context.TestConfiguration;  
+import org.springframework.context.annotation.Bean;  
+import org.testcontainers.containers.MySQLContainer;  
+import org.testcontainers.utility.DockerImageName;  
+  
+@TestConfiguration(proxyBeanMethods = false)  
+public class MySqlTestConfiguration {  
+  
+    // Bean creation for Test Container
+    @Bean  
+    MySQLContainer<?> mySQLContainer() {  
+        return new MySQLContainer<>(DockerImageName.parse("docker.io/mysql:9.4.0-oraclelinux9"));  
+    }  
+}
+```
+
+```java title="AuthControllerIntegrationTest"
+package tech.kingoyster.spring_1.authentication;  
+  
+import org.springframework.beans.factory.annotation.Autowired;  
+import org.springframework.boot.test.context.SpringBootTest;  
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;  
+import org.springframework.context.annotation.Import;  
+import org.testcontainers.containers.MySQLContainer;  
+import org.testcontainers.junit.jupiter.Container;  
+import org.testcontainers.junit.jupiter.Testcontainers;  
+import tech.kingoyster.spring_1.MySqlTestConfiguration;  
+
+// NOTE: use @Testcontainers + @Contiainerto auto start / stop container
+@SpringBootTest  
+@Testcontainers  
+public class AuthControllerIntegrationTest {  
+  
+    // NOTE: use @ServiceConnection to auto update datasource properties
+    //   @DynamicPropertySource can be used for manual override
+    @Container  
+    @ServiceConnection
+    private MySQLContainer<?> mySQLContainer;  
+}
+```
 
 # Spring validation
 
@@ -1674,6 +1721,8 @@ public class AppConfig {
 # [[Spnego]] integration
 
 %% TODO: extract sample from TSS project %%
+
+# Mock [[REST API]] Service Server
 
 # Spring Rest client
 

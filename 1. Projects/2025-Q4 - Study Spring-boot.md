@@ -9,13 +9,13 @@ end: 2026-01-31
 - [x] [[Spring-boot#Spring security|Spring security]] & filter chain & Authorization
 - [x] [[Spring-boot|Spring]] life-cycle
 - [x] [[Spring-boot|Spring]] component
-- [ ] [[Spring-boot|Spring]] error handling
+- [x] [[Spring-boot|Spring]] error handling
 - [x] [[Spring-boot|Spring]] with migration tool
 - [x] Migration flow for DEV and PROD
 - [ ] [[JPA]] & [[Hibernate]]
 - [ ] [[JUnit]] & [[Mokito]]
 - [ ]  [[Spring-boot#Spring security|Spring security]]  testing
-- [ ] [[TestContainer]]
+- [ ] [[Test Containers]]
 - [ ] File download / upload API
 
 # Course overview
@@ -38,9 +38,9 @@ end: 2026-01-31
 	- Attach app metadata to `/actuator/info` for release diagnostics.
 	- Keep API docs public while the API remains protected.
 	- Verify [[OpenAPI]]/Scalar paths and understand where the spec/UI live.
-- Session 4 — [[MySQL]] Profile & [[Testcontainers]] Integration
+- Session 4 — [[MySQL]] Profile & [[Test Containers]] Integration
 	- Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.
-	- Use [[Testcontainers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
+	- Use [[Test Containers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
 	- Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource`).
 	- Validate persistence guarantees (identity, constraints, sorting, cascading).
 	- Handle and assert on database exceptions (e.g., unique constraint violations).
@@ -80,19 +80,21 @@ end: 2026-01-31
 2. [x] Read and reason about [[HTTP]] metrics (e.g., `http.server.requests`) to spot latency/errors.
 3. [x] Attach app metadata to `/actuator/info` for release diagnostics.
 4. [x] Keep API docs public while the API remains protected.
-5. [ ] Verify [[OpenAPI]] / Scalar paths and understand where the spec/UI live.
+5. [x] Verify [[OpenAPI]] / Scalar paths and understand where the spec/UI live.
+	1. [x] [[OpenAPI]] here just mean the swagger file.
+	2. [x] Scalar here just mean swagger UI
 
 # Session 4
 
 ~~1. [ ] Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.~~
-1. [ ] Use [[Testcontainers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
+1. [ ] Use [[Test Containers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
 2. [ ] Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource`).
 3. [ ] Validate persistence guarantees (identity, constraints, sorting, cascading).
 4. [ ] Handle and assert on database exceptions (e.g., unique constraint violations).
 
 # Session 5
 
-1. [ ] Configure [[CORS]] so a React dev server can call your APIs safely.  
+1. [ ] Configure [[CORS]] so a [[ReactJS]] dev server can call your APIs safely.  
 2. [ ] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
 3. [ ] Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
 4. [ ] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
