@@ -1,6 +1,19 @@
-Static analysis tool to check for common code mistake.
+Static analysis tool to check for common code mistake, bug pattern.
 Can only be used as part of compiler.
-[[Maven]] config:
+
+# Alternative
+
+[[Java-Error prone]]  doesn't work well with [[Java#Java 17]]+.
+So alternatives are:
+- [[Java-Checkstyle]] & [[Java-PMD]]
+- [[ArchUnit]]
+- [[SpotBugs]]
+- [[Sonarlint]]
+
+[[Mend.io]] focus is on Security and compliance. It can not be 100% alternative for [[Java-Error prone]].
+
+# [[Maven]] config
+
 ```xml
   <build>
     <plugins>

@@ -3,6 +3,8 @@
 Notes:
 - Although it is possible to test at service level. It is generally better to test full integration (API -> DB).
 	- When is it worth to test at service level? When the SQL is complex
+- Should we mix between global and class-level container?
+	- Not suggested by [[Gemini AI]]
 
 # Generic container
 

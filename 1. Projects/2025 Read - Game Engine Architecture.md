@@ -82,3 +82,8 @@ Chapter 2:
 
 Continue with chapter 2 about [[Visual studio]] and [[C++]].
 Not much new beside what I already know.
+
+## 2026-01-10
+
+- About [[Visual studio]]
+- About [[Microsoft MSVC#CLI]] & [[LLVM]]/[[CLang Compiler#CLI]] 
