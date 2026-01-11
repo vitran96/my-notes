@@ -14,7 +14,9 @@ If [[Docker]], no need to do additional setup.
 
 ## [[Podman]]
 
-Article: https://www.baeldung.com/java-podman-configure-testcontainers
+Article: 
+- https://www.baeldung.com/java-podman-configure-testcontainers
+- https://podman-desktop.io/tutorial/testcontainers-with-podman
 
 If [[Podman]],  will require enable [[Docker]] compatible [[Socket]].
 [[Ryuk container]] must be disabled. This mean `no auto-cleanup`. How to mitigate this? There are 2 solutions:
@@ -54,3 +56,11 @@ int hostPort = container.getMappedPort(6379);
 System.out.println("Redis started on " + host + ":" + hostPort);
 container.stop();
 ```
+
+# [[MySQL]] container
+
+Contain default `mysql.cnf` that can cause error on latest [[MySQL]] version.
+
+## Override `cnf` file
+
+%% TODO: %%

@@ -605,11 +605,13 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration(proxyBeanMethods = false)  
 public class MySqlTestConfiguration {  
   
-    // Bean creation for Test Container
-    @Bean
-    @ServiceConnection
-    MySQLContainer<?> mySQLContainer() {  
-        return new MySQLContainer<>(DockerImageName.parse("docker.io/mysql:9.4.0-oraclelinux9"));
+    // NOTE: cannot contain "repo name" in image name (eg: "docker.io/")
+//    private static final String MYSQL_IMAGE = "docker.io/mysql:9.4.0-oraclelinux9";  
+    private static final String MYSQL_IMAGE = "mysql:9.4.0-oraclelinux9";  
+  
+    @Bean  
+    @ServiceConnection    MySQLContainer<?> mySQLContainer() {  
+        return new MySQLContainer<>(DockerImageName.parse(MYSQL_IMAGE));  
     }  
 }
 ```
@@ -864,6 +866,9 @@ public class FeaturesEndpoint {
 ```
 
 ## Extending existing actuator
+
+Notes:
+- This might cause failure if `info` actuator excluded / not included. Should you `@ConditionOnProperty` or some kind of flag to make this Bean not cause failure.
 
 ```java
 @Component
