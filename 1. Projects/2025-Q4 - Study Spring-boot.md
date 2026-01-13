@@ -12,10 +12,10 @@ end: 2026-01-31
 - [x] [[Spring-boot|Spring]] error handling
 - [x] [[Spring-boot|Spring]] with migration tool
 - [x] Migration flow for DEV and PROD
+- [x] [[Test Containers]]
 - [ ] [[JPA]] & [[Hibernate]]
 - [ ] [[JUnit]] & [[Mokito]]
 - [ ]  [[Spring-boot#Spring security|Spring security]]  testing
-- [x] [[Test Containers]]
 - [ ] File download / upload API
 
 # Course overview

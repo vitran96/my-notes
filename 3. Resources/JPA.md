@@ -143,3 +143,7 @@ public interface UserRepo Extends JpaRepository<User, Long> {
 
 `findBy` prefix with `Email` will tell JPA to auto create query that use email for filter.
 `findOne` tell JPA that we are looking for exactly 1.
+
+# Handling Foreign Key
+
+%%  TODO:  %%
