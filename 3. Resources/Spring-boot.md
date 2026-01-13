@@ -667,6 +667,41 @@ public class AuthControllerIntegrationTest {
 }
 ```
 
+## MockMVC
+
+MockMVC can be used as a [[Integration Test]] to test security.
+However, it might fail if we have a strict [[Flyway]]/[[Liquibase]] setup.
+
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+class SecurityPolicyTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    void shouldRejectAnonymousUser() throws Exception {
+        mockMvc.perform(get("/api/admin/dashboard"))
+               .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void shouldForbiddenUserFromAdminArea() throws Exception {
+        mockMvc.perform(get("/api/admin/dashboard"))
+               .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldAllowAdminToAccessDashboard() throws Exception {
+        mockMvc.perform(get("/api/admin/dashboard"))
+               .andExpect(status().isOk());
+    }
+}
+```
+
 # Spring validation
 
 %% TODO: %%
