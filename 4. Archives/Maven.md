@@ -1,6 +1,7 @@
 [[Build tool]] for [[Java]] and its ecosystem ([[Kotlin]], [[Scala]], etc...)
 
 # Distribution setting
+
 Upload to [[Artifactory]] like [[JFrog]]
 ```xml title="pom.xml
 <distributionManagement>
@@ -18,6 +19,7 @@ Upload to [[Artifactory]] like [[JFrog]]
 ```
 
 # Deploy a package to [[Artifactory]] directly
+
 ```shell
 # Cannot push from .m2
 mvn deploy:deploy-file \

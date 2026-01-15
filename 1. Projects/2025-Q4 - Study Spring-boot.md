@@ -14,8 +14,8 @@ end: 2026-01-31
 - [x] Migration flow for DEV and PROD
 - [x] [[Test Containers]]
 - [ ] [[JPA]] & [[Hibernate]]
-- [ ] [[JUnit]] & [[Mokito]]
-- [ ]  [[Spring-boot#Spring security|Spring security]]  testing
+- [x] [[JUnit]] & [[Mokito]]
+- [x]  [[Spring-boot#Spring security|Spring security]]  testing
 - [ ] File download / upload API
 
 # Course overview
@@ -71,8 +71,8 @@ end: 2026-01-31
 2. [x] Auto create ADMIN account
 3. [x] Setup Spring-security
 4. [x] Setup Authentication Filter chain
-5. [ ] [[Unit Test]] User CRUD & Security Filter chain & Security (where possible)
-6. [ ] [[Integration Test]] Security & Security Filter chain
+5. [ ] [[Unit Test]] User CRUD ~~& Security Filter chain & Security (where possible)~~
+6. [x] [[Integration Test]] Security ~~& Security Filter chain~~
 
 # Session 3
 
@@ -98,7 +98,10 @@ end: 2026-01-31
 2. [ ] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
 3. [ ] Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
 4. [ ] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
-5. [ ] Define preflight behavior and verify the right `Access-Control-*` headers are returned.
+5. [ ] Define pre-flight behavior and verify the right `Access-Control-*` headers are returned.
+
+Used [[Maven failsafe]] to run [[Integration Test]].
+I am kind of know how to setup [[Integration Test]] and [[Test Containers]] now.
 
 # Session 6
 
