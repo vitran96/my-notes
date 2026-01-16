@@ -1859,3 +1859,7 @@ public class CustomClientMiddleware implements ClientHttpRequestInterceptor {
 ## Config timeout
 
 %% TODO: %%
+
+# Create File API
+
+Article: https://spring.io/guides/gs/uploading-files
