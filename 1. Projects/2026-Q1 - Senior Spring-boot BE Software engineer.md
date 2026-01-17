@@ -1,3 +1,9 @@
+---
+start: 2026-01-20
+end: 2026-03-31
+---
+
+
 To be considered a senior-level engineer in the Java/Spring ecosystem, the shift in expectations moves from **"making it work"** to **"making it scale, making it maintainable, and making it observable."**
 
 Here is the checklist of domains you should master to confidently claim seniority.
@@ -12,7 +18,7 @@ You should move beyond basic annotations and understand how the framework functi
 # 2. High-Performance Data Access
 
 A senior developer knows that the database is usually the primary bottleneck.
-- **JPA/Hibernate Optimization**: Mastering the "N+1" problem (using `Join Fetch`, `EntityGraphs`, or `DTO Projection`). Mastering [[JPA]] fetching (like lazy loading), flow, usage.
+- **[[JPA]]/[[Hibernate]] Optimization**: Mastering the "N+1" problem (using `Join Fetch`, `EntityGraphs`, or `DTO Projection`). Mastering [[JPA]] fetching (like lazy loading), flow, usage.
 - **Caching Strategies**: Implementing multi-level caching (Local Caffeine cache + Distributed Redis cache) and handling **Cache Aside** vs. **Write-Through** patterns.
 - **Transaction Management**: Understanding Isolation levels, Propagation types, and how to handle **Distributed Transactions** (Saga Pattern or 2PC).
 
