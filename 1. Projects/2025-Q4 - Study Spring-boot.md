@@ -1,6 +1,6 @@
 ---
 start: 2025-10-02
-end: 2026-01-31
+end: 2026-01-20
 ---
 
 # Scope
@@ -13,10 +13,10 @@ end: 2026-01-31
 - [x] [[Spring-boot|Spring]] with migration tool
 - [x] Migration flow for DEV and PROD
 - [x] [[Test Containers]]
-- [ ] [[JPA]] & [[Hibernate]]
+~~- [ ] [[JPA]] & [[Hibernate]]~~
 - [x] [[JUnit]] & [[Mokito]]
 - [x]  [[Spring-boot#Spring security|Spring security]]  testing
-- [ ] File download / upload API
+- [x] File download / upload API
 
 # Course overview
 
@@ -71,7 +71,7 @@ end: 2026-01-31
 2. [x] Auto create ADMIN account
 3. [x] Setup Spring-security
 4. [x] Setup Authentication Filter chain
-5. [ ] [[Unit Test]] User CRUD ~~& Security Filter chain & Security (where possible)~~
+5. [x] [[Unit Test]] User CRUD ~~& Security Filter chain & Security (where possible)~~
 6. [x] [[Integration Test]] Security ~~& Security Filter chain~~
 
 # Session 3
@@ -94,16 +94,22 @@ end: 2026-01-31
 
 # Session 5
 
-1. [ ] Configure [[CORS]] so a [[ReactJS]] dev server can call your APIs safely.  
-2. [ ] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
-3. [ ] Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
-4. [ ] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
-5. [ ] Define pre-flight behavior and verify the right `Access-Control-*` headers are returned.
+1. [x] Configure [[CORS]] so a [[ReactJS]] dev server can call your APIs safely.  
+2. [x] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
+3. [x] Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
+4. [x] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
+~~5. [ ] Define pre-flight behavior and verify the right `Access-Control-*` headers are returned.~~
 
 Used [[Maven failsafe]] to run [[Integration Test]].
 I am kind of know how to setup [[Integration Test]] and [[Test Containers]] now.
 
 # Session 6
 
-1. [ ] [[Maven]] check style.
-2. [ ] [[Maven]] formatting.
+1. [x] [[Maven]] check style.
+2. [x] [[Maven]] formatting.
+
+# Summary
+
+Good run but take a bit too long.
+Skipped [[JPA]] & [[Hibernate]] -> move it to another session.
+Missing test case, so the next 2 study sessions will just about updating test case.
