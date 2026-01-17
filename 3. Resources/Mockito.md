@@ -28,20 +28,26 @@ class UserServiceTest {
 ```
 
 # Prepare mocking
+
 `@InjectMock` to choose which class to inject mock to.
 `@Mock` to mock a class and inject into `@InjectMock`
 `@Spy` can be used to track the change.
+`@MockitoBean` (or `@MockBean`) apply to [[Spring-boot]] only. Auto inject to all bean.
 
 # Mocking
+
 `when` -> `then`
 
-# Count innovocation
+# Count invocation
+
 `verify(<mock class>, times(<xxx>)).<mock function>(...);`
 
 # Work with [[JUnit|JUnit 5]]
+
 `@Test` must be `org.junit.jupyter.api.Test`, not `org.junit.Test`
 
 # Attach agent to [[Maven]] surefire
+
 Future release of Java might prohibit "inline Mockito agent attach". For [[Maven]], you can use below [[XML]] (please remove `@{argLine}` if there is no additional argument for java)
 [Article about this](https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3)
 ```xml

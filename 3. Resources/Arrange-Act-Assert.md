@@ -1,0 +1,1 @@
+This is a good [[Test Pattern]] for [[Unit Test]]|[[Integration Test]]|[E2E]

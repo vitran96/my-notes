@@ -736,7 +736,7 @@ Notes:
 - We can [[Unit Test]] the document since this module also support testing.
 - This is more like handwriting document
 
-# Springdoc [[OpenAPI]] generation
+# [[Springdoc]] [[OpenAPI]] generation
 
 [Guide](https://www.baeldung.com/spring-rest-openapi-documentation)
 
@@ -840,6 +840,12 @@ springdoc.show-login-endpoint=true
 ```
 
 ## Set base url to root
+
+%% TODO: %%
+
+## Inject example to all route
+
+%% TODO: %%
 
 # Spring actuator
 
@@ -1863,6 +1869,7 @@ public class CustomClientMiddleware implements ClientHttpRequestInterceptor {
 # Create File API
 
 Article: https://spring.io/guides/gs/uploading-files
+File [[Blob]] API.
 
 %% TODO: %%
 
@@ -1919,6 +1926,18 @@ public class FileController {
     }  
 }
 ```
+
+## Upload
+
+### Old
+
+### New
+
+## Download
+
+### Download [[Byte]]
+
+### Download [[IO Stream]]
 
 # Configurable log
 

@@ -1,4 +1,6 @@
 [[Maven]] plugin to run test.
+It is suggested for [[Unit Test]] only.
+It run at `test` stage with `mvn test`
 
 # File lookup pattern
 
@@ -11,3 +13,7 @@
 
 `target/surefire-reports/TEST-*.xml`
 
+# Skip
+
+Test can be skip with 
+- `-DskipTests=true`. This one is however a bit dangerous as it might stop [[Maven failsafe]] too.
