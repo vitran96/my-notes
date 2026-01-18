@@ -1,6 +1,7 @@
 ---
 start: 2025-10-02
 end: 2026-01-20
+status: DONE
 ---
 
 # Scope

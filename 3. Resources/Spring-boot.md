@@ -587,6 +587,8 @@ Mocking with [[Mockito]] and run test with [[JUnit]].
 
 ### Mock external service
 
+%% TODO: %%
+
 ### [[Test Containers]] usage
 
 Articles:
@@ -701,6 +703,19 @@ class SecurityPolicyTest {
     }
 }
 ```
+
+## TestRestTemplate vs MockMvc
+
+Article:
+- https://docs.spring.io/spring-framework/reference/testing/mockmvc/vs-end-to-end-integration-tests.html
+
+Not recommended TestRestTemplate for everything since it is slow? Why slow?
+- Spring boot will have to set up server and open port
+- TestRestTemplate will have to use network to test
+
+## RestTestClient vs TestRestTemplate
+
+Introduction: https://www.baeldung.com/spring-resttestclient-guide
 
 # Spring validation
 

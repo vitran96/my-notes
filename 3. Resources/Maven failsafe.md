@@ -21,3 +21,7 @@ It will run at `verify` stage with `mvn verify`
 This can be skip with
 - `-DskipTests=True`. This one is a bit dangerous as it will skip [[Maven surefire]] too.
 - `-DskipITs=True`
+
+# Choose specific test
+
+- `-Dit.test=<class#method>,...`

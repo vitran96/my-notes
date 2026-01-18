@@ -135,6 +135,30 @@ The module follow JSR-310.
 # Virtual thread
 
 %% TODO: %%
+Notes:
+- Feel kind of like a middle ground between [[Multi-threading]] and [[Async programming]]
+	- Can handle [[IO process]] waiting well
+	- Can also handle [[CPU process]] well
+	- But not as good as either if we need something that lean heavy on one of them
+	- A thread mapping to a real physical thread
+
+# File API
+
+## java.nio.file.File vs java.io.File
+
+%% TODO: %%
+
+# Stream API
+
+## Does stream pipeline run right away?
+
+%% TODO: with example of equivalent %%
+
+# Thread API
+
+## Is parallel better than executor?
+
+%% TODO: %%
 
 # Java version update
 

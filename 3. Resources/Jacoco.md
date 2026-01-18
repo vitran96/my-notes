@@ -2,7 +2,9 @@
 
 [Guide](https://www.baeldung.com/jacoco)
 
-# Plugin
+# Plugin & Config
+
+Config below assume that
 
 ## Merged report
 
@@ -18,7 +20,7 @@
                 <goal>prepare-agent</goal>
             </goals>
             <configuration>
-                <destFile>${project.build.directory}/jacoco-all.exec</destFile>
+                <destFile>${project.build.directory}/jacoco.exec</destFile>
             </configuration>
         </execution>
         <execution>
@@ -27,7 +29,7 @@
                 <goal>prepare-agent-integration</goal>
             </goals>
             <configuration>
-                <destFile>${project.build.directory}/jacoco-all.exec</destFile>
+                <destFile>${project.build.directory}/jacoco.exec</destFile>
                 <append>true</append>
             </configuration>
         </execution>
