@@ -10,12 +10,18 @@ Related topics:
 - [[JPA]]
 - [[Hibernate]]
 - [[HikariCP]]
-- [[Kafka]] / [[RapidMQ]]
+- [[Kafka]] / [[RapidMQ]] [[Message queue]]
 - [[Redis]] / [[Valkey]]
 - [[Integration Test]] for external [[REST API]] service
 - [[CSRF]]
 - [[Caching]]
 - [[OAuth]]
+- [[Java#Garbage Collection]]
+- [[Resilience4j]] [[Circuit breaker]]
+- [[log4j]]
+- [[Spring-boot#Spring Proxy]]
+- [[Spring-boot#Spring Modulith]]
+- [[Rate-limit]]
 
 Here is the checklist of domains you should master to confidently claim seniority.
 
