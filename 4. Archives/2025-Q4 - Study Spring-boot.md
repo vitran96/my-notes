@@ -96,9 +96,9 @@ status: DONE
 # Session 5
 
 1. [x] Configure [[CORS]] so a [[ReactJS]] dev server can call your APIs safely.  
-2. [x] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
-3. [x] Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
-4. [x] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
+~~2. [ ] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).~~
+2. [x] Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
+3. [x] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
 ~~5. [ ] Define pre-flight behavior and verify the right `Access-Control-*` headers are returned.~~
 
 Used [[Maven failsafe]] to run [[Integration Test]].
@@ -114,3 +114,11 @@ I am kind of know how to setup [[Integration Test]] and [[Test Containers]] now.
 Good run but take a bit too long.
 Skipped [[JPA]] & [[Hibernate]] -> move it to another session.
 Missing test case, so the next 2 study sessions will just about updating test case.
+
+Things that I have not cover shall be continue in [[20XX - PENDING - Senior Spring-boot BE Software engineer]]:
+- [[JPA]]
+- [[Hibernate]]
+- [[HikariCP]]
+- [[Kafka]] / [[RapidMQ]]
+- [[Redis]] / [[Valkey]]
+- [[Integration Test]] for external [[REST API]] service

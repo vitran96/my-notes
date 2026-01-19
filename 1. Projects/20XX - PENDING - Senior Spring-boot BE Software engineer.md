@@ -6,6 +6,17 @@ end: 2026-03-31
 
 To be considered a senior-level engineer in the Java/Spring ecosystem, the shift in expectations moves from **"making it work"** to **"making it scale, making it maintainable, and making it observable."**
 
+Related topics:
+- [[JPA]]
+- [[Hibernate]]
+- [[HikariCP]]
+- [[Kafka]] / [[RapidMQ]]
+- [[Redis]] / [[Valkey]]
+- [[Integration Test]] for external [[REST API]] service
+- [[CSRF]]
+- [[Caching]]
+- [[OAuth]]
+
 Here is the checklist of domains you should master to confidently claim seniority.
 
 # 1. Advanced Spring Core & Internals
