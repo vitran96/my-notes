@@ -24,4 +24,4 @@ This can be skip with
 
 # Choose specific test
 
-- `-Dit.test=<class#method>,...`
+- `-Dtest=<class#method>,...`
