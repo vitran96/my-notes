@@ -1,0 +1,1 @@
+A common type of [[network storage]]
