@@ -1,1 +1,1 @@
-[[CI CD tools]] for [[Infrastructure]]
+[[CI CD tools]] for [[Infrastructure]], known as [[Infrastructure as Code]].
