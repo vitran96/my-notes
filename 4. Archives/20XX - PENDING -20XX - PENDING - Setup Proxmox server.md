@@ -5,4 +5,4 @@
 VM management: [[Proxmox]]
 Hardware virtualization: [[Qemu]]
 
-Management script: [[OpenTofu]]20XX - PENDING -
+Management script: [[4. Archives/OpenTofu]]20XX - PENDING -
