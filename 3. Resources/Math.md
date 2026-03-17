@@ -16,3 +16,7 @@ Represent a vector of length 1 (distance stripped)
 $$
 \frac{\vec{v}}{||\vec{v}||}
 $$
+
+# Bend vector 90 degree
+
+Just need to flip X / Y (eg: $X$ -> $-X$ or $-Y$ to $Y$) 
