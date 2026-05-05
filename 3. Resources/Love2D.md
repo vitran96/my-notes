@@ -28,3 +28,7 @@ uiSoundSrc:clone():play()
 ## Use static sound for web
 
 [[Gemini AI]] recommend that we use `static` if targeting the [[Web]] build
+
+# [[Web]] build
+
+# [[Window OS]] build
