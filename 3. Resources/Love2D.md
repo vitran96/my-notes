@@ -1,4 +1,4 @@
-[[Lua]] [[Game Engine]]
+ [[Lua]] [[Game Engine]]
 
 # Set Color
 
