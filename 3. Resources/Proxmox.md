@@ -1,3 +1,7 @@
+# Install extension
+
+Either via `config.xml`  or UI
+
 # Log
 
 ## 2026-05-23
