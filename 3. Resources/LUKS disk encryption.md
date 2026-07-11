@@ -4,7 +4,7 @@ This process binds your disk encryption key to your computer's [[TPM2]] chip, al
 
 ## Prerequisites
 
-*   Ensure **Secure Boot** is enabled in your BIOS/UEFI.
+*   Ensure **Secure Boot** is enabled in your [[BIOS]]/[[UEFI]].
 *   Identify your LUKS partition (e.g., `/dev/nvme0n1p3`) using `lsblk`.
 
 ## Implementation
