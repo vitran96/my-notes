@@ -16,7 +16,7 @@ This process binds your disk encryption key to your computer's [[TPM2]] chip, al
     `sudo dracut -fv --regenerate-all`
 4.  **Reboot:** Your system will now attempt to use the TPM to unlock the disk automatically.
 
-## Cleanup (Custom Polkit Removal)
+## Cleanup (Custom [[Polkit]] Removal)
 
-To remove your previous polkit configuration:
+To remove your previous [[Polkit]] configuration:
 `sudo rm /etc/polkit-1/rules.d/90-udisks2.rules && sudo systemctl restart polkit`
