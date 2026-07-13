@@ -12,9 +12,9 @@ This process binds your disk encryption key to your computer's [[TPM2]] chip, al
 1.  **Enroll [[TPM2]]:** Add the TPM key to the LUKS partition.
     `sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/nvme0n1p3`
 2.  **Update Config:** Edit `/etc/crypttab` and add `tpm2-device=auto` to your partition entry.
-3.  **Update [[Initramfs]]:** Rebuild the initramfs to apply changes.
+3.  **Update [[Initramfs]]:** Rebuild the [[initramfs]] to apply changes.
     `sudo dracut -fv --regenerate-all`
-4.  **Reboot:** Your system will now attempt to use the TPM to unlock the disk automatically.
+4.  **Reboot:** Your system will now attempt to use the [[TPM module]] to unlock the disk automatically.
 
 ## Cleanup (Custom [[Polkit]] Removal)
 
