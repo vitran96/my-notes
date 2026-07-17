@@ -2,9 +2,55 @@
 
 Either via `config.xml`  or UI
 
+# Enable snippets
+
+For [[Terraform]] to use other [[VM]] as snippet: `pvesm set local --content iso,vztmpl,backup,snippets` or "**Datacenter → Storage → local → Edit → Content → check "Snippets"**."
+
+# Permission Denied Error (403 Forbidden)
+
+*   **Error Message:** `Permission check failed (/storage/local, Datastore.Audit|Datastore.AllocateSpace)`
+*   **Cause:** The Proxmox API token being used by Terraform does not have the necessary privileges to perform the requested actions, such as uploading files (snippets, ISOs) to a storage pool.
+*   **Solution:**
+    1.  Log in to the Proxmox web UI.
+    2.  Go to `Datacenter` -> `Permissions` -> `Roles` and create a new role (e.g., `Terraform`) with a comprehensive set of permissions required for VM management (`Datastore.Audit`, `Datastore.AllocateSpace`, `VM.Allocate`, `VM.Clone`, `VM.Config.*`, `VM.PowerMgmt`, etc.).
+    3.  Go to `Datacenter` -> `Permissions` and assign this new role to a user (e.g., `root@pam` or a dedicated `terraform-user@pve`) for the path `/`.
+    4.  Generate a new API token for that user and update the `proxmox_api_token` variable with the new token secret.
+
+---
+
+# Hostname Lookup Error (500 Internal Server Error)
+
+*   **Error Message:** `hostname lookup 'pve' failed - failed to get address info for: pve: Name or service not known`
+*   **Cause:** The Proxmox server itself is unable to resolve its own hostname to an IP address. This is a local name resolution issue on the Proxmox node.
+*   **Solution:**
+    1.  SSH into the Proxmox server as `root`.
+    2.  Check the hosts file: `cat /etc/hosts`.
+    3.  Check what is the domain name and correct it in the config
+    4.  Run again
+
+---
+
+# ISO Volume Not Found Error
+
+*   **Error Message:** `volume 'local:iso/pfSense-CE-2.7.2-RELEASE-amd64.iso' does not exist`
+*   **Cause:** The VM resource is configured to use an ISO file that is not present in the specified Proxmox storage pool.
+*   **Solution:** Instead of manually uploading the ISO, the Terraform configuration was updated to manage the file automatically. The `proxmox_virtual_environment_file` resource is used to upload the ISO from a local path on the machine running Terraform. The VM's `cdrom` block then references the ID of this managed file resource, creating a dependency and ensuring the file is uploaded before the VM is created.
+
+---
+
+# Using Compressed ISOs (`.iso.gz`)
+
+*   **Question:** Can a gzipped ISO file (`.iso.gz`) be used directly?
+*   **Answer:** No. Proxmox requires a standard, uncompressed `.iso` file to mount as a virtual CD-ROM. The `.iso.gz` file must be decompressed on your local machine (e.g., using `gunzip`) before running `tofu apply`. The `pfsense_iso_path` variable must point to the resulting `.iso` file.
+
+# Initialization
+
+Only work on [[cloud]] supported image. For [[cloud]] supported image, best use config.yml to setup.
+
 # Log
 
 ## 2026-05-23
+
 I used Proxmox GUI installer
 - Default username is root
 - Type in password, email, timezone, static IP, hostname
@@ -127,41 +173,3 @@ apt update
 sed -i.bak "s/if (data.status !== 'Active')/if (false)/" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
 systemctl restart pveproxy
 ```
-
-
-## Permission Denied Error (403 Forbidden)
-
-*   **Error Message:** `Permission check failed (/storage/local, Datastore.Audit|Datastore.AllocateSpace)`
-*   **Cause:** The Proxmox API token being used by Terraform does not have the necessary privileges to perform the requested actions, such as uploading files (snippets, ISOs) to a storage pool.
-*   **Solution:**
-    1.  Log in to the Proxmox web UI.
-    2.  Go to `Datacenter` -> `Permissions` -> `Roles` and create a new role (e.g., `Terraform`) with a comprehensive set of permissions required for VM management (`Datastore.Audit`, `Datastore.AllocateSpace`, `VM.Allocate`, `VM.Clone`, `VM.Config.*`, `VM.PowerMgmt`, etc.).
-    3.  Go to `Datacenter` -> `Permissions` and assign this new role to a user (e.g., `root@pam` or a dedicated `terraform-user@pve`) for the path `/`.
-    4.  Generate a new API token for that user and update the `proxmox_api_token` variable with the new token secret.
-
----
-
-## Hostname Lookup Error (500 Internal Server Error)
-
-*   **Error Message:** `hostname lookup 'pve' failed - failed to get address info for: pve: Name or service not known`
-*   **Cause:** The Proxmox server itself is unable to resolve its own hostname to an IP address. This is a local name resolution issue on the Proxmox node.
-*   **Solution:**
-    1.  SSH into the Proxmox server as `root`.
-    2.  Check the hosts file: `cat /etc/hosts`.
-    3.  Check what is the domain name and correct it in the config
-    4.  Run again
-
----
-
-## ISO Volume Not Found Error
-
-*   **Error Message:** `volume 'local:iso/pfSense-CE-2.7.2-RELEASE-amd64.iso' does not exist`
-*   **Cause:** The VM resource is configured to use an ISO file that is not present in the specified Proxmox storage pool.
-*   **Solution:** Instead of manually uploading the ISO, the Terraform configuration was updated to manage the file automatically. The `proxmox_virtual_environment_file` resource is used to upload the ISO from a local path on the machine running Terraform. The VM's `cdrom` block then references the ID of this managed file resource, creating a dependency and ensuring the file is uploaded before the VM is created.
-
----
-
-## Using Compressed ISOs (`.iso.gz`)
-
-*   **Question:** Can a gzipped ISO file (`.iso.gz`) be used directly?
-*   **Answer:** No. Proxmox requires a standard, uncompressed `.iso` file to mount as a virtual CD-ROM. The `.iso.gz` file must be decompressed on your local machine (e.g., using `gunzip`) before running `tofu apply`. The `pfsense_iso_path` variable must point to the resulting `.iso` file.
