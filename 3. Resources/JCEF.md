@@ -1,0 +1,1 @@
+Similar to [[jxbrowser]], embedding [[Chromium]] to [[Java]].
