@@ -30,6 +30,34 @@ Model: [[Llama]]
 - **Track token usage:** Use `ollama run <model> --verbose` in the [[CLI]].
 - **OpenAI Compatibility:** [[Ollama]] provides native [[OpenAI-compatible endpoints]] at `http://localhost:11434/v1/` for drop-in integration with standard [[SDKs]] and tools.
 
+# Commands
+
+```shell
+# ==========================================
+# OLLAMA CONFIGURATION & SERVICE SETUP
+# ==========================================
+# Instruction: Run these commands one by one to install Ollama, create its 
+# runit service supervisor profile, configure network binding, and download your model.
+# ==========================================
+
+# 1. Install Ollama via package manager
+pkg install ollama -y
+
+# 3. Create the service execution script for runit
+cat << 'EOF' > $PREFIX/var/service/ollama/run
+#!/data/data/com.termux/files/usr/bin/sh
+export OLLAMA_HOST=0.0.0.0:11434
+exec ollama serve 2>&1
+EOF
+
+# 4. Make the service execution script runnable
+chmod +x $PREFIX/var/service/ollama/run
+
+# 6. Enable and start Ollama via the service supervisor
+sv-enable ollama
+sv up ollama
+```
+
 # Log
 
 - Quite ez to do. Just need [[Termux]] and setup [[Termux boot]] to start the app if phone restarted
