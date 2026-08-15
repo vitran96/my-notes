@@ -9,6 +9,19 @@ Exit node require approval in Dashboard.
 
 Ideally, his is good but this doesn't work for me.
 
+# Install in [[Termux]]
+
+```shell
+# Install curl and net-tools if missing
+pkg update -y && pkg install curl net-tools -y
+
+# Download and install Tailscale CLI for Termux
+curl -fsSL https://raw.githubusercontent.com/bropines/tailscale-termux-cli/main/remote-install.sh | bash
+
+# Authenticate and bring up Tailscale
+tailscale up
+```
+
 # Log
 
 - 2026-08-04 - I give up on using 1 node to expose my infra. The likely best practice way is to have my router using non-common [[LAN]] IP (like 192.168.58.0) instead of (192.168.1.0). [[WireGuard]] would not help either since [[iOS]] doesn't allow nested [[VPN]] connection
