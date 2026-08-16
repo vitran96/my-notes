@@ -18,8 +18,16 @@ pkg update -y && pkg install curl net-tools -y
 # Download and install Tailscale CLI for Termux
 curl -fsSL https://raw.githubusercontent.com/bropines/tailscale-termux-cli/main/remote-install.sh | bash
 
+# Default tailscaled work fine but must include --socket like below because it use different socket file path
+# To stop, run
+sv stop tailscaled
+sv status tailscaled
+
 # Authenticate and bring up Tailscale
-tailscale up
+tailscale --socket="$HOME/.tailscale/tailscaled.sock" up
+
+# Server as https within tailnet (must enable in Admin > DNS)
+tailscale --socket="$HOME/.tailscale/tailscaled.sock" serve --bg http://127.0.0.1:11434
 ```
 
 # Log
