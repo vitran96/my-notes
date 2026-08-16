@@ -28,6 +28,9 @@ tailscale --socket="$HOME/.tailscale/tailscaled.sock" up
 
 # Server as https within tailnet (must enable in Admin > DNS)
 tailscale --socket="$HOME/.tailscale/tailscaled.sock" serve --bg http://127.0.0.1:11434
+
+# To test with curl
+curl --socks5-hostname localhost:1055 https://phone-2-llm.tail78e763.ts.net/v1/models
 ```
 
 # Log
