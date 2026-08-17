@@ -11,6 +11,8 @@ Ideally, his is good but this doesn't work for me.
 
 # Install in [[Termux]]
 
+## Instruction
+
 ```shell
 # Install curl and net-tools if missing
 pkg update -y && pkg install curl net-tools -y
@@ -31,6 +33,31 @@ tailscale --socket="$HOME/.tailscale/tailscaled.sock" serve --bg http://127.0.0.
 
 # To test with curl
 curl --socks5-hostname localhost:1055 https://phone-2-llm.tail78e763.ts.net/v1/models
+```
+
+## Watchdog
+
+There is issue in [[Android]], somehow stop [[Tailscale]]. So suggested by [[Gemini AI]] to add a watch dog script
+
+```shell
+# Create a health-check watchdog cron/loop script to restart tailscaled if dropped
+cat << 'EOF' > ~/tailscaled-watchdog.sh
+#!/data/data/com.termux/files/usr/bin/sh
+while true; do
+  if ! pgrep -x "tailscaled" > /dev/null; then
+    echo "[$(date)] tailscaled down, cleaning locks and restarting..." >> ~/.tailscale/watchdog.log
+    rm -f "$HOME/.tailscale/tailscaled.sock" "$HOME/.tailscale/tailscaled.state.lock"
+    sv restart tailscaled
+  fi
+  sleep 15
+done
+EOF
+chmod +x ~/tailscaled-watchdog.sh
+
+# Start watchdog in the background
+nohup ~/tailscaled-watchdog.sh > /dev/null 2>&1 &
+
+# Find and terminate the watchdog process pkill -f tailscaled-watchdog.sh
 ```
 
 # Log
