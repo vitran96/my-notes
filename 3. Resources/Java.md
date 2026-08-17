@@ -164,10 +164,10 @@ Notes:
 
 I will take in LTS change-log only
 
-## Java 25
+## [[Java 25]]
 
-## Java 21
+## [[Java 21]]
 
-## Java 17
+## [[Java 17]]
 
-## Java 8
+## [[Java 8]]
