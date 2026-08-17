@@ -1,3 +1,7 @@
+---
+end: 2026-04
+---
+
 [[OS]]: [[Fedora]]
 UI: 
 - Desktop:[[Niri]]
