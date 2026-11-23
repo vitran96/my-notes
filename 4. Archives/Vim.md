@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Use sudo with current user vimrc
 
 ```bash

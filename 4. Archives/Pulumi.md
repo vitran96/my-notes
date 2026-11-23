@@ -1,4 +1,8 @@
+---
+para: archive
+was: resource
+---
 [[Terraform]] alternative.
-[[CI CD tools]] for [[Infrastructure]], known as [[Infrastructure as Code]].
+An [[Infrastructure as Code]] tool.
 
 Support debugging.

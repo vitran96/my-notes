@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 [[NodeJS]] tooling to integrate with [[Git]] hook to parse and handle commit message
 
 # Install
@@ -83,7 +87,7 @@ module.exports = {
 
 # Test locally
 ```shell
-VAR_1="data"
-
 echo "some message" | npx commitlint
 ```
+
+See also: [[Lefthook]], [[changesets]]

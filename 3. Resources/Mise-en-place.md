@@ -1,13 +1,16 @@
 ---
+para: resource
 repo: https://github.com/jdx/mise
+tags: [tooling]
 ---
+mise: polyglot dev-tool version manager, env-var loader and task runner (replaces asdf/nvm/direnv/make).
 
 # Auto-Configure
 It will automatically set current shell env, tooling.
 Config for `mise.toml`: https://mise.jdx.dev/configuration.html
 
 # Tasks
-Not cross-platform so be careful when write.
+Not cross-platform so be careful when write: inline `run` scripts use the platform shell (sh vs cmd/pwsh), so they aren't portable; use `run_windows` or file tasks.
 [Document](https://mise.jdx.dev/tasks/task-configuration.html)
 
 # Watch
@@ -19,7 +22,7 @@ A task with defined `sources` can be watched.
 ```toml
 [tasks.compile]
 run = "mvn compile"
-sources = { "src/main/java/**/*.java", "pom.xml" }
+sources = ["src/main/java/**/*.java", "pom.xml"]
 ```
 
 # Install / Search tool
@@ -77,7 +80,7 @@ node = "20"
 python = "3.12"
 
 [tasks."start:be"]
-depends = { "//server:start" }
+depends = ["//server:start"]
 
 # server mise config
 [tools]
@@ -89,15 +92,17 @@ run = "npm start"
 
 # ENV config
 Use `MISE_ENV=<env name>` to switch mise config file.
-Rule is similar to [[Vite]] env file rule, the last one will override the 1st one:
+Rule is similar to [[Vite#Env]] env file rule, the last one will override the 1st one:
 1. mise.toml
 2. mise.local.toml
 3. mise.<MISE_ENV>.toml
 4. mise.<MISE_ENV>.local.toml
 
+%% verify order against mise.jdx.dev/configuration/environments.html %%
+
 # Lock file
 Similar to [[NodeJS]] package-lock file, mise can enable that.
-Without this, we will have to manually choose version.
+Without it, fuzzy versions (`node = "20"`) resolve to the newest match at install time, so machines can drift.
 To enable
 ```toml
 [settings]
@@ -110,3 +115,5 @@ Modify extensions runtime path directly in **settings.json** of a project.
 
 ## Auto config other extensions
 This plugin, if enable, also auto config other extensions. Use local shims config can help but will fail on [[Window OS]].
+
+See also: [[Fedora]]

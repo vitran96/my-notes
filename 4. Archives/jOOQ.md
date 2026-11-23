@@ -1,4 +1,8 @@
-A [[Java]] ‘s [[ORM]] library to interact with [[Relational database|SQL DB]]
+---
+para: archive
+was: resource
+---
+A [[Java]] type-safe SQL DSL / query builder (not a full [[ORM]]) for [[Relational database|SQL DB]]
 
 # Dynamic table name
 
@@ -11,11 +15,10 @@ Table<?> table = table(name(parameter + "_other_stuff"));
 
 # Dynamic SQL template
 
-Not possible
-Workaround is by dynamically pass in fields
+Possible via plain SQL templating: DSL.sql("... {0}", arg), DSL.field(...), ctx.resultQuery(...); otherwise pass fields dynamically:
 Eg:
 ```java
-RequestQuery<?> query(
+ResultQuery<?> query(
 	String bizDate, 
 	Field<?> sortField, 
 	SortOrder sortOrder

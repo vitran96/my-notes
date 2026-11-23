@@ -1,13 +1,17 @@
+---
+para: archive
+was: resource
+---
 # Boot with shell
 
-Append "init=/bin/sh" into cmdline.txt in boot drive
+Append "init=/bin/sh" into cmdline.txt in boot drive (Raspberry Pi; on GRUB edit the kernel line)
 
 # User related
 
 ## Delete user
 
 ```bash
-sudo deluser -remove-home <USER>
+sudo deluser --remove-home <USER>
 ```
 
 ## Change password
@@ -47,7 +51,7 @@ sed -i 's/old-text/new-text/g' input.txt
 ln -s [OPTIONS] FILE LINK
 ```
 
-# Count file
+# Count lines (e.g. files in ls output)
 
 ```bash
 wc -l
@@ -90,11 +94,9 @@ Linux password hash is save in `/etc/shadow`
 3. Sudo access to shadow file in the other drive
 4. Generate a new hash password and replace the existing hash of a user of your choice
 
-Generete hash password from python (only on a Linux device):
+Generate hash password (only on a Linux device):
 
-```python
-import crypt
-salt="yourSalt"
-crypt.crypt("yourNewPassword", salt)
+```bash
+openssl passwd -6 -salt yourSalt yourNewPassword
 ```
 

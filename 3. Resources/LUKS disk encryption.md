@@ -1,3 +1,7 @@
+---
+para: resource
+tags: [linux, security]
+---
 # Summary: [[TPM2]] Auto-Unlock for LUKS ([[Fedora]])
 
 This process binds your disk encryption key to your computer's [[TPM2]] chip, allowing for automatic decryption at boot while keeping your original passphrase as a secure fallback.
@@ -16,7 +20,6 @@ This process binds your disk encryption key to your computer's [[TPM2]] chip, al
     `sudo dracut -fv --regenerate-all`
 4.  **Reboot:** Your system will now attempt to use the [[TPM2]] to unlock the disk automatically.
 
-## Cleanup (Custom [[Polkit]] Removal)
+## Re-enroll
 
-To remove your previous [[Polkit]] configuration:
-`sudo rm /etc/polkit-1/rules.d/90-udisks2.rules && sudo systemctl restart polkit`
+PCR 7 = Secure Boot state; toggling Secure Boot or key/dbx updates break auto-unlock (passphrase still works). Re-enroll: `sudo systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=7 <dev>`

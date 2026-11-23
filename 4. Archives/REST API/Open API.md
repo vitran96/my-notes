@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 - Can generate TS client with [[open-ts]]
 - Can generate server / client of multiple language with [[Open API generator]]
 	- Extendable with custom template

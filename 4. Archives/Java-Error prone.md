@@ -1,10 +1,13 @@
+---
+para: archive
+was: resource
+---
 Static analysis tool to check for common code mistake, bug pattern.
 Can only be used as part of compiler.
 
 # Alternative
 
-[[Java-Error prone]]  doesn't work well with [[Java#Java 17]]+.
-So alternatives are:
+On JDK 16+ Error Prone needs --add-exports/--add-opens flags in .mvn/jvm.config (see errorprone.info/docs/installation); recent releases require JDK 17+ to run. I found the setup painful, so alternatives are:
 - [[Java-Checkstyle]] & [[Java-PMD]]
 - [[ArchUnit]]
 - [[SpotBugs]]
@@ -22,8 +25,7 @@ So alternatives are:
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
-          <source>17</source>
-          <target>8</target>
+          <release>17</release>
           <encoding>UTF-8</encoding>
           <compilerArgs>
             <arg>-XDcompilePolicy=simple</arg>

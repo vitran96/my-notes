@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Update stretch -> buster
 
 ```bash

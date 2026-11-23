@@ -1,4 +1,8 @@
-We can use [[Maven]] plugin: `spotless` for [[Code-linting]] and [[Code-formatting]].
+---
+para: archive
+was: resource
+---
+We can use [[Maven]] plugin: `spotless` for [[Code linting]] and [[Code formatting]].
 [Guide](https://www.baeldung.com/java-maven-spotless-plugin)
 ```xml
 <plugin>
@@ -15,9 +19,9 @@ We can use [[Maven]] plugin: `spotless` for [[Code-linting]] and [[Code-formatti
 
 Command:
 ```shell
-# Linting
+# Check formatting
 mvn spotless:check
 
-# Foramtting
+# Formatting
 mvn spotless:apply
 ```

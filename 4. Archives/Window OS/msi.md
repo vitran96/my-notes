@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Install from cli
 [https://www.codeproject.com/Articles/16767/How-to-Pass-Command-Line-Arguments-to-MSI-Installe](https://www.codeproject.com/Articles/16767/How-to-Pass-Command-Line-Arguments-to-MSI-Installe)
 
@@ -12,19 +16,19 @@ msiexec.exe /i <Package> <Options>
 Eg:
 
 ```bash
-msiexec.exe /i "D:\\storage\\setup\\SetupMVCIServer_V2_PDUSimIncluded.msi" /passive /norestart
+msiexec.exe /i "C:\path\to\setup.msi" /passive /norestart
 ```
 
-Quite install:
+Quiet install:
 
-```bash
+```powershell
 Start-Process "msiexec.exe" -ArgumentList '/i <Package> <Options>' -Wait
 ```
 
 Full logging:
 
 ```bash
-msiexec /i <Package> /qb /norestart /l* <Log file>
+msiexec /i <Package> /qb /norestart /l*v <Log file>
 ```
 
 Pass Parameters - Eg:

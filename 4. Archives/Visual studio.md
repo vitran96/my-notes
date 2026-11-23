@@ -1,5 +1,9 @@
+---
+para: archive
+was: resource
+---
 [[Microsoft]] [[IDE]].
-Work on [[Window OS]] and [[MacOS]]
+Windows only; Visual Studio for Mac was retired 2024-08-31.
 # Dev shell prompt
 
 Dev Command Prompt location

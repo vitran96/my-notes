@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 - Client-server communication protocol
 - Allows retrieving inter-linked text documents
 - HTTP verbs:
@@ -5,6 +9,7 @@
     - GET
     - POST
     - PUT
+    - PATCH
     - DELETE
     - TRACE
     - OPTIONS

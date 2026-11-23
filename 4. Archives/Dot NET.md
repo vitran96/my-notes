@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 A [[Framework]] for [[C-Sharp|C#]]
 
-The latest .NET (Core and 6+) can now work on [[Linux Distro]] and [[MacOS]] without needing [[Mono]]
+.NET (formerly .NET Core; unified since .NET 5) runs on [[Linux Distro]] and [[MacOS]] without [[Mono]]. Languages: [[C-Sharp|C#]], F#, VB.NET.

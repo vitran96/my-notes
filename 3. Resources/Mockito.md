@@ -1,3 +1,7 @@
+---
+para: resource
+tags: [java, testing]
+---
 [[Java]] testing library. Can be used together with [[JUnit]]. Used to mock / stub data / function. Usually used in [[Unit Test]].
 Mockito also works well with [[Spring-boot]].
 
@@ -29,10 +33,10 @@ class UserServiceTest {
 
 # Prepare mocking
 
-`@InjectMock` to choose which class to inject mock to.
-`@Mock` to mock a class and inject into `@InjectMock`
-`@Spy` can be used to track the change.
-`@MockitoBean` (or `@MockBean`) apply to [[Spring-boot]] only. Auto inject to all bean.
+`@InjectMocks` to choose which class to inject mock to.
+`@Mock` to mock a class and inject into `@InjectMocks`
+`@Spy` wraps a real object; real methods run unless stubbed (partial mock).
+`@MockitoBean`: Spring Framework 6.2+; replaces `@MockBean` (deprecated in Boot 3.4); replaces the bean in the ApplicationContext. [[Spring-boot]] only.
 
 # Mocking
 
@@ -44,7 +48,7 @@ class UserServiceTest {
 
 # Work with [[JUnit|JUnit 5]]
 
-`@Test` must be `org.junit.jupyter.api.Test`, not `org.junit.Test`
+`@Test` must be `org.junit.jupiter.api.Test`, not `org.junit.Test`
 
 # Attach agent to [[Maven]] surefire
 
@@ -70,3 +74,5 @@ Future release of Java might prohibit "inline Mockito agent attach". For [[Maven
      </configuration>
  </plugin>
 ```
+
+See also: [[Maven surefire]], [[Arrange-Act-Assert]], [[Java testing]]

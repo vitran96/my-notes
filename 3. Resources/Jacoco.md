@@ -1,10 +1,12 @@
+---
+para: resource
+tags: [java, testing]
+---
 [[Java]] [[Code coverage]] tool
 
 [Guide](https://www.baeldung.com/jacoco)
 
 # Plugin & Config
-
-Config below assume that
 
 ## Merged report
 
@@ -39,7 +41,7 @@ Config below assume that
                 <goal>report</goal>
             </goals>
             <configuration>
-                <dataFile>${project.build.directory}/jacoco-all.exec</dataFile>
+                <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                 <outputDirectory>${project.reporting.outputDirectory}/jacoco-merged</outputDirectory>
             </configuration>
         </execution>
@@ -53,7 +55,7 @@ Config below assume that
 <plugin>
     <groupId>org.jacoco</groupId>
     <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.7.7.201606060606</version>
+    <version>0.8.13</version> <!-- verify latest -->
     <executions>
         <execution>
             <id>pre-unit-test</id>
@@ -90,3 +92,7 @@ Config below assume that
 # Report
 
 `target/site/jacoco/index.html`
+
+`report-integration` writes to `target/site/jacoco-it/`.
+
+See also: [[Maven surefire]] (unit tests), [[Maven failsafe]] (integration tests), [[Lefthook]].

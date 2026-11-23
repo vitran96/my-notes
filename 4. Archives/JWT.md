@@ -1,6 +1,8 @@
-[[JSON]] Web Token or JWT
-A way to authenticate server
-It usually use for authentication between service
+---
+para: archive
+was: resource
+---
+[[JSON]] Web Token (JWT, RFC 7519): compact, URL-safe token carrying claims; signed (JWS) and optionally encrypted (JWE). Used as bearer/ID tokens and for service-to-service auth.
 
 Notes:
 - My findings after using it is that it is not really a good tool for session management.
@@ -10,7 +12,7 @@ Notes:
 
 # Secure JWT
 [[PASETO]] is a recommended alternative.
-[[OpenConnect]] and [[OAuth]] are also good replacement.
+[[OAuth]] 2.0 and OpenID Connect are protocols that issue tokens (OIDC ID tokens are JWTs), not replacements for JWT.
 
 # [[Java]] package
 https://github.com/auth0/java-jwt

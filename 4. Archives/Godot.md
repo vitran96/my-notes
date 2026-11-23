@@ -1,4 +1,9 @@
+---
+para: archive
+was: resource
+---
 [[Design pattern#Game programming pattern]]
+[[Read - Game Programming pattern]]
 
 2D/3D [[Game Engine]].
 Can use [[GdScript]] and [[C-Sharp]] for scripting.
@@ -6,7 +11,7 @@ Can use [[GdScript]] and [[C-Sharp]] for scripting.
 # Architecture
 
 ## GC
-GC in Godot is Reference Counting
+RefCounted objects (incl. Resource) are reference-counted; Node/Object are freed manually (queue_free()/free()); C# scripts also use the .NET GC.
 
 # Basic
 Nodes are fundamental building block for creating game
@@ -143,7 +148,7 @@ Folder:
 - **root project**: contains all the folders and files of the project. Should be named after the project name. Should be the root of your local VCS repository, if you choose to use a VCS (highly recommended, with a service like GitHub or Bitbucket).
 - **assets**: contains all the original medias (sprites, textures, 3D models, music, sound effects, ...) before importing them into Godot as resources. It is important to separate this from your source code for many reasons: most of software have their own project files that you have to export first, like PSD to PNG; Godot has its own importing formats, like for textures; Some media are build from many files you would want to store, and version, separately. It is also a good idea to split it into subfolders per media type and/or media, example: /assets/music/intro-music/ or /assets/sprites/player/. In the demo project, you can see an Inkscape project file called master-1.svg which is used to export multiple PNGs. I didn't used subfolder because it is a very basic project.
 - **releases**: contains your project as it will be distributed to the end users. It is the export result of your Godot project. Should contains subfolders for each platform you are planning to support.
-- **src**: contains the source code and resources of your Godot project. Should be the root of your Godot project, i.e. contains the "engine.cfg" file. The following subfolders are categories of entity where you will store the different element of your project. They should cover most of the needs for a basic project.
+- **src**: contains the source code and resources of your Godot project. Should be the root of your Godot project, i.e. contains the "project.godot" (engine.cfg was Godot 1/2) file. The following subfolders are categories of entity where you will store the different element of your project. They should cover most of the needs for a basic project.
 - **actors**: contains an actor per subfolder. An actor is a "smart" entity, like the player character or enemies with some sort of AI.
 - **areas**: contains an area per subfolder. An area is a static element which is used to create levels' map. For most of 2D games an area would be a Tile Map.
 - **fonts**: contains fonts used to display text in your project. It is a good idea to store them in one location to avoid duplication. Protip: try to limit the number of fonts you want to use.

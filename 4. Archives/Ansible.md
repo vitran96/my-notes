@@ -1,7 +1,13 @@
+---
+para: archive
+was: resource
+---
 # Install
 
 ```shell
-pipx install ansible ansible-lint ansible-galaxy
+pipx install --include-deps ansible
+pipx install ansible-lint
+# ansible-galaxy ships with ansible-core
 ```
 
 # Standard project structure

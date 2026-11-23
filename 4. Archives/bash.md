@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Import history to [[Zim]]
 
 ```bash

@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 [[Version Control Software]]
 
 # Git Credential helper
@@ -10,14 +14,14 @@ git config --local credential.<https://git-codecommit.eu-west-1.amazonaws.com.he
 git config --local credential.<https://git-codecommit.eu-west-1.amazonaws.com.UseHttpPath> true
 ```
 
-If you are using the Git Credential Manager then remove it or the credential helper will not work correctly. You can add a credential helper for the DevStack or Github to store your username and password. The commands must be executed in a shell with administrator rights.
+If you are using the Git Credential Manager then remove it or the credential helper will not work correctly. You can add a credential helper for another Git host or GitHub to store your username and password. The commands must be executed in a shell with administrator rights.
 
 ```sh
 git config --system --unset credential.helper
 
-git config --system credential.<https://devstack.vwgroup.com.username> <Volkswagen ID>
+git config --system credential.<https://git.example.com.username> <username>
 
-git config --system credential.<https://devstack.vwgroup.com.helper> store
+git config --system credential.<https://git.example.com.helper> store
 
 git config --system credential.<https://github.com.username> <Github username>
 

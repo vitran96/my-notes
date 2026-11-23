@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 General OS used by most people
 Good for gaming and [[Dot NET]] app development
 
@@ -31,9 +35,11 @@ setx PATH "%my_user_path%;NEW_PATH"
 Appending to System PATH:
 
 ```bash
-for /f "usebackq tokens=2,*" %A in (`reg query "HKLM\\SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment" /v PATH`) do set system_path=%B
-setx /M PATH "%my_user_path%;NEW_PATH"
+for /f "usebackq tokens=2,*" %A in (`reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment" /v PATH`) do set system_path=%B
+setx /M PATH "%system_path%;NEW_PATH"
 ```
+
+Warning: setx truncates values longer than 1024 characters.
 
 # Restart to Recovery mode
 

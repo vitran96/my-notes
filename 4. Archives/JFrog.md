@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 [[Artifactory]] for sharing package/binary for development. Mainly use for [[Java]] projects with [[Maven]], [[Gradle]]. However, it can also manage [[Window OS|Win binary]], [[Linux Distro|Linux binary]], [[MacOS|Mac binary]], [[Container|Container image]], [[NodeJS|NPM package]], etc...
 
 Notes:
@@ -7,9 +11,9 @@ Notes:
 
 ```xml title="~/.m2/settings.xml"
 <?xml version="1.0" encoding="UTF-8"?>
-<settings xmlns="https://maven.apache.org/SETTINGS/1.1.0"
-          xmlns:xsi="https://www.s3.org/2001/XMLSchema-instance"
-          xmlns:schemaLocation="https://maven.apache.org/SETTINGS/1.1.0 https://maven.apache.org/xsd/settings-1.1.0.xsd">
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
 	<servers>
 		<!-- Note: config server & access credential here. Can specify multiple server -->
 		<!-- Mirror setting can be used to force using the mirror link -->
@@ -46,15 +50,15 @@ Notes:
 		</profile>
 	</profiles>
 	
-	<activateProfiles>
-		<activateProfile>{profile id}</activateProfile>
-	</activateProfiles>
+	<activeProfiles>
+		<activeProfile>{profile id}</activeProfile>
+	</activeProfiles>
 	
 	<!-- NOTE: I am not sure about this proxies settings -->
 	<proxies>
 		<proxy>
 			<id>{id}</id>
-			<activate>true</activate>
+			<active>true</active>
 			<protocol>http</protocol>
 			<username>proxyuser</username>
 			<password>proxypass</password>

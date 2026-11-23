@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Sample rule 1
 [[AWS]] least priviledge rule at the time I work at [[emotive]] for client.
 

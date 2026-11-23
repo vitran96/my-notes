@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 [[Android OS]] based created by [[Auto Start]] group for car run on [[ARM CPU]]
 Used by [[Porsche]]
 

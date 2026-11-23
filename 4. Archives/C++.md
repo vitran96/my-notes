@@ -1,7 +1,11 @@
+---
+para: archive
+was: resource
+---
 A [[Programming language]] for system level ([[System programming language]]) with [[Procedural paradigm]] and [[Object oriented paradigm]] support
-C++ is also a super set of [[CLang]]
+C++ is largely compatible with [[CLang|C]] but not a strict superset (e.g. implicit void* conversion and VLAs are not valid C++).
 
-# clang compiler
+# MSVC (cl) compiler
 
 Basic compilation
 

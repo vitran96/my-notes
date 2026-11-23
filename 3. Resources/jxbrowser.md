@@ -1,2 +1,5 @@
-Embedding Web View [[Chromium]] to [[Java]].
-Not [[FOSS]] app. Require payment to use.
+---
+para: resource
+tags: [java]
+---
+Commercial (TeamDev, proprietary licence) library embedding [[Chromium]] in [[Java]] Swing/JavaFX/SWT. See also: [[JCEF]].

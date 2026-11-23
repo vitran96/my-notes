@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 C# is a [[Programming language]]
 
 # CLR

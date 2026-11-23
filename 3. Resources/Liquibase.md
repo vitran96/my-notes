@@ -1,3 +1,9 @@
+---
+para: resource
+tags: [java, database]
+---
+Database schema migration tool (changelogs in XML/YAML/SQL) for [[Java]]; alternative to [[Flyway]].
+
 # Change set with [[SQL]]
 [SqlFile](https://docs.liquibase.com/reference-guide/change-types/sqlfile)
 
@@ -29,6 +35,7 @@
 ```
 
 # [[Maven]] plugin
+%% verify latest plugin version (4.5.0 below is old) %%
 ```xml
 <build>
 	<plugins>
@@ -95,7 +102,7 @@ changeLogFile=src/main/resources/config/liquibase/master.xml
 url=jdbc:h2:file:./target/h2db/db/carapp 
 username=carapp 
 password= 
-driver=com.mysql.jdbc.Driver 
+driver=org.h2.Driver 
 referenceUrl=jdbc:h2:file:./target/h2db/db/carapp2 
 referenceDriver=org.h2.Driver 
 referenceUsername=tutorialuser2 
@@ -114,8 +121,8 @@ referencePassword=tutorialmy5ql2
       ...
       <dependency>
          <groupId>org.liquibase.ext</groupId>
-         <artifactId>liquibase-hibernate5</artifactId>
-         <version>3.6</version>
+         <artifactId>liquibase-hibernate6</artifactId>
+         <version>4.27.0</version>
       </dependency>
      ...
    </dependencies>
@@ -140,4 +147,59 @@ referencePassword=tutorialmy5ql2
    <verbose>true</verbose>
    <logging>debug</logging>
 </configuration>
+```
+
+# Spring Boot integration
+
+Spring-boot can auto recognize [[Liquibase]] dependancies in the class-path so you don't need additional configuration.
+
+## Config
+
+URL can be used from data-source
+```yaml
+spring:
+  liquibase:
+    change-log: classpath:/db/migrations/changelog.xml
+    url: jdbc:mysql://localhost:3306/mydatabase
+    user: myuser
+    password: mypassword
+    enabled: false
+```
+
+## Run with Bean
+
+[Guide](https://www.baeldung.com/liquibase-refactor-schema-of-java-app#config)
+
+```java
+@Bean
+public SpringLiquibase liquibase() {
+    SpringLiquibase liquibase = new SpringLiquibase();
+    liquibase.setChangeLog("classpath:config/liquibase/master.xml");
+    liquibase.setDataSource(dataSource());
+    return liquibase;
+}
+```
+
+or (JHipster-specific: `AsyncSpringLiquibase`, `JHipsterConstants`; `env` must be injected)
+
+```java
+@Bean
+public SpringLiquibase liquibase(@Qualifier("taskExecutor") TaskExecutor taskExecutor,
+        DataSource dataSource, LiquibaseProperties liquibaseProperties) {
+
+    // Use liquibase.integration.spring.SpringLiquibase if you don't want Liquibase to start asynchronously
+    SpringLiquibase liquibase = new AsyncSpringLiquibase(taskExecutor, env);
+    liquibase.setDataSource(dataSource);
+    liquibase.setChangeLog("classpath:config/liquibase/master.xml");
+    liquibase.setContexts(liquibaseProperties.getContexts());
+    liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
+    liquibase.setDropFirst(liquibaseProperties.isDropFirst());
+    if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_NO_LIQUIBASE)) {
+        liquibase.setShouldRun(false);
+    } else {
+        liquibase.setShouldRun(liquibaseProperties.isEnabled());
+        log.debug("Configuring Liquibase");
+    }
+    return liquibase;
+}
 ```

@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 Code sign for [[Java]] package [[Jar]]
 
 ## Windows
@@ -10,22 +14,24 @@ Verify signature
 jarsigner -verify -verbose <FILE>
 ```
 
-Sign with JSK
+Sign with JKS
 
 ```bash
-jarsigner -tsa <TIME_STAMP_SERVER> -keystore <JSK FILE> <JAR FILE> <ALIAS>
+jarsigner -tsa <TIME_STAMP_SERVER> -keystore <JKS FILE> <JAR FILE> <ALIAS>
 ```
 
-PFX → JSK
+PFX → JKS
+
+Since Java 9 the default keystore type is PKCS12; JKS is legacy.
 
 ```bash
 keytool -importkeystore -srckeystore <PFX FILE> -srcstoretype pkcs12 -destkeystore <JKS FILE> -deststoretype jks -storepass <PASSWORD>
 ```
 
-Get info from JSK
+Get info from JKS
 
 ```bash
-keytool -list -v -keystore <JSK FILE>
+keytool -list -v -keystore <JKS FILE>
 ```
 
 Get info from PFX

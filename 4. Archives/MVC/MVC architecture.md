@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 ![[mvc_architecture_diagram.png]]
 
 Aims:

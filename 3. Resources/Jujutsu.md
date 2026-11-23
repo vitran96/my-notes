@@ -1,19 +1,22 @@
+---
+para: resource
+tags: [tooling]
+---
 [[Git]] compatible [[Version Control Software|VCS]]
 
 # Init
 
 ```shell
-# JJ Init but git command will not work
-jj init
+# Recent jj colocates with Git by default
+jj git init
 
-# JJ init with git
+# On older versions
 jj git init --colocate
 ```
 
 # Commit
 
-By default, JJ auto `git add` all file(s).
-Unlike [[Git]], we do add -> commit, JJ will set commit message 1st (or later) and commit very thing in that is currently changed with `jj new [-m next-commit-message]`
+The working copy is auto-snapshotted (no `git add`). Describe with `jj describe -m`, then start the next change with `jj new`; or `jj commit -m` does both.
 
 # How to not commit some file
 
@@ -23,7 +26,7 @@ jj split
 
 ## Remove file that was just ignored
 
-%% TODO: %%
+Add it to `.gitignore`, then `jj file untrack <path>`.
 
 # Undo
 
@@ -35,9 +38,13 @@ jj undo
 # Change old commit
 
 ```shell
-jj new <revision>
+# Option 1: new change on top, edit, then fold it into the parent
+jj new <rev>
 # make change
-jj squash --to <revision> --from <new revision>
+jj squash
+
+# Option 2: edit the commit directly
+jj edit <rev>
 ```
 
 # Create branch
@@ -47,84 +54,87 @@ jj squash --to <revision> --from <new revision>
 ## Create bookmark
 
 ```shell
-jj b c >name>
+jj bookmark create <name> -r @-
 ```
 
 ## Update bookmark tracking commit
 
 ```shell
-# @ for latest un-commited change
-# @ can have alternative like HEAD if any
-# minus mean last commit
-jj b m @-
+# @ is the working-copy commit, @- is its parent
+jj bookmark move <name> --to @-
+# or
+jj bookmark set <name> -r @-
 ```
 
 ## Push bookmark
 
 ```shell
 # Track bookmark
-jj b t <branch name>
+jj bookmark track <name>@origin
 
-jj git push --to <branch_name>c
-```
-
-# Config
-
-```shell
-# User (or git global) config
-jj config --user <config key> <value>
-
-# Repo
-jj config --repo ...
+jj git push -b <name>
+# or push the parent of the working copy with an auto-named bookmark
+jj git push -c @-
 ```
 
 # Config
 
 https://jj-vcs.github.io/jj/latest/config
 
+```shell
+# User (or git global) config
+jj config set --user <config key> <value>
+
+# Repo
+jj config set --repo <config key> <value>
+```
+
 ## Code sign
 
 ```shell
-jj config --user git.sign-on-push true
+jj config set --user git.sign-on-push true
 
-jj config --user signing.behaviour drop
-jj config --user signing.? gpg
-jj config --user signing.key <...>
+# signing.behavior: drop / keep / own / force
+jj config set --user signing.behavior own
+jj config set --user signing.backend gpg
+jj config set --user signing.key <id>
 
-# Optional?
-jj config --user signing.gpg.program ...
+# Optional
+jj config set --user signing.backends.gpg.program <path>
 ```
 
 ## Config UI for resolve conflict / message
 
 ```shell
-jj config --user ui.? vim
-jj config --user ui.? vim
+jj config set --user ui.editor vim
+jj config set --user ui.merge-editor <tool>
+jj config set --user ui.diff-editor <tool>
 ```
 
 # Fix command
 
-This command is similar t [[Maven]] `goal`. Eg: we can config JJ tools for fix and then run `jj fix` to run them.
-Eg: run code format tool.
-We can choose which commit to run the tools on.
+`jj fix` runs configured formatters (`[fix.tools.<name>]` `command=[...]`, `patterns=["glob:'**/*.java'"]`) over file contents of the chosen revisions (default: mutable ones).
 
 # Run command
 
-Similar to `jj fix`, this allow us to run command on specific commit. 
+Similar to `jj fix`, this allow us to run command on specific commit. %% verify: jj run is not functional in released versions as far as I know %%
 
 # Handle missing email
 
-Not the best approach yet but currently work
 ```shell
-jj new <commit before missing email>
-jj merge -s <commit with missing email> -d @-
+jj config set --user user.email <x>
+# newer jj
+jj metaedit --update-author -r <rev>
+# older jj
+jj describe --reset-author --no-edit <rev>
 ```
+
+%% verify which one jj --version supports %%
 
 # Handle missing message
 
 ```shell
-# I have not tried this yet
-jj desc <commit>
+jj describe -r <rev> -m "<msg>"
 ```
 
 # Command table compare with [[Git]]

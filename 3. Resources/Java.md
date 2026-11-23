@@ -1,19 +1,25 @@
+---
+para: resource
+tags: [java]
+---
 A [[Programming language]] with [[Object oriented paradigm]]
 
-# JRE
+# JDK distributions
 
-[[Java]] Runtime Environment
-
-JRE has multiple implementation:
+These are JDK distributions (see [[Backend interview questions#JDK, JRE, JVM]] for JDK vs JRE vs JVM):
 - [[OpenJDK]]
 - [[OracleJDK]]
-- [[AWS JDK]]
-- [[MS Iron JDK]]
+- [[Eclipse Temurin]]
+- [[Amazon Corretto]]
+- [[Microsoft Build of OpenJDK]]
 - [[Oracle GraalVM]]
-- [[Jetbrain JVM]]
+- [[JetBrains Runtime]]
+- [[Azul Zulu]]
+
+Most are builds of OpenJDK.
 
 # Java agent Premain-class
-[[Getting started]] with Java's instrument agent
+Getting started with Java's instrument agent
 
 TestAgent.java
 ```java
@@ -30,8 +36,13 @@ public class TestAgent {
 ```
 
 manifest.mf
-```toml
-Premain-Class="package.to.TestAgent"
+```
+Premain-Class: package.to.TestAgent
+```
+
+Run with:
+```shell
+java -javaagent:agent.jar -jar app.jar
 ```
 
 %% Note about Java special API to get incremental / debug data %%
@@ -40,14 +51,14 @@ Premain-Class="package.to.TestAgent"
 
 Silent install:
 
-```bash
-.\\jdk.exe /s
+```powershell
+.\jdk.exe /s
 ```
 
 Eg:
 
-```bash
-.\\jdk-8u221-windows-i586.exe /s
+```powershell
+.\jdk-8u221-windows-i586.exe /s
 ```
 
 # Primitive data caching
@@ -63,7 +74,7 @@ System.out.println(a == b); // false
 System.out.println(((int) a) == ((int) b)); // true
 ```
 
-Like the example above, if the number type is object type `Integer` and is out side of the range, only `equals()` will work. Otherwise, Java will do object reference compare.
+`==` on wrappers always compares references. Autoboxing uses `Integer.valueOf`, which returns cached objects for -128..127, so `==` happens to be true there and false outside. Always use `equals()`. Also `-XX:AutoBoxCacheMax=<n>`.
 This can be configured with the option below:
 ```shell
 java -Djava.lang.Integer.IntegerCache.high=<value>
@@ -80,7 +91,7 @@ java -Djava.lang.Integer.IntegerCache.high=<value>
 |`Boolean`|`false`, `true`|Both `Boolean` instances are cached.|
 
 ## What about wrapper that is not cached?
-It will do object reference comparison -> always false if different object.
+`Float`/`Double` (no cache): `valueOf` returns a new object.
 
 # String pool
 
@@ -102,10 +113,10 @@ public class StringPoolExample {
         System.out.println(s1.equals(s3)); // true -> The content is the same
         
         // String literal concatenation save in String pool
-        String s1 = "Java" + "Programming"; 
-		String s2 = "JavaProgramming";
+        String s5 = "Java" + "Programming"; 
+		String s6 = "JavaProgramming";
 
-		System.out.println(s1 == s2); // true
+		System.out.println(s5 == s6); // true
     }
 }
 ```
@@ -113,6 +124,7 @@ public class StringPoolExample {
 ## intern()
 
 ```java
+String s1 = "Java";
 String s3 = new String("Java");
 String s4 = s3.intern(); // Fetch the reference from the pool
 
@@ -131,20 +143,15 @@ System.out.println(s1 == s4); // true
 
 `JavaTimeModule` is an important module to serialize/deserialize date & time.
 The module follow JSR-310.
+`JavaTimeModule` is Jackson's (`jackson-datatype-jsr310`), not the JDK; Spring Boot registers it automatically. %% verify: Jackson 3 builds java.time support in %%
 
 # Virtual thread
 
-%% TODO: %%
-Notes:
-- Feel kind of like a middle ground between [[Multi-threading]] and [[Async programming]]
-	- Can handle [[IO process]] waiting well
-	- Can also handle [[CPU process]] well
-	- But not as good as either if we need something that lean heavy on one of them
-	- A thread mapping to a real physical thread
+Since Java 21 (JEP 444). Many virtual threads are scheduled M:N onto a few carrier platform threads; a blocking IO call unmounts the virtual thread. Great for IO-bound, thread-per-request code; no gain for CPU-bound work (use a sized platform pool). Pinning inside `synchronized` was fixed in Java 24 (JEP 491).
 
 # File API
 
-## java.nio.file.File vs java.io.File
+## java.nio.file.Path/Files vs java.io.File
 
 %% TODO: %%
 
@@ -152,7 +159,7 @@ Notes:
 
 ## Does stream pipeline run right away?
 
-%% TODO: with example of equivalent %%
+No. Intermediate ops (`map`, `filter`, `peek`) are lazy and run only when a terminal op (`collect`, `forEach`, `count`) is called, element by element.
 
 # Thread API
 

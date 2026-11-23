@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # John the Ripper (john)
 
 Best work on Linux. Linux and OsX version work differently

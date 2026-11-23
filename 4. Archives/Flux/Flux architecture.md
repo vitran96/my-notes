@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 ![[flux_architecture_diagram.png]]
 
 # What problem is it trying to solve?

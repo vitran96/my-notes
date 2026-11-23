@@ -1,6 +1,8 @@
 ---
-url:
+para: archive
+was: resource
 ---
-
 Articles:
 - Implement with [[Debezium]]: https://debezium.io/blog/2025/11/28/cqrs/?ref=dailydev
+
+See also: [[Change data capture]]

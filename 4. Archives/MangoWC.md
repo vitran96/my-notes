@@ -1,1 +1,5 @@
+---
+para: archive
+was: resource
+---
 A good [[Window manager]] that is really configurable and also support [[Scrolling window manager]] layout out-of-the-box.

@@ -1,1 +1,5 @@
-[[Open Source]] alternative ò [[Mathlab]]
+---
+para: archive
+was: resource
+---
+[[Open Source]] alternative of [[Mathlab]]

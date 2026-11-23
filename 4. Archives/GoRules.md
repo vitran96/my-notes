@@ -1,14 +1,15 @@
 ---
+para: archive
+was: resource
 url: https://docs.gorules.io
 ---
-
 Decision engine
 
 # What is GoRules?
 
 - Despite the name, **not written in [[Go]]** — the core engine (**[[ZEN Engine]]**) is written in **[[Rust]]**.
 - It's a **Business Rules Engine / Decision Model** system: define rules as a [[JSON]] graph ([[JDM|JDM — JSON Decision Model]]), evaluate them against input data.
-- SDKs available for [[Java]], [[NodeJS]], [[Python]], [[Go]], [[C#]], [[Kotlin]], [[Swift]], [[Rust]]  all wrapping the same [[Rust]] core via native bindings ([[JNI]] for [[Java]]) or [[WASM]] (for browser).
+- SDKs available for [[Java]], [[NodeJS]], [[Python]], [[Go]], [[C-Sharp|C#]], [[Kotlin]], [[Swift]], [[Rust]]  all wrapping the same [[Rust]] core via native bindings ([[JNI]] for [[Java]]) or [[WASM]] (for browser).
 - Free hosted visual editor: https://editor.gorules.io
 - Self-hosted React editor component: `@gorules/jdm-editor`
 
@@ -23,10 +24,10 @@ React (jdm-editor) --REST--> Spring Boot --JNI--> ZEN Engine (Rust core)
 ```
  
 - **No separate service/daemon to install.** The [[Java]] [[SDK]] (`io.gorules:zen-engine`) ships prebuilt native binaries inside the jar — [[Maven]]/[[Gradle]] just downloads it like any dependency.
-- Rules ([[JDM]] [[JSON]]) can be **stored dynamically** (e.g. in [[Postgres]], or in-memory for prototyping) and edited by end users via the `jdm-editor` React component — this is a first-class use case, not a hack.
+- Rules ([[JDM]] [[JSON]]) can be **stored dynamically** (e.g. in [[PostgreSQL|Postgres]], or in-memory for prototyping) and edited by end users via the `jdm-editor` React component — this is a first-class use case, not a hack.
 ---
  
-# Local Setup — [[mise]].toml
+# Local Setup — [[Mise-en-place|mise]].toml
  
 ```toml
 [tools]
@@ -62,7 +63,7 @@ dependencies {
 ## Import dependency
 
 ```java
-import io.gorules.zen_engine.ZenEngine
+import io.gorules.zen_engine.ZenEngine;
 ```
 
 ## [[ZEN Engine]] bean
@@ -85,10 +86,12 @@ public class ZenEngineConfig {
 public class RuleController {
  
     private final ZenEngine zenEngine;
+    private final SimulationResMapper simulationResMapper;
     private final List<Rule> rules = new ArrayList<>(); // empty by default
  
-    public RuleController(ZenEngine zenEngine) {
+    public RuleController(ZenEngine zenEngine, SimulationResMapper simulationResMapper) {
         this.zenEngine = zenEngine;
+        this.simulationResMapper = simulationResMapper;
     }
  
     @GetMapping
@@ -122,7 +125,7 @@ public class RuleController {
 ```
 `Rule` = simple POJO: `id (Long)`, `name (String)`, `decision (String — raw JDM JSON)`.
  
-## Simulate endpoint ([[async]] — evaluate returns a `CompletableFuture`)
+## Simulate endpoint ([[Async programming|async]] — evaluate returns a `CompletableFuture`)
 
 ```java
 @PostMapping("/{id}/simulate")
@@ -130,7 +133,7 @@ public CompletableFuture<SimulationRes> simulate(@PathVariable long id, @Request
     Rule rule = findByIdOrThrow(id);
     ZenDecision decision = zenEngine.createDecision(rule.getDecision());
  
-    JsonBuffer context = inputJson.toString();
+    JsonBuffer context = inputJson.toString(); // %% TODO verify: use the SDK's JsonBuffer constructor %%
     ZenEvaluateOptions options = new ZenEvaluateOptions((byte) 10, true); // trace = true
  
     return decision.evaluate(context, options)
@@ -142,7 +145,7 @@ public CompletableFuture<SimulationRes> simulate(@PathVariable long id, @Request
 }
 ```
  
-## Mapping raw ZEN response → clean DTO ([[Spring Boot]] 4 / [[Jackson]] 3)
+## Mapping raw ZEN response → clean DTO ([[Spring-boot|Spring Boot]] 4 / [[Jackson]] 3)
 
 > [[Spring-boot]] 4 defaults to **[[Jackson]] 3**: `ObjectMapper` → immutable `JsonMapper`, package moves from `com.fasterxml.jackson` → `tools.jackson`. `JsonMapper` autowires as a Spring bean — no manual config needed.
  
@@ -184,7 +187,7 @@ public class SimulationResMapper {
  
 ---
  
-# Frontend scaffold ([[Vite]] + [[React]] + [[Typescript]])
+# Frontend scaffold ([[Vite]] + [[ReactJS|React]] + [[Typescript]])
  
 ```bash
 npm create vite@latest . -- --template react-ts
@@ -284,7 +287,7 @@ const handleDownload = () => {
  
 # Key gotchas / lessons learned
 
-1. **[[async]] evaluate:** `ZenDecision.evaluate()` returns `CompletableFuture<ZenEngineResponse>` — [[Spring MVC]] handles `CompletableFuture` return types from `@RequestBody` controllers natively, no extra config.
+1. **[[Async programming|async]] evaluate:** `ZenDecision.evaluate()` returns `CompletableFuture<ZenEngineResponse>` — [[Spring MVC]] handles `CompletableFuture` return types from `@RestController` methods natively, no extra config.
 2. **[[Jackson]] 3 in [[Spring-boot]] 4:** inject `JsonMapper` (not `ObjectMapper`), package is `tools.jackson.*` not `com.fasterxml.jackson.*` for the databind/core parts (annotations like `@JsonProperty` stay in `com.fasterxml` for compat).
 3. **[[JDM]] Editor's built-in file upload gives no error feedback on failure** — build your own with `decisionModelSchema.safeParse()` + `console.error` for visibility.
 4. **Simulator ≠ live/streaming** — it's request/response; the graph trace is rendered after the full evaluation completes.

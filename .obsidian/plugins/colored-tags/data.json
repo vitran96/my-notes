@@ -9,7 +9,24 @@
   "accessibility": {
     "highTextContrast": false
   },
-  "knownTags": {},
+  "knownTags": {
+    "ai": 6,
+    "backend": 1,
+    "beach-head-2002": 7,
+    "database": 8,
+    "file-format": 9,
+    "frontend": 2,
+    "game-dev": 10,
+    "homelab": 11,
+    "interview": 3,
+    "java": 4,
+    "linux": 12,
+    "reverse-engineering": 13,
+    "security": 14,
+    "sql": 5,
+    "testing": 15,
+    "tooling": 16
+  },
   "tagColors": {},
   "_version": 4
 }

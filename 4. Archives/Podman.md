@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 [[Container]] tool.
 No daemon like [[Docker]].
 

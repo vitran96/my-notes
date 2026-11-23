@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Event loop
 
 ![[NodeJS-diagram-2.png]]

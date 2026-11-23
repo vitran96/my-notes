@@ -1,9 +1,13 @@
+---
+para: archive
+was: resource
+---
 [[Build tool]] for [[Java]] and its ecosystem ([[Kotlin]], [[Scala]], etc...)
 
 # Distribution setting
 
 Upload to [[Artifactory]] like [[JFrog]]
-```xml title="pom.xml
+```xml title="pom.xml"
 <distributionManagement>
 	<!-- NOTE: can set multiple -->
 	<repository>
@@ -25,7 +29,7 @@ Upload to [[Artifactory]] like [[JFrog]]
 mvn deploy:deploy-file \
 	-DrepositoryId=<m2 settings id> \
 	-Durl="<url>" \
-	-Dpackagin=jar \
+	-Dpackaging=jar \
 	-Dfile="<path/to/file.jar>" \
-	-DpomFIle="<path/to/pom.xml>"
+	-DpomFile="<path/to/pom.xml>"
 ```

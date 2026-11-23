@@ -1,2 +1,6 @@
+---
+para: archive
+was: resource
+---
 3D [[Game Engine]].
-Written in [[C++]] and script with [[C++]].
+Written in [[C++]]; scripting with C++ and Blueprints (visual scripting).

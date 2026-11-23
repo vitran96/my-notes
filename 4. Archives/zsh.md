@@ -1,4 +1,8 @@
-Extendable Linux shell with framework:
+---
+para: archive
+was: resource
+---
+Extendable Unix shell with framework:
 - [[Oh my zsh]]
-- [[Zim]] (optimized [[Oh my zsh]])
-- [[Prezto]] (rewrite of [[Zim]])
+- [[Zim]] (separate, fast framework)
+- [[Prezto]] (began as a fork of [[Oh my zsh]])

@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Fetch data
 - `XMLHttpRequest()` is quite cumbersome and outdated
     - Has been used in most JS libraries (Eg: jQuery)
@@ -52,8 +56,8 @@ fetch(baseURL + 'dishes')
 		}
 	},
 	error => {
-		var errMessage = new Error(error.mesaage);
-		throw errorMessage;
+		const errMessage = new Error(error.message);
+		throw errMessage;
 	})
 ```
 

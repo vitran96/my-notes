@@ -1,5 +1,4 @@
 [
-  "hotkeysplus-obsidian",
   "todo-highlighter",
   "colored-tags",
   "dataview",
@@ -10,8 +9,8 @@
   "recent-files-obsidian",
   "obsidian-excalidraw-plugin",
   "obsidian-git",
-  "obsidian-mind-map",
   "obsidian-plantuml",
   "obsidian-editor-shortcuts",
-  "shiki-highlighter"
+  "shiki-highlighter",
+  "obsidian-local-rest-api"
 ]

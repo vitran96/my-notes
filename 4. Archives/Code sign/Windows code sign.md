@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 Code sign tool on [[Window OS]]
 
 Tools:
@@ -12,9 +16,9 @@ Tools:
 
 | EV code sign | Regular code sign |
 | ------------ | ----------------- |
-| It’s only issued after a thorough vetting of the publisher in strict accordance with CA/Brower forum guidelines. | Has a fairly simple and standard vetting process. |
-| The private key must be stored in an external hardware token,thus preventing any unauthorized personnel from accessing them. | The private key is stored in the developer’s workstation. |
-| Builds instant trust with Microsoft SmartScreen filter. | Does not build instant trust with Microsoft SmartScreen filter. |
+| It’s only issued after a thorough vetting of the publisher in strict accordance with CA/Browser forum guidelines. | Has a fairly simple and standard vetting process. |
+| The private key must be stored in an external hardware token,thus preventing any unauthorized personnel from accessing them. | Since 2023-06-01 (CA/B Forum) all publicly trusted code-signing keys, not only EV, must be on a hardware token/HSM. |
+| Builds instant trust with Microsoft SmartScreen filter (Microsoft reportedly dropped EV instant reputation in 2024, %% verify %%). | Does not build instant trust with Microsoft SmartScreen filter. |
 
 ## Cross certificate
 
@@ -184,9 +188,11 @@ Last update: 2021/07/12
     
     Hash: up to SHA512
     
-- **GlobaSign**:
+- **GlobalSign**:
     
-    [http://rfc3161timestamp.globalsign.com/advancedhttp://timestamp.globalsign.com/tsa/r6advanced1](http://rfc3161timestamp.globalsign.com/advancedhttp://timestamp.globalsign.com/tsa/r6advanced1)
+    [http://rfc3161timestamp.globalsign.com/advanced](http://rfc3161timestamp.globalsign.com/advanced)
+    
+    [http://timestamp.globalsign.com/tsa/r6advanced1](http://timestamp.globalsign.com/tsa/r6advanced1)
     
     Credible: Yes . [Windows Cert Store]
     
@@ -258,15 +264,15 @@ Last update: 2021/07/12
     pvk2pfx -pvk <PVK file> -pi <PVK password> -spc <CER of SPC file> -pfx <PFX file output (.pfx)>
     ```
     
-3. Signing file [Signing snippet](https://www.notion.so/Signing-snippet-4830be4dde474b09a833442b9a4eeaf4?pvs=21)
+3. Signing file [[#Signing snippet]]
     
 
 Eg:
 
 ```powershell
-makecert -r -pe -ss PrivateCertStore -n CN=Emotive -h 0 -eku 1.3.6.1.5.5.7.3.3 -e 03/31/2022 -sv EmotiveKey.pvk EmotiveCer.cer
-pvk2pfx -pvk .\\EmotiveKey.pvk -pi 123456789 -spc .\\EmotiveCer.cer -pfx Emotive.pfx
-signtool.exe sign -v -f ".\\Emotive.pfx" -p "123456789" -t "<http://timestamp.digicert.com>" -d "Some description" .\\OpenTestFrameworkSetup_6.x.x.xxxxx.msi
+makecert -r -pe -ss PrivateCertStore -n CN=<Company> -h 0 -eku 1.3.6.1.5.5.7.3.3 -e 03/31/2022 -sv <key>.pvk <cert>.cer
+pvk2pfx -pvk .\\<key>.pvk -pi <password> -spc .\\<cert>.cer -pfx <cert>.pfx
+signtool.exe sign -v -f ".\\<cert>.pfx" -p "<password>" -t "<http://timestamp.digicert.com>" -d "Some description" .\\setup.msi
 ```
 
 ## Signing with EV certificate
@@ -346,8 +352,6 @@ signtool.exe sign -v -a -fd sha256 -d <Description> -sha1 <thumbprint> <FILEs>
 ## Link
 
 [certutil](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/certutil)
-
-## Link
 
 [How to create an app package signing certificate - Win32 apps](https://docs.microsoft.com/en-us/windows/win32/appxpkg/how-to-create-a-package-signing-certificate)
 

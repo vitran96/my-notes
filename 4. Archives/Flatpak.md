@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Roll back an update
 
 Link: https://unix.stackexchange.com/questions/552688/is-it-possible-to-roll-back-a-flatpak-update

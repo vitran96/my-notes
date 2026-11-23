@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 Microsoft SQL - [[Relational database]]
 
 Notes:

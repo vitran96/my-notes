@@ -1,0 +1,125 @@
+---
+para: archive
+was: project
+start: 2025-10-02
+end: 2026-01-20
+status: done
+---
+# Scope
+
+- [x] [[Spring-boot|Spring]] config
+- [x] [[Spring Security]] & filter chain & Authorization
+- [x] [[Spring-boot|Spring]] life-cycle
+- [x] [[Spring-boot|Spring]] component
+- [x] [[Spring-boot|Spring]] error handling
+- [x] [[Spring-boot|Spring]] with migration tool
+- [x] Migration flow for DEV and PROD
+- [x] [[Test Containers]]
+~~- [ ] [[JPA]] & [[Hibernate]]~~
+- [x] [[JUnit]] & [[Mockito]]
+- [x]  [[Spring Security]]  testing
+- [x] File download / upload API
+
+# Course overview
+
+- Session 1 — [[REST API]], Validation, Error Handling
+	- Design a small [[REST API]] surface (resource modeling, versioned paths, idempotent verbs).	    
+	- Apply [[Jakarta]] Bean Validation on inputs and surface clean 400 errors.
+	- Shape a consistent [[JSON]] error envelope (validation, not-found, conflict).
+	- Structure controller–service–repository cleanly for testability.
+	- Decide when to return 201 vs 200 and how to set `Location` headers.
+- Session 2 — Security Filter Chain (no redirects), Public Docs
+	- How [[Spring Security]] chooses a filter chain (first matching chain/rule wins).
+	- Configure APIs to return **401/403 [[JSON]]** instead of redirecting to a login page.
+	- Open specific endpoints ([[OpenAPI]] `/v3/api-docs`, Scalar UI `/scalar`, health) while securing the rest.
+	- Use method-level guards (`@PreAuthorize`) for fine-grained authorization.
+	- Create clear auth semantics for anonymous, user, and admin roles.
+- Session 3 — Actuator, Observability, [[OpenAPI]] Polish
+	- Enable and safely expose Actuator endpoints in dev (health, metrics, info, env, thread dump).
+	- Read and reason about [[HTTP]] metrics (e.g., `http.server.requests`) to spot latency/errors.
+	- Attach app metadata to `/actuator/info` for release diagnostics.
+	- Keep API docs public while the API remains protected.
+	- Verify [[OpenAPI]]/Scalar paths and understand where the spec/UI live.
+- Session 4 — [[MySQL]] Profile & [[Test Containers]] Integration
+	- Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.
+	- Use [[Test Containers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
+	- Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource`).
+	- Validate persistence guarantees (identity, constraints, sorting, cascading).
+	- Handle and assert on database exceptions (e.g., unique constraint violations).
+- Session 5 — [[SPA]] Concerns: [[CORS]], [[CSRF]], Login Flow Choices
+	- Configure [[CORS]] so a React dev server can call your APIs safely.  
+	- Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).
+	- Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
+	- Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
+	- Define preflight behavior and verify the right `Access-Control-*` headers are returned.
+- Session 6 — Checkstyle & Formatting:
+	- [[Maven]] check style.
+	- [[Maven]] formatting.
+
+# Session 1
+
+1. [x] Create base code
+2. [x] Create base migration with [[Liquibase]]
+3. [x] Create / Generate JPA's Entity
+	1. [x] Generation of JPA is not worth it if the scope is small & we want customized Entity instead of the DEFAULT generation
+	2. [x] Generation of changelog might be worth to check
+4. [x] Customer CRUD
+	1. [x] Start with simple base CRUD
+5. [x] [[Unit Test]]
+
+# Session 2
+
+1. [x] Create User CRUD
+2. [x] Auto create ADMIN account
+3. [x] Setup Spring-security
+4. [x] Setup Authentication Filter chain
+5. [x] [[Unit Test]] User CRUD ~~& Security Filter chain & Security (where possible)~~
+6. [x] [[Integration Test]] Security ~~& Security Filter chain~~
+
+# Session 3
+
+1. [x] Enable and safely ~~expose~~ Actuator endpoints in dev (health, metrics, info, env, thread dump).
+2. [x] Read and reason about [[HTTP]] metrics (e.g., `http.server.requests`) to spot latency/errors.
+3. [x] Attach app metadata to `/actuator/info` for release diagnostics.
+4. [x] Keep API docs public while the API remains protected.
+5. [x] Verify [[OpenAPI]] / Scalar paths and understand where the spec/UI live.
+	1. [x] [[OpenAPI]] here just mean the swagger file.
+	2. [x] Scalar here just mean swagger UI
+
+# Session 4
+
+~~1. [ ] Switch from [[H2]] to [[MySQL]] via [[Spring profiles]] without code changes.~~
+1. [x] Use [[Test Containers]] to run real [[MySQL]] in [[Integration Test|integration tests]] (ephemeral, reproducible).
+2. [x] Inject container [[JDBC]] properties at test runtime (`@DynamicPropertySource` / `@ServiceConnection`).
+3. [x] Validate persistence guarantees (identity, constraints, sorting, cascading).
+~~4. [ ] Handle and assert on database exceptions (e.g., unique constraint violations).~~
+
+# Session 5
+
+1. [x] Configure [[CORS]] so a [[ReactJS]] dev server can call your APIs safely.  
+~~2. [ ] Understand when [[CSRF]] applies (cookie-based sessions) vs when it doesn’t (stateless [[JWT]]).~~
+2. [x] Compare session/form-login vs stateless [[JWT]] for [[SPA]]s and choose trade-offs.
+3. [x] Ensure unauthenticated [[SPA]] calls get **[[JSON]] 401/403** (no HTML redirects).
+~~5. [ ] Define pre-flight behavior and verify the right `Access-Control-*` headers are returned.~~
+
+Used [[Maven failsafe]] to run [[Integration Test]].
+I am kind of know how to setup [[Integration Test]] and [[Test Containers]] now.
+
+# Session 6
+
+1. [x] [[Maven]] check style.
+2. [x] [[Maven]] formatting.
+
+# Summary
+
+Good run but take a bit too long.
+Skipped [[JPA]] & [[Hibernate]] -> move it to another session.
+Missing test case, so the next 2 study sessions will just about updating test case.
+
+Things that I have not cover shall be continue in [[Senior Spring-boot BE Software engineer]]:
+- [[JPA]]
+- [[Hibernate]]
+- [[HikariCP]]
+- [[Kafka]] / [[RabbitMQ]]
+- [[Redis]] / [[Valkey]]
+- [[Integration Test]] for external [[REST API]] service

@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Set alternative
 
 ```bash

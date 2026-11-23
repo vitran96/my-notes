@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 It is not possible to sign a zip file.
 
 The workaround this is to create catalog inside the file. However, that won't work with every AV

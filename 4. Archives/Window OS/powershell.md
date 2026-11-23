@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 1 of Default [[Window OS]] shell along with [[cmd]]
 
 # Sample profile

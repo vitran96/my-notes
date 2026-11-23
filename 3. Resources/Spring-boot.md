@@ -1,6 +1,11 @@
+---
+para: resource
+tags: [java, backend]
+---
 Build on top of [[Spring]]. Mainly use [[Java]] but also support [[Kotlin]], [[Groovy]].
 This is the most mature web-framework for [[Java]] ecosystem (beat [[vertx]] in my opinion).
 With [[Thymeleaf]] it can be come a [[Full-stack web framework]] with [[Server-side rendering]].
+See also: [[Spring Security]], [[Java testing]], [[HikariCP]]
 
 # Standard project structure
 
@@ -38,10 +43,10 @@ spring init \
   --java-version=21 \
   --build=maven \
   --language=java \
-  --group-id=tech.kingoyster \
+  --group-id=com.example \
   --artifact-id=demo \
   --name=project-1 \
-  --package-name=tech.kingoyster.project-1 \
+  --package-name=com.example.project1 \
   --dependencies=web,security,lombok,liquibase,testcontainers,actuator,devtools,restdocs,validation,data-jpa,h2,mysql \
   --extract \
   project-1
@@ -49,7 +54,7 @@ spring init \
 
 # App starting life-cycle
 
-bootstrap (load properties & env) -> context creation -> been definition -> dependency injection -> initialization -> ready -> shutdown
+bootstrap (load properties & env) -> context creation -> bean definition -> dependency injection -> initialization -> ready -> shutdown
 
 To inspect the **Application Startup Lifecycle**
 1. Implement the `ApplicationListener` interface
@@ -57,7 +62,8 @@ To inspect the **Application Startup Lifecycle**
 
 ## The Multi-Event Listener
 
-This class captures the most important events in the sequence they occur.
+This class captures the events that fire after the context exists (Started, Ready).
+EnvironmentPrepared, ContextInitialized and ApplicationPrepared fire before the context exists, so a `@Component` can't receive them; register them in `main()` instead (next section).
 
 ```java
 import lombok.extern.slf4j.Slf4j;
@@ -69,32 +75,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class StartupCheckListener {
 
-    // 1. Environment Ready (Properties/Profiles loaded)
-    @EventListener
-    public void handleEnvironmentPrepared(ApplicationEnvironmentPreparedEvent event) {
-        log.info("--- 2. Environment Prepared: Profiles: {}", 
-            (Object) event.getEnvironment().getActiveProfiles());
-    }
-
-    // 2. Context Prepared (Context created, no beans yet)
-    @EventListener
-    public void handleContextPrepared(ApplicationContextInitializedEvent event) {
-        log.info("--- 3. Context Initialized");
-    }
-
-    // 3. Beans Loaded (Definitions loaded, not instantiated)
-    @EventListener
-    public void handleApplicationPrepared(ApplicationPreparedEvent event) {
-        log.info("--- 4. Application Prepared (Beans loaded)");
-    }
-
-    // 4. Application Started (Ready, but Runners haven't run)
+    // Application Started (Ready, but Runners haven't run)
     @EventListener
     public void handleApplicationStarted(ApplicationStartedEvent event) {
         log.info("--- 5. Application Started");
     }
 
-    // 5. Application Ready (Everything finished)
+    // Application Ready (Everything finished)
     @EventListener
     public void handleApplicationReady(ApplicationReadyEvent event) {
         log.info("--- 6. Application Ready! Time to serve traffic.");
@@ -110,6 +97,9 @@ Notes:
 ```java
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
+import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
+import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.ApplicationListener;
 
@@ -122,6 +112,22 @@ public class LifecycleApplication {
         // Manually adding a listener for the earliest possible event
         app.addListeners((ApplicationListener<ApplicationStartingEvent>) event -> {
             System.out.println("--- 1. Application Starting (Manual Listener Triggered)");
+        });
+
+        // 2. Environment Ready (Properties/Profiles loaded)
+        app.addListeners((ApplicationListener<ApplicationEnvironmentPreparedEvent>) event -> {
+            System.out.println("--- 2. Environment Prepared: Profiles: "
+                + java.util.Arrays.toString(event.getEnvironment().getActiveProfiles()));
+        });
+
+        // 3. Context Initialized (Context created, no bean definitions yet)
+        app.addListeners((ApplicationListener<ApplicationContextInitializedEvent>) event -> {
+            System.out.println("--- 3. Context Initialized");
+        });
+
+        // 4. Application Prepared (Definitions loaded, not instantiated)
+        app.addListeners((ApplicationListener<ApplicationPreparedEvent>) event -> {
+            System.out.println("--- 4. Application Prepared (Beans loaded)");
         });
 
         app.run(args);
@@ -233,7 +239,7 @@ public class LifecycleInspectorBean implements
 ## Aware & Factory
 
 Implement interface `BeanNameAware` to inject name.
-Implement interface to `BeanFactory` to state how to write
+Implement `FactoryBean<T>` to control how a bean is created; `BeanFactoryAware` to receive the `BeanFactory`.
 
 When do we need to implement aware interface?
 -> When we need to interact / access been related information like the BeanFactory or bean's name.
@@ -267,6 +273,7 @@ What to do if we have multiple bean implementing the same interface?
 
 1. Create the bean in configuration bean and set unqiue function name -> match the name by that string
 2. Use `@Qualifier`
+3. `@Primary`
 
 Create bean:
 ```java
@@ -313,6 +320,18 @@ public class CheckoutService {
 ```
 
 
+## Why is it important?
+
+- For Spring component scan & dependencies injection.
+
+## Why Constructor injection is better than `@Autowired` 
+
+1. Enforcing dependencies for creation
+2. Clear schema contract
+3. fields can be final (immutable)
+4. testable with plain new, no Spring
+5. Ensure compile-time safety
+
 # Spring scope
 
 | Scope | Description |
@@ -324,7 +343,7 @@ public class CheckoutService {
 
 ## Prototype scope in Singleton
 
-Non-singleton level if do direct constructor injection will keep the bean forever instead of create new one for each thread.
+The prototype is injected once when the singleton is created, so the singleton keeps the same instance forever (not per call or thread).
 To fix the issue, we can do 1 of the below approach.
 
 ### @Lookup
@@ -377,179 +396,22 @@ public class MyPrototype {
 
 # [[Liquibase]] support
 
-Spring-boot can auto recognize [[Liquibase]] dependancies in the class-path so you don't need additional configuration.
-Please take a look at [[Liquibase]] page for configuration.
-
-## Config
-
-URL can be used from data-source
-```yaml
-spring:
-  liquibase:
-    change-log: classpath:/db/migrations/changelog.xml
-    url: jdbc:mysql://localhost:3306/mydatabase
-	user: myuser
-	password: mypassword
-    enabled: false
-```
-
-## Run with Bean
-
-[Guide](https://www.baeldung.com/liquibase-refactor-schema-of-java-app#config)
-
-```java
-@Bean
-public SpringLiquibase liquibase() {
-    SpringLiquibase liquibase = new SpringLiquibase();
-    liquibase.setChangeLog("classpath:config/liquibase/master.xml");
-    liquibase.setDataSource(dataSource());
-    return liquibase;
-}
-```
-
-or
-
-```java
-@Bean
-public SpringLiquibase liquibase(@Qualifier("taskExecutor") TaskExecutor taskExecutor,
-        DataSource dataSource, LiquibaseProperties liquibaseProperties) {
-
-    // Use liquibase.integration.spring.SpringLiquibase if you don't want Liquibase to start asynchronously
-    SpringLiquibase liquibase = new AsyncSpringLiquibase(taskExecutor, env);
-    liquibase.setDataSource(dataSource);
-    liquibase.setChangeLog("classpath:config/liquibase/master.xml");
-    liquibase.setContexts(liquibaseProperties.getContexts());
-    liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
-    liquibase.setDropFirst(liquibaseProperties.isDropFirst());
-    if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_NO_LIQUIBASE)) {
-        liquibase.setShouldRun(false);
-    } else {
-        liquibase.setShouldRun(liquibaseProperties.isEnabled());
-        log.debug("Configuring Liquibase");
-    }
-    return liquibase;
-}
-```
+See [[Liquibase#Spring Boot integration]]
 
 # [[Flyway]] support
 
-Spring-boot can auto recognize [[Flyway]] dependancies in the class-path so you don't need additional configuration.
-
-## Config
-
-%% TODO: %%
+See [[Flyway#Spring Boot integration]]
 
 # [[JPA]]
 
 Notes:
 - [[JPA]] is the specification, [[Hibernate]] is the implementation, and [[HikariCP]] is the connection provider.
 
-## Config
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/demo_liquibase
-    username: postgres
-    password: changemeinproduction
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-```
-
-## Create custom datasource
-
-Steps:
-1. Disable default DataSource auto-configuration
-2. Setup custom DataSource properties
-
-```java
-@Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(
-    basePackages = "com.example.repo.primary", // Package for Primary Repos
-    entityManagerFactoryRef = "primaryEntityManagerFactory",
-    transactionManagerRef = "primaryTransactionManager"
-)
-public class PrimaryDbConfig {
-
-    @Primary
-    @Bean(name = "primaryDataSourceProperties")
-    @ConfigurationProperties("app.datasource.primary")
-    public DataSourceProperties dataSourceProperties() {
-        return new DataSourceProperties();
-    }
-
-    @Primary
-    @Bean(name = "primaryDataSource")
-    public DataSource dataSource() {
-        return dataSourceProperties().initializeDataSourceBuilder().build();
-    }
-
-    @Primary
-    @Bean(name = "primaryEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            EntityManagerFactoryBuilder builder, @Qualifier("primaryDataSource") DataSource dataSource) {
-        return builder
-                .dataSource(dataSource)
-                .packages("com.example.model.primary") // Package for Primary Entities
-                .persistenceUnit("primary")
-                .build();
-    }
-
-    @Primary
-    @Bean(name = "primaryTransactionManager")
-    public PlatformTransactionManager transactionManager(
-            @Qualifier("primaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
-}
-```
+See [[JPA#Spring Boot config]]
 
 # Spring [[HikariCP]]
 
-Recommended config:
-```properties
-# Basic Connection Info
-spring.datasource.url=jdbc:mysql://localhost:3306/mydb
-spring.datasource.username=root
-spring.datasource.password=password
-
-# --- Recommended HikariCP Tuning ---
-
-# 1. Maximum Pool Size: The formula (cores * 2) + 1 is a great starting point.
-# Don't set this to 100+ unless you have a high-end DB cluster.
-spring.datasource.hikari.maximum-pool-size=10
-
-# 2. Minimum Idle: Matches maximum-pool-size for a "fixed-size" pool (recommended for performance).
-spring.datasource.hikari.minimum-idle=10
-
-# 3. Connection Timeout: How long to wait for a connection from the pool (5-10 seconds is safer than 30s).
-spring.datasource.hikari.connection-timeout=5000
-
-# 4. Idle Timeout: How long a connection can sit idle before being retired (default is 10 min).
-spring.datasource.hikari.idle-timeout=300000
-
-# 5. Max Lifetime: Total life of a connection. Must be shorter than any DB/Firewall timeout.
-spring.datasource.hikari.max-lifetime=1800000
-
-# 6. Leak Detection: Log a warning if a thread holds a connection longer than this (great for debugging).
-spring.datasource.hikari.leak-detection-threshold=2000
-```
-
-Why these specific values?
-- Fixed Pool Size (minimum-idle == maximum-pool-size): By keeping the pool size fixed, you avoid the latency "spike" of creating a new physical [[TCP]] connection to the [[Relational database|database]] when traffic suddenly bursts.
-- Max Lifetime: It is critical to set this around 2-5 minutes shorter than your [[Relational database|database]] 's global wait timeout (e.g., [[MySQL]]'s wait_timeout) to prevent "Broken Pipe" or "Connection Reset" errors.
-- Connection Timeout: 30 seconds (the default) is an eternity for a web user. It is better to fail fast (5 seconds) so your application can handle the error or fallback.
-
-## What happen if connection suddenly spike?
-
-- **Connection Requests are Queued:** Initially, the connection pool tries to satisfy requests using existing idle connections. As the spike continues, all available connections become "active". Subsequent requests are then put into a queue to wait for a connection to be returned to the pool.
-- **Threads Block:** The application threads handling the user requests are blocked while waiting for a connection from the pool. This leads to increased latency for those requests.
-- **Connection Timeout Exceptions:** If a request remains in the queue for longer than the configured `connectionTimeout` (default is typically around 30 seconds for [[HikariCP]]), it will fail and throw a timeout exception. The user receives an error, and the application's overall error rate increases.
-- **Application Unresponsiveness (Cascading Failure):** As more and more threads block waiting for connections, the application's general thread pool (e.g., [[Tomcat]]'s thread pool) can become exhausted. This prevents the application from processing new incoming requests (even those not requiring a DB connection immediately), leading to a complete application freeze.
-- **Database Overload:** Even if the application pool size is large, the database itself has a maximum number of connections it can handle. An overwhelming number of simultaneous queries from the application can overload the database server, leading to slow queries, lock waits, and potential database instability, exacerbating the problem.
-- **"Connection pool exhausted" Errors:** Eventually, the system will start logging "Connection pool exhausted" or "too many clients" errors, indicating a critical failure in managing database resources.
+See [[HikariCP]]
 
 # [[Mongo DB]]
 
@@ -557,165 +419,11 @@ Why these specific values?
 
 # REST Controller
 
-REST controller is a combination of `@Controller` and `@ResponseBody` (basically add `application/json` as response)
-
-# Spring's Bean
-
-Why is it important?
-- For Spring component scan & dependencies injection.
-
-## Why Constructor injection is better than `@Autowired` 
-
-1. Enforcing dependencies for creation
-2. Clear schema contract
-3. No need for comprehensive reflection
-4. Better performance in some case
-5. Ensure compile-time safety
+`@RestController` = `@Controller` + `@ResponseBody`: return values are written to the body by `HttpMessageConverters` (JSON when Jackson is present)
 
 # Spring test
 
-## Unit Test
-
-%% TODO: %%
-
-Don't need `@SpringBootTest` if not load Spring app context.
-Mocking with [[Mockito]] and run test with [[JUnit]].
-
-## Integration test
-
-%% TODO: %%
-
-### Mock external service
-
-%% TODO: %%
-
-### [[Test Containers]] usage
-
-Articles:
-- https://blog.jetbrains.com/idea/2024/12/testing-spring-boot-applications-using-testcontainers/
-
-#### Create container as bean
-
-```java title="MySqlTestConfiguration.java"
-package tech.kingoyster.spring_1;  
-  
-import org.springframework.boot.test.context.TestConfiguration;  
-import org.springframework.context.annotation.Bean;  
-import org.testcontainers.containers.MySQLContainer;  
-import org.testcontainers.utility.DockerImageName;  
-  
-@TestConfiguration(proxyBeanMethods = false)  
-public class MySqlTestConfiguration {  
-  
-    // NOTE: cannot contain "repo name" in image name (eg: "docker.io/")
-//    private static final String MYSQL_IMAGE = "docker.io/mysql:9.4.0-oraclelinux9";  
-    private static final String MYSQL_IMAGE = "mysql:9.4.0-oraclelinux9";  
-  
-    @Bean  
-    @ServiceConnection    MySQLContainer<?> mySQLContainer() {  
-        return new MySQLContainer<>(DockerImageName.parse(MYSQL_IMAGE));  
-    }  
-}
-```
-
-```java title="AuthControllerIntegrationTest"
-package tech.kingoyster.spring_1.authentication;  
-  
-import org.springframework.beans.factory.annotation.Autowired;  
-import org.springframework.boot.test.context.SpringBootTest;  
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;  
-import org.springframework.context.annotation.Import;  
-import org.testcontainers.containers.MySQLContainer;  
-import org.testcontainers.junit.jupiter.Container;  
-import org.testcontainers.junit.jupiter.Testcontainers;  
-import tech.kingoyster.spring_1.MySqlTestConfiguration;  
-
-// NOTE: use @Testcontainers + @Contiainerto auto start / stop container
-@SpringBootTest  
-@Import(MySqlTestConfiguration.class) // Import your configuration
-public class AuthControllerIntegrationTest {  
-  
-    // NOTE: use @ServiceConnection to auto update datasource properties
-    //   @DynamicPropertySource can be used for manual override
-    @Autowired
-    private MySQLContainer<?> mySQLContainer;
-}
-```
-
-#### Create container managed by [[JUnit]]
-
-```java title="AuthControllerIntegrationTest"
-package tech.kingoyster.spring_1.authentication;  
-  
-import org.springframework.beans.factory.annotation.Autowired;  
-import org.springframework.boot.test.context.SpringBootTest;  
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;  
-import org.springframework.context.annotation.Import;  
-import org.testcontainers.containers.MySQLContainer;  
-import org.testcontainers.junit.jupiter.Container;  
-import org.testcontainers.junit.jupiter.Testcontainers;  
-import tech.kingoyster.spring_1.MySqlTestConfiguration;  
-
-// NOTE: use @Testcontainers + @Contiainerto auto start / stop container
-@SpringBootTest  
-@Testcontainers  
-public class AuthControllerIntegrationTest {  
-  
-    // NOTE: use @ServiceConnection to auto update datasource properties
-    //   @DynamicPropertySource can be used for manual override
-    @Container  
-    @ServiceConnection
-    private MySQLContainer<?> mySQLContainer = new MySQLContainer<>(DockerImageName.parse("docker.io/mysql:9.4.0-oraclelinux9"));
-}
-```
-
-## MockMVC
-
-MockMVC can be used as a [[Integration Test]] to test security.
-However, it might fail if we have a strict [[Flyway]]/[[Liquibase]] setup.
-
-```java
-@SpringBootTest
-@AutoConfigureMockMvc
-class SecurityPolicyTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Test
-    void shouldRejectAnonymousUser() throws Exception {
-        mockMvc.perform(get("/api/admin/dashboard"))
-               .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = "USER")
-    void shouldForbiddenUserFromAdminArea() throws Exception {
-        mockMvc.perform(get("/api/admin/dashboard"))
-               .andExpect(status().isForbidden());
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void shouldAllowAdminToAccessDashboard() throws Exception {
-        mockMvc.perform(get("/api/admin/dashboard"))
-               .andExpect(status().isOk());
-    }
-}
-```
-
-## TestRestTemplate vs MockMvc
-
-Article:
-- https://docs.spring.io/spring-framework/reference/testing/mockmvc/vs-end-to-end-integration-tests.html
-
-Not recommended TestRestTemplate for everything since it is slow? Why slow?
-- Spring boot will have to set up server and open port
-- TestRestTemplate will have to use network to test
-
-## RestTestClient vs TestRestTemplate
-
-Introduction: https://www.baeldung.com/spring-resttestclient-guide
+See [[Java testing]]
 
 # Spring validation
 
@@ -753,118 +461,11 @@ Notes:
 
 # [[Springdoc]] [[OpenAPI]] generation
 
-[Guide](https://www.baeldung.com/spring-rest-openapi-documentation)
-
-API URL: `http://localhost:8080/v3/api-docs`
-Swagger UI: `http://localhost:8080/swagger-ui/index.html`
-
-## [[Maven]] dependency
-
-### WebMVC
-
-```xml
-<dependency>
-    <groupId>org.springdoc</groupId>
-    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-    <version>2.8.13</version>
-</dependency>
-```
-
-### [[WebFlux]]
-
-```xml
-<dependency>
-    <groupId>org.springdoc</groupId>
-    <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-    <version>2.8.5</version>
-</dependency>
-```
-
-### Support plugin for [[Kotlin]]
-
-```xml
-<dependency>
-    <groupId>org.springdoc</groupId>
-    <artifactId>springdoc-openapi-starter-common</artifactId>
-    <version>2.8.5</version>
-</dependency>
-```
-
-## Properties
-
-[Properties](https://springdoc.org/properties.html)
-```properties
-springdoc.api-docs.enabled=false
-springdoc.api-docs.path=<url path>
-springdoc.swagger-ui.path=<url path>.html
-springdoc.swagger-ui.operationsSorter=<sort with method|etc...>
-springdoc.swagger-ui.tagsSorter=alpha
-springdoc.writer-with-order-by-keys=true
-```
-
-## Plugin to generate docs
-
-```xml
-<plugin>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-maven-plugin</artifactId>
-    <version>3.4.3</version>
-    <executions>
-        <execution>
-            <id>pre-integration-test</id>
-            <goals>
-                <goal>start</goal>
-            </goals>
-        </execution>
-        <execution>
-            <id>post-integration-test</id>
-            <goals>
-                <goal>stop</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
-<plugin>
-    <groupId>org.springdoc</groupId>
-    <artifactId>springdoc-openapi-maven-plugin</artifactId>
-    <version>1.4</version>
-    <executions>
-        <execution>
-            <phase>integration-test</phase>
-            <goals>
-                <goal>generate</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
-```
-
-## Show actuator routes
-
-Actuator is not show by default
-```properties
-springdoc.show-actuator=true
-```
-
-## Show Spring-security routes
-
-Spring's security not show by default
-```properties
-# not work
-springdoc.show-login-endpoint=true
-```
-
-## Set base url to root
-
-%% TODO: %%
-
-## Inject example to all route
-
-%% TODO: %%
+See [[OpenAPI#Springdoc (Spring Boot)]]
 
 # Spring actuator
 
-Check out [[Spring-boot#Properties]] for actuator properties.
+Check out [[Spring-boot#Config file]] for actuator properties.
 
 ## Actuator metric
 
@@ -951,501 +552,7 @@ public class InfoWebEndpointExtension {
 
 # Spring security
 
-Notes:
-- Default will redirect like how [[SSO]] work
-	- Can be disabled with config
-- Spring security does support [[LDAP]], [[OAuth]] integration
-- [[CSRF]] is supported by default
-- Request cache is supported by default
-
-## Sample config
-
-```java
-package tech.kingoyster.spring_1;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.web.cors.*;
-
-import java.util.List;
-
-@EnableWebSecurity
-@EnableMethodSecurity
-@Configuration
-public class SecurityConfig {
-
-    @Bean
-    public SecurityFilterChain apiSecurityChain(HttpSecurity http) throws Exception {
-        http
-                // NOTE: disable to simplify this sample
-                .csrf(AbstractHttpConfigurer::disable)
-                // NOTE: why does this affect redirect?`
-                .requestCache(RequestCacheConfigurer::disable)
-                .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth
-                        // NOTE: this allow create internal only API.
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/scalar/**",
-                                "/actuator/health"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
-                // NOTE: basic auth is now (simple), no "formLogin()" -> no redirect
-                .httpBasic(Customizer.withDefaults())
-                .exceptionHandling(ex -> ex
-                        // NOTE: return 401
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            // TODO: why do it this way??
-                            response.setStatus(HttpStatus.FORBIDDEN.value());
-                            response.setContentType("application/json");
-                            response.getWriter().write("{\"error\":\"forbidden\"}");
-                        })
-                );
-        return http.build();
-    }
-
-    // TODO: replace this with service to interact with User table in DB
-    @Bean
-    UserDetailsService users(PasswordEncoder encoder) {
-        UserDetails admin = User.withUsername("admin")
-                .password(encoder.encode("Admin@123"))
-                .roles("ADMIN")
-                .build();
-
-        UserDetails user = User.withUsername("user")
-                .password(encoder.encode("User@123"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, user);
-    }
-
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    // TODO: this should come from application.yml & ENV
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:5173")); // React dev origin
-        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        cfg.setAllowedHeaders(List.of("*"));
-        cfg.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", cfg);
-        return source;
-    }
-}
-```
-
-## Lifecycle
-
-%% TODO: %%
-
-## Custom implement
-~~Since our user data source is in DB, we need to create custom `UserDetailsService`.~~
-~~There is an existing implementation, [JdbcUserDetailsManager](https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/jdbc.html). However, it has different schema so we are not going to use it.~~
-Above is not relevant anymore. Spring security doesn't have built-in structure to authenticate as [[REST API]].
-So we will have to create our own filter and our own process / flow.
-
-Note: 
-- Consider using [[OAuth]] module
-
-```java title="SecurityConfig.java"
-	private final AccessTokenFilter accessTokenFilter;  
-	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;  
-	private final CustomAccessDeniedHandler customAccessDeniedHandler;
-
-	@Bean
-    public SecurityFilterChain apiSecurityChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        // NOTE: this way, I can guarantee route like SPA route won't be blocked
-                        .requestMatchers(
-                               "/api/v1/auth/login",
-                               "/api/v1/dummies/say-hi"
-                        ).permitAll()
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()
-                )
-                // TODO: split and re-enable this
-                .csrf(AbstractHttpConfigurer::disable)
-                // NOTE: why does this affect redirect?
-                .requestCache(RequestCacheConfigurer::disable)
-                // TODO: better split this config
-                .cors(Customizer.withDefaults())
-                // NOTE: basic auth is now (simple), no "formLogin()" -> no redirect
-                .httpBasic(AbstractHttpConfigurer::disable)
-                // Override Spring Security error handling for custom ErrorDetail
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(customAuthenticationEntryPoint)
-                        .accessDeniedHandler(customAccessDeniedHandler)
-                )
-                .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-```
-
-```java title="JwtProfider.java"
-import com.auth0.jwt.JWT;  
-import com.auth0.jwt.JWTCreator;  
-import com.auth0.jwt.JWTVerifier;  
-import com.auth0.jwt.algorithms.Algorithm;  
-import com.auth0.jwt.interfaces.DecodedJWT;  
-import org.springframework.beans.factory.annotation.Value;  
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;  
-import org.springframework.security.core.Authentication;  
-import org.springframework.security.core.userdetails.User;  
-import org.springframework.security.core.userdetails.UserDetails;  
-import org.springframework.stereotype.Service;  
-  
-import java.time.Instant;  
-import java.util.Objects;  
-  
-@Service  
-public class JwtProvider {  
-    private final String secret;  
-    private final String issuer;  
-    private final int accessTokenExpiry;  
-    private final int refreshTokenExpiry;  
-  
-    public JwtProvider(  
-            @Value("${app.jwt.secret}") String secret,  
-            @Value("${spring.application.name}") String issuer,  
-            @Value("${app.jwt.access.expiry}") int accessTokenExpiry,  
-            @Value("${app.jwt.refresh.expiry}") int refreshTokenExpiry  
-    ) {  
-        this.secret = secret;  
-        this.issuer = issuer;  
-        this.accessTokenExpiry = accessTokenExpiry;  
-        this.refreshTokenExpiry = refreshTokenExpiry;  
-    }  
-  
-    public Authentication getAuthentication(String token) {  
-        DecodedJWT decodedJWT = decodeJwt(token);  
-        verifyOrThrow(decodedJWT);  
-        String subject = decodedJWT.getSubject();  
-  
-        UserDetails principal = User.builder()  
-                .username(subject)  
-                // Password cannot be null  
-                .password("")  
-                .build();  
-        return UsernamePasswordAuthenticationToken.authenticated(  
-                principal, 
-                "", 
-                null
-        );  
-    }  
-  
-    public void verifyOrThrow(DecodedJWT decodedJWT) {  
-        Algorithm algorithm = Algorithm.HMAC512(secret);  
-        JWTVerifier jwtVerifier = JWT.require(algorithm)  
-                .withIssuer(issuer)  
-                .build();  
-  
-        jwtVerifier.verify(decodedJWT);  
-    }  
-  
-    public DecodedJWT decodeJwt(String token) {  
-        return JWT.decode(token);  
-    }  
-  
-    private String generateToken(int expiry, String subject) {  
-        Instant now = Instant.now();  
-        Algorithm algorithm = Algorithm.HMAC512(secret);  
-        JWTCreator.Builder builder = JWT.create()  
-                .withIssuer(issuer)  
-                .withIssuedAt(now)  
-                .withExpiresAt(now.plusMillis(expiry));  
-  
-        if (Objects.nonNull(subject)) {  
-            builder = builder  
-                    .withSubject(subject);  
-        }  
-  
-        return builder.sign(algorithm);  
-    }  
-  
-    private String generateToken(int expiry) {  
-        String str = null;  
-        return generateToken(expiry, str);  
-    }  
-  
-    public String generateAccessToken(String idStr) {  
-        return generateToken(accessTokenExpiry, idStr);  
-    }  
-  
-    public String generateRefreshToken() {  
-        return generateToken(refreshTokenExpiry);  
-    }  
-}
-```
-
-```java title="AuthenticationServiceImpl.java"
-import com.auth0.jwt.exceptions.JWTVerificationException;  
-import com.auth0.jwt.interfaces.DecodedJWT;  
-import lombok.RequiredArgsConstructor;  
-import org.springframework.security.crypto.password.PasswordEncoder;  
-import org.springframework.stereotype.Service;  
-import tech.kingoyster.spring_1.exception.NotAuthenticatedException;  
-import tech.kingoyster.spring_1.exception.NotFoundException;  
-import tech.kingoyster.spring_1.exception.UserNotAuthenticatedException;  
-import tech.kingoyster.spring_1.user.User;  
-import tech.kingoyster.spring_1.user.UserRepository;  
-import tech.kingoyster.spring_1.user.UserSummary;  
-  
-@Service  
-@RequiredArgsConstructor  
-public class AuthenticationServiceImpl implements AuthenticationService {  
-    private final UserRepository userRepository;  
-    private final JwtProvider jwtProvider;  
-    private final PasswordEncoder passwordEncoder;  
-  
-    @Override  
-    public LoginResponse authenticate(LoginRequest loginRequest) {  
-        User user = userRepository.findOneByEmail(loginRequest.username())  
-                .orElseThrow(() -> new NotFoundException("User " + loginRequest.username() + " not found!"));  
-  
-        if (!passwordEncoder.matches(loginRequest.password(), user.getHashedPassword())) {  
-            throw new UserNotAuthenticatedException("User username or password is not correct!");  
-        }  
-  
-        String refreshToken = jwtProvider.generateRefreshToken();  
-        String accessToken = jwtProvider.generateAccessToken(user.getId().toString());  
-  
-        return LoginResponse.builder()  
-                .refreshToken(refreshToken)  
-                .accessToken(accessToken)  
-                .build();  
-    }  
-  
-    @Override  
-    public RefreshDto refreshToken(String refreshToken, String accessToken) {  
-        if (!canRefresh(refreshToken)) {  
-            throw new NotAuthenticatedException("Refresh token");  
-        }  
-  
-        String subject = jwtProvider.decodeJwt(accessToken).getSubject();  
-        String newAccessToken = jwtProvider.generateAccessToken(subject);  
-        return RefreshDto.builder()  
-                .accessToken(newAccessToken)  
-                .build();  
-    }  
-  
-    private boolean canRefresh(String token) {  
-        try {  
-            DecodedJWT decodedJWT = jwtProvider.decodeJwt(token);  
-            jwtProvider.verifyOrThrow(decodedJWT);  
-            return true;  
-        } catch (JWTVerificationException e) {  
-            return false;  
-        }  
-    }  
-}
-```
-
-```java title="AccessTokenFilter.java"
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.rmi.RemoteException;
-
-@Component
-@RequiredArgsConstructor
-public class AccessTokenFilter extends OncePerRequestFilter {
-
-    private static final String AUTH_PREFIX = "Bearer ";
-    public static final String AUTH_EXCEPTION_ATTRIBUTE = "authException";
-
-    private final JwtProvider jwtProvider;
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
-        String accessToken = extractToken(request.getHeader("Authorization"));
-        if (StringUtils.isNotEmpty(accessToken)) {
-            validateAccessToken(request, accessToken);
-        }
-
-        filterChain.doFilter(request, response);
-    }
-
-    private void validateAccessToken(HttpServletRequest request, String accessToken) {
-        try {
-            Authentication authentication = jwtProvider.getAuthentication(accessToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (JWTVerificationException e) {
-            request.setAttribute(AUTH_EXCEPTION_ATTRIBUTE, e);
-        }
-    }
-
-    private String extractToken(String fullBearerToken) {
-        if (StringUtils.startsWith(fullBearerToken, AUTH_PREFIX)) {
-            return StringUtils.removeStart(fullBearerToken, AUTH_PREFIX);
-        }
-
-        return null;
-    }
-}
-
-```
-
-```java title="CustomAccessDeniedHandler.java"
-import com.fasterxml.jackson.databind.ObjectMapper;  
-import jakarta.servlet.ServletException;  
-import jakarta.servlet.http.HttpServletRequest;  
-import jakarta.servlet.http.HttpServletResponse;  
-import lombok.RequiredArgsConstructor;  
-import org.springframework.http.HttpStatus;  
-import org.springframework.security.access.AccessDeniedException;  
-import org.springframework.security.web.access.AccessDeniedHandler;  
-import org.springframework.stereotype.Component;  
-import tech.kingoyster.spring_1.HttpMediaType;  
-import tech.kingoyster.spring_1.exception.ErrorDetail;  
-  
-import java.io.IOException;  
-import java.time.LocalDateTime;  
-  
-@Component  
-@RequiredArgsConstructor  
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {  
-    private final ObjectMapper objectMapper;  
-  
-    @Override  
-    public void handle(HttpServletRequest request,  
-                       HttpServletResponse response,  
-                       AccessDeniedException accessDeniedException) throws IOException, ServletException {  
-        var errorDetail = new ErrorDetail(  
-                LocalDateTime.now(),  
-                1,  
-                accessDeniedException.getMessage(),  
-                request.getServletPath(),  
-                null  
-        );  
-  
-        response.setStatus(HttpStatus.FORBIDDEN.value());  
-        response.setContentType(HttpMediaType.APP_JSON.getValue());  
-        response.getWriter().write(objectMapper.writeValueAsString(errorDetail));  
-    }  
-}
-```
-
-```java title="CustomAuthenticationEntryPoint.java"
-import com.auth0.jwt.exceptions.JWTVerificationException;  
-import com.fasterxml.jackson.databind.ObjectMapper;  
-import jakarta.servlet.ServletException;  
-import jakarta.servlet.http.HttpServletRequest;  
-import jakarta.servlet.http.HttpServletResponse;  
-import lombok.RequiredArgsConstructor;  
-import org.springframework.http.HttpStatus;  
-import org.springframework.security.core.AuthenticationException;  
-import org.springframework.security.web.AuthenticationEntryPoint;  
-import org.springframework.stereotype.Component;  
-import tech.kingoyster.spring_1.HttpMediaType;  
-import tech.kingoyster.spring_1.exception.ErrorDetail;  
-  
-import java.io.IOException;  
-import java.time.LocalDateTime;  
-import java.util.Objects;  
-  
-@Component  
-@RequiredArgsConstructor  
-public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {  
-    private final ObjectMapper objectMapper;  
-  
-    @Override  
-    public void commence(HttpServletRequest request,  
-                         HttpServletResponse response,  
-                         AuthenticationException authException) throws IOException, ServletException {  
-        var message = authException.getMessage();  
-        var customAuthException = request.getAttribute(AccessTokenFilter.AUTH_EXCEPTION_ATTRIBUTE);  
-        if (Objects.nonNull(customAuthException) && customAuthException instanceof JWTVerificationException jwtVerificationException) {  
-            message = jwtVerificationException.getMessage();  
-        }  
-  
-        var errorDetail = new ErrorDetail(  
-                LocalDateTime.now(),  
-                0,  
-                message,  
-                request.getServletPath(),  
-                null  
-        );  
-  
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());  
-        response.setContentType(HttpMediaType.APP_JSON.getValue());  
-        response.getWriter().write(objectMapper.writeValueAsString(errorDetail));  
-    }  
-}
-```
-
-## Require authenticate on all API exclude some
-
-A simple way to fine-grain request matcher.
-This is important since it mean we only need to define the path 1 time.
-And it work well with [[SPA]] too if we host it together with BE.
-
-```java title="SecurityConfig.java"
-@Bean  
-public SecurityFilterChain apiSecurityChain(HttpSecurity http) throws Exception {  
-    http  
-		.authorizeHttpRequests(auth -> auth  
-				// NOTE: this way, I can guarantee route like SPA route won't be blocked  
-				.requestMatchers(  
-					   "/api/v1/auth/login",  
-					   "/api/v1/dummies/say-hi"  
-				).permitAll()  
-				.requestMatchers("/api/**").authenticated()  
-				.anyRequest().permitAll()  
-		)  
-		...
-  
-    return http.build();  
-}
-```
-
-## Role & Permission
-
-Article: https://medium.com/@victoronu/implementing-role-and-permission-based-authorization-in-spring-boot-with-jwt-359901206b6a
-
-%% TODO: %%
-
-## [[OAuth]] integration
-
-%% TODO: %%
+See [[Spring Security]]
 
 # DTO Mapper pattern
 
@@ -1459,7 +566,7 @@ Notes:
 ## Use `@Value`
 
 ```java
-@Value("app.env1")
+@Value("${app.env1}")
 private String env1;
 ```
 
@@ -1468,7 +575,6 @@ private String env1;
 ```java
 @Configuration  
 @ConfigurationProperties(prefix = "app.admin")  
-@RequiredArgsConstructor  
 @NoArgsConstructor  
 @Getter  
 @Setter  
@@ -1479,6 +585,35 @@ public class AdminConfiguration {
     private String email;  
 	// app.admin.password
     private String password;  
+}
+```
+
+## Configuration properties
+
+Instead of `@Value("${...}")` to get env data, we can create a bean to save and access globally.
+Also, with additional dependencies, we can even document and generate artifact to support properties file auto-complete for custom properties.
+
+```properties
+# Sample App Configuration
+app.display-name=My Coding Project
+app.version=1.0.2
+app.max-connections=50
+app.timeout-seconds=30
+```
+
+```java
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ConfigurationProperties(prefix = "app")
+@Data
+public class AppConfig {
+    private String displayName;
+    private String version;
+    private int maxConnections;
+    private int timeoutSeconds;
 }
 ```
 
@@ -1704,8 +839,6 @@ public class MyInterceptor implements HandlerInterceptor {
 
 # Spring [[Aspect oriented programming|AOP]]
 
-%% TODO: what is Spring proxy? %%
-
 Spring package for [[Aspect oriented programming|AOP]].
 
 Pattern `execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)`.
@@ -1717,6 +850,8 @@ Notes:
 
 ```java title="LoggingAspect.java"
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -1752,6 +887,10 @@ public class LoggingAspect {
 }
 ```
 
+## Spring Proxy
+
+%% TODO %%
+
 # Caching
 
 %% TODO: %%
@@ -1775,44 +914,19 @@ spring.web.resources.chain.strategy.content.paths=/**
 server.error.path=/index.html
 ```
 
+%% verify; usual approach is a forward controller for non-file routes %%
+
 # [[Hibernate]] nested [[SQL]] transaction
 
 %% TODO: %%
 
-# Properties bean
-
-Instead of `@Value("{...}")` to get env data, we can create a bean to save and access globally.
-Also, with additional dependencies, we can even document and generate artifact to support properties file auto-complete for custom properties.
-
-```properties
-# Sample App Configuration
-app.display-name="My Coding Project"
-app.version=1.0.2
-app.max-connections=50
-app.timeout-seconds=30
-```
-
-```java
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@ConfigurationProperties(prefix = "app")
-@Data
-public class AppConfig {
-    private String displayName;
-    private String version;
-    private int maxConnections;
-    private int timeoutSeconds;
-}
-```
-
 # [[Spnego]] integration
 
-%% TODO: extract sample from TSS project %%
+See [[Spring Security]]
 
-# Mock [[REST API]] Service Server
+# Mock Rest Service Server
+
+%% TODO: MockRestServiceServer %%
 
 # Spring Rest client
 
@@ -1889,7 +1003,7 @@ File [[Blob]] API.
 %% TODO: %%
 
 ```java
-package tech.kingoyster.spring_1.file;  
+package com.example.spring_1.file;  
   
 import lombok.RequiredArgsConstructor;  
 import org.springframework.core.io.Resource;  
@@ -1929,7 +1043,8 @@ public class FileController {
 //        // TODO:  
 //    }  
   
-    // NOTE: @RequestPart allow use to send both BLOB data & JSON    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)  
+    // NOTE: @RequestPart allow use to send both BLOB data & JSON
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)  
     @ResponseStatus(HttpStatus.NO_CONTENT)  
     public void uploadFile(  
             @RequestPart("file") MultipartFile file,  
@@ -1956,7 +1071,7 @@ public class FileController {
 
 # Configurable log
 
-Use [[log4j]] and modify config param with [[Spring-boot#Spring properties]]
+Spring Boot uses Logback by default (Log4j2 via `spring-boot-starter-log4j2`); set `logging.level.<pkg>=DEBUG`. See [[Spring-boot#Config file]].
 
 %% TODO: %%
 
@@ -1964,34 +1079,4 @@ Use [[log4j]] and modify config param with [[Spring-boot#Spring properties]]
 
 Below is an example how we can do sample validation for route params with [[Regex]]
 
-```java
-package tech.kingoyster.spring_1.file;  
-  
-import lombok.RequiredArgsConstructor;  
-import org.springframework.core.io.Resource;  
-import org.springframework.http.ResponseEntity;  
-import org.springframework.web.bind.annotation.GetMapping;  
-import org.springframework.web.bind.annotation.PathVariable;  
-import org.springframework.web.bind.annotation.RequestMapping;  
-import org.springframework.web.bind.annotation.RestController;  
-  
-import java.util.List;  
-  
-@RestController  
-@RequestMapping("/api/v1/files")  
-@RequiredArgsConstructor  
-public class FileController {  
-  
-    private final StorageService storageService;  
-  
-    @GetMapping  
-    public List<String> listFile() {  
-        return null;  
-    }  
-  
-    @GetMapping("/{filename:.+}")  
-    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {  
-        return null;  
-    }  
-}
-```
+`{filename:.+}` restricts the path variable by regex; `.+` keeps the extension in older Spring where suffix matching truncated it.

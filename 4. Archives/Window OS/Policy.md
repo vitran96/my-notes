@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # Get
 ```powershell
 Get-ExecutionPolicy -list

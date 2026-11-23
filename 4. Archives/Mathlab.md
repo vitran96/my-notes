@@ -1,0 +1,4 @@
+---
+para: archive
+was: resource
+---

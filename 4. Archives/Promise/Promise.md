@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 ![[promise_action_diagram.png]]
 
 ![[promise_architecture_diagram.png]]

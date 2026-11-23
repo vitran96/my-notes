@@ -1,22 +1,30 @@
-`# Vector function
+---
+para: resource
+tags: [game-dev]
+---
+See also: [[Game development skill]], [[Love2D]]
+
+# Vector between two points
 
 $$
 \vec{v} = (x_2 - x_1, y_2 - y_1)
 $$
 
-# Vector distance
+# Vector length (magnitude)
 
 $$
 ||\vec{v}|| = \sqrt{x_v^2 + y_v^2}
 $$
 
-# Vector unit
+The distance between the points is ‖v‖.
+
+# Unit vector (normalize)
 
 Represent a vector of length 1 (distance stripped)
 $$
 \frac{\vec{v}}{||\vec{v}||}
 $$
 
-# Bend vector 90 degree
+# Rotate 90°
 
-Just need to flip X / Y (eg: $X$ -> $-X$ or $-Y$ to $Y$) 
+Counter-clockwise (x, y) → (−y, x); clockwise (x, y) → (y, −x). Swap the components and negate one. 

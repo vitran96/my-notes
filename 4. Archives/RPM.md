@@ -1,4 +1,8 @@
-Package manager for most of [[RHEL]] distro (eg: [[Fedora]])
+---
+para: archive
+was: resource
+---
+Package format and low-level package manager for Red Hat-family distros ([[Fedora]], RHEL, Rocky); day-to-day use dnf (resolves dependencies).
 
 ```bash
 rpm -ivh package_to_install
@@ -9,5 +13,11 @@ rpm -e package_to_delete
 ```
 
 ```bash
-rpm -ql package_to_show_info
+# list files
+rpm -ql package_name
+```
+
+```bash
+# info
+rpm -qi <pkg>
 ```

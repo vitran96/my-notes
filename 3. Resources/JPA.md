@@ -1,3 +1,7 @@
+---
+para: resource
+tags: [java, database]
+---
 # Generate Entity
 [Article](https://stackoverflow.com/questions/14956665/generate-jpa2-entities-from-existing-database-using-maven)
 
@@ -5,7 +9,7 @@
 [Repo](https://github.com/smartnews/jpa-entity-generator)
 Issues:
 - Cannot remove default `@Data` annotation
-- For some reason, the latest update is note released and it **NEEDED** to support `jakarta` package (rename from `javax`)
+- For some reason, the latest update is not released and it **NEEDED** to support `jakarta` package (rename from `javax`)
 
 Notes:
 - Good enhancement can be found from this [repo](https://github.com/pierrickrouxel/jpa-entity-generator/tree/main)
@@ -62,7 +66,7 @@ By default, the tool include schema / catalog (== MySQL database or Postgres Sch
 <!--                    <ejb3>true</ejb3>-->  
 <!--                    <jdk5>true</jdk5>-->  
 		<outputDirectory>${project.basedir}/src/main/java</outputDirectory>  
-		<packageName>tech.kingoyster.spring_1.model</packageName>  
+		<packageName>com.example.spring_1.model</packageName>  
 		<templatePath>${project.basedir}/template</templatePath>  
 	</configuration>  
 	<dependencies>  
@@ -103,15 +107,16 @@ mvn hibernate-tools:hbm2java
 ```
 
 ### Use custom template
-To override an existing template, you just need to name . Then add to the configuration `<templatePath>...</templatePath>`.
+To override an existing template, name your file like the built-in template (e.g. `Pojo.ftl`) and place it under `<templatePath>/pojo/`. Then add to the configuration `<templatePath>...</templatePath>`.
 If path is `template_path` then the template should be in `template_path/pojo`.
 
 # [[Lombok]] `@Data` annotation should be avoided
-It is not recommended to add `@Data` annotation to Entity since it can break the [[Lazy evaluation]]
+It is not recommended to add `@Data` annotation to Entity since it can break lazy loading.
+Lombok's generated `equals`/`hashCode`/`toString` touch lazy associations (extra queries or `LazyInitializationException`, infinite recursion on bidirectional relations) and `hashCode` changes once the ID is assigned.
 
 # Projection view
 ```java
-public interface UserRepo extends JapRepository<User, Long> {
+public interface UserRepo extends JpaRepository<User, Long> {
 	// This will create SELECT ... FROM users with fields sepecified in UserSummary
 	List<UserSummary> findProjectedById(Long id);
 }
@@ -122,10 +127,10 @@ public interface UserRepo extends JapRepository<User, Long> {
 ## Use `@Query`
 ```java
 public interface UserRepo extends JpaRepository<User, Long> {
-	@Transaction
+	@Transactional
 	@Modifying
 	@Query("UPDATE User u SET u.hashedPassword = :hashedPassword WHERE u.id = :id")
-	void updatePasword(@Param("id") Long id, @Param("hashedPassword") String hashedPassword)
+	void updatePassword(@Param("id") Long id, @Param("hashedPassword") String hashedPassword);
 }
 ```
 
@@ -135,7 +140,7 @@ Notes:
 
 ## Let JPA EntityManager auto handle query
 ```java
-public interface UserRepo Extends JpaRepository<User, Long> {
+public interface UserRepo extends JpaRepository<User, Long> {
 	Optional<User> findOneByEmail(String email);
 	List<User> findByEmail(String email);
 }
@@ -147,3 +152,71 @@ public interface UserRepo Extends JpaRepository<User, Long> {
 # Handling Foreign Key
 
 %%  TODO:  %%
+
+# Spring Boot config
+
+## Config
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo_liquibase
+    username: postgres
+    password: changemeinproduction
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+```
+
+## Create custom datasource
+
+Steps:
+1. Disable default DataSource auto-configuration
+2. Setup custom DataSource properties
+
+```java
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+    basePackages = "com.example.repo.primary", // Package for Primary Repos
+    entityManagerFactoryRef = "primaryEntityManagerFactory",
+    transactionManagerRef = "primaryTransactionManager"
+)
+public class PrimaryDbConfig {
+
+    @Primary
+    @Bean(name = "primaryDataSourceProperties")
+    @ConfigurationProperties("app.datasource.primary")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Primary
+    @Bean(name = "primaryDataSource")
+    public DataSource dataSource() {
+        return dataSourceProperties().initializeDataSourceBuilder().build();
+    }
+
+    @Primary
+    @Bean(name = "primaryEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            EntityManagerFactoryBuilder builder, @Qualifier("primaryDataSource") DataSource dataSource) {
+        return builder
+                .dataSource(dataSource)
+                .packages("com.example.model.primary") // Package for Primary Entities
+                .persistenceUnit("primary")
+                .build();
+    }
+
+    @Primary
+    @Bean(name = "primaryTransactionManager")
+    public PlatformTransactionManager transactionManager(
+            @Qualifier("primaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+}
+```
+
+# Related
+
+Schema migrations: [[Liquibase]], [[Flyway]]. Connection pool: [[HikariCP]].

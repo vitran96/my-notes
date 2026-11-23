@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 Most if not all browser support [[HTML]], [[CSS]], [[Javascript]]
 
 # Disable Web security

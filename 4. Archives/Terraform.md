@@ -1,4 +1,10 @@
-[[CI CD tools]] for [[Infrastructure]], known as [[Infrastructure as Code]].
+---
+para: archive
+was: resource
+---
+An [[Infrastructure as Code]] tool.
+
+Commands below use [[OpenTofu]] (tofu), the open-source Terraform fork.
 
 # Deploy
 
@@ -42,3 +48,5 @@ terraform-project/
         ├── backend.tf
         └── terraform.tfvars # Actual values for prod variables (e.g., instance_type = "m5.large")
 ```
+
+See also: [[OpenTofu]]

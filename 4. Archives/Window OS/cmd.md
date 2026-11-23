@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 # No variable expansion
 
 [https://stackoverflow.com/a/58486645/11217661](https://stackoverflow.com/a/58486645/11217661)

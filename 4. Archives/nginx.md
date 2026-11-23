@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 nginx is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP/UDP proxy server, originally written by [[Igor Sysoev]]
 
 # Sample config for [[static web]]
@@ -7,7 +11,7 @@ server {
 	listen [::]:4200;
 	listen 4200;
 	root /usr/share/nginx/html/apps;
-	include mimes.types;
+	include mime.types;
 	index index.html index.htm;
 	location / {
 		try_files $uri $uri/ /index.html;
@@ -27,15 +31,17 @@ server {
 		proxy_set_header Host $host;
 		proxy_set_header X-Real-IP $remote_addr;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $schema;
+		proxy_set_header X-Forwarded-Proto $scheme;
 	}
 
 	location /api/ {
 		proxy_pass http://be:8000/;
 		proxy_set_header Host $host;
 		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header x-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto $schema;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
 	}
 }
 ```
+
+See also: [[Traefik]], [[API Gateway]]

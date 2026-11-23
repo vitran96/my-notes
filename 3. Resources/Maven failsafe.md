@@ -1,10 +1,12 @@
 ---
+para: resource
 site: https://maven.apache.org/surefire/maven-failsafe-plugin/
+tags: [java, testing]
 ---
-
 [[Maven]] plugin to run test.
 It is suggested for [[Integration Test]] only.
 It will run at `verify` stage with `mvn verify`
+Goals: `integration-test` (runs tests) + `verify` (fails the build), so run `mvn verify`, not `mvn integration-test`.
 
 # File lookup pattern
 
@@ -24,4 +26,6 @@ This can be skip with
 
 # Choose specific test
 
-- `-Dtest=<class#method>,...`
+- `-Dit.test=<Class#method>,...` (not `-Dtest`, which is surefire's)
+
+See also: [[Jacoco]], [[Test Containers]]

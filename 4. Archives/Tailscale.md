@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 [[VPN Mesh]] service
 
 # Exit node
@@ -7,7 +11,7 @@ Exit node require approval in Dashboard.
 
 # Setup [[pfsense]] with [[Virtual subnet]]
 
-Ideally, his is good but this doesn't work for me.
+Ideally, this is good but this doesn't work for me.
 
 # Install in [[Termux]]
 
@@ -32,10 +36,12 @@ tailscale --socket="$HOME/.tailscale/tailscaled.sock" up
 tailscale --socket="$HOME/.tailscale/tailscaled.sock" serve --bg http://127.0.0.1:11434
 
 # To test with curl
-curl --socks5-hostname localhost:1055 https://phone-2-llm.tail78e763.ts.net/v1/models
+curl --socks5-hostname localhost:1055 https://<host>.<tailnet>.ts.net/v1/models
 ```
 
 # Log
 
 - 2026-08-04 - I give up on using 1 node to expose my infra. The likely best practice way is to have my router using non-common [[LAN]] IP (like 192.168.58.0) instead of (192.168.1.0). [[WireGuard]] would not help either since [[iOS]] doesn't allow nested [[VPN]] connection
 - 2026-08-17 - For some reason it stop working. Reinstall [[tailscaled]] make it work
+
+See also: [[2026-07 Setup LLM server in Samsung Note 20 Ultra]]

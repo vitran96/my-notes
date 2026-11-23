@@ -1,6 +1,8 @@
-[[Window OS]] virtual Linux.
-It working kind of like [[Docker]].
-[[Docker]] image might be adaptable with WSL.
+---
+para: archive
+was: resource
+---
+[[Window OS]] subsystem for Linux. WSL 2 runs a real Linux kernel in a lightweight utility VM (WSL 1 translated syscalls). [[Docker]] Desktop uses WSL 2 as its backend.
 
 # Install / Update
 ```powershell
@@ -16,11 +18,11 @@ wsl --list --online
 # Install distribution
 
 ```powershell
-wsl --install --d <distribution name>
+wsl --install -d <distribution name>
 ```
 
 eg:
 
 ```powershell
-wsl --install --d Ubuntu-18.04
+wsl --install -d Ubuntu-18.04
 ```

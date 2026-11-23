@@ -1,3 +1,7 @@
+---
+para: archive
+was: resource
+---
 4 basic principles:
 
 - Use HTTP methods explicitly
@@ -7,7 +11,7 @@
 
 What make REST successful?
 
-- Use URI 9Uniform Resource Indicator) addressable resources
+- Use URI (Uniform Resource Identifier) addressable resources
 - HTTP Protocol
 - Make request - Receive Response - Display Response
 
